@@ -4,6 +4,8 @@ splash = open("resources/misc/splash_screen", "r")
 
 
 def print_splash(wholescr_y, wholescr_x):
+    curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
     global splash
     logo = splash.read()
     logo_h = 8
@@ -18,7 +20,7 @@ def print_splash(wholescr_y, wholescr_x):
     spl_scr.addstr(0, 0, "LOADING")
     spl_scr.refresh()
     curses.napms(200)
-    spl_scr.addstr(0, 0, logo)
-    spl_scr.addstr(logo_h+1, 0, "(pre-alpha) author: Pawel Hordyniak")
+    spl_scr.addstr(0, 0, logo, curses.color_pair(1))
+    spl_scr.addstr(logo_h+1, 0, "(pre-alpha) author: Pawel Hordyniak", curses.color_pair(2))
     spl_scr.refresh()
     curses.napms(1000)
