@@ -1,6 +1,8 @@
-#This is main application
+#This is main application body
 import curses
 import splash_screen
+import ui
+import game_control
 from curses import wrapper
 from math import floor
 
@@ -10,49 +12,44 @@ def main(wholescr):
     wholescr_y, wholescr_x = wholescr.getmaxyx()
     wholescr.addstr(int(wholescr_y/2), int(wholescr_x/2), "".join([str(wholescr_y), " ", str(wholescr_x)]))
     wholescr.refresh()
+    curses.napms(300)
     splash_screen.print_splash(wholescr_y, wholescr_x)
-    def popup(mess):
-        width = len(mess)+4
-        height = 3
-
-        popup = curses.newwin(height, width, floor(wholescr_y/2)-2, floor(wholescr_x/2)-floor(width/2))
-        popup.border()
-        popup.addstr(1, 2, mess)
-        popup.refresh()
-
-
+    
     curses.napms(200)
 
 
     ui_screen = curses.newwin(wholescr_y, floor(wholescr_x/3), 0, 0)
     ui_screen_maxy, ui_screen_maxx = ui_screen.getmaxyx()
-    ui_screen.addstr(2, 1, "".join([str(ui_screen_maxy), " ", str(ui_screen_maxx)]))
     ui_screen.border()
-    ui_screen.refresh()
-
-    
-
-
-    curses.napms(200)
 
     game_map = curses.newwin(wholescr_y, wholescr_x-ui_screen_maxx, 0, ui_screen_maxx)
     game_map_maxy, game_map_maxx = game_map.getmaxyx()
-    game_map.addstr(2, 1, "".join([str(game_map_maxy), " ", str(game_map_maxx)]))
     game_map.border()
-    game_map.refresh()
 
-    curses.napms(200)
-    ui_screen.addstr(1,1, "Test UI Window")
-    ui_screen.refresh()
-    curses.napms(200)
-    game_map.addstr(1,1, "Test game map area")
-    game_map.refresh()
-    curses.napms(200)
-    popup("This is a test popup message")
-    curses.napms(500)
-    #wholescr.clear()
+    render = game_control.Renderque()
+    render.setscreen(ui_screen)
+    render.setscreen(game_map)
     
-    #wholescr.refresh()
+    class testobj():
+        pos_y = 8
+        pos_x = 8
+        screen = None
+        content = "Fuck me, it works!"
+        def __init__(self, screen):
+            self.screen = screen
+        def draw(self):
+            self.screen.addstr(self.pos_y, self.pos_x, self.content)
+            
+    my_obj = testobj(game_map)
+    render.addontop(my_obj)
+    render.renderpass()
+            
+            
+    
+    
+    curses.napms(200)
+    ui.popup("This is a test popup message", wholescr_y, wholescr_x)
+    curses.napms(500)
     curses.napms(3000)
 
 
