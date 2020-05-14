@@ -11,12 +11,11 @@ class mainmenu():
 	
 	def __init__(self, window):
 		self.win = window
-		curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
-		curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_WHITE)
+		
 		self.win.clear()
 		self.win.border()
 		
 		self.win_y, self.win_x = window.getmaxyx()
 		
-	def draw_item_list():
+	def draw_item_list(self):
 		pass
