@@ -4,11 +4,15 @@ import curses
 from math import floor
 
 class Renderque():
+	#que is a list of all object that are to be rendered.
+	#Each renderable object need to have draw() method
     que = []
+    #screens is a list of current screens that need to be refreshed and updated
     screens = []
     #border = True
     
     def renderpass(self):
+    	#this func update screens and draws all objects from que
         for screen in self.screens:
             screen.clear()
             screen.border()
