@@ -32,7 +32,7 @@ def main(wholescr):
     current_scene = menu
     render = game_control.Renderque(current_scene)
     update = game_control.Updateque(current_scene)
-    input_control = game_control.Keyboard()
+    input_control = game_control.Keyboard(current_scene)
 
     render.renderpass()
 

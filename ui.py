@@ -22,6 +22,9 @@ class button():
     def toggle(self):
         self.is_focused = not self.is_focused
 
+    def draw(self):
+        self.window.addstr(self.pos_y, self.pos_x, self.content)
+
 class Label():
     content = ""
     def __init__(self, window, content, pos_y, pos_x):

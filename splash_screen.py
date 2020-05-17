@@ -23,4 +23,4 @@ def print_splash(wholescr_y, wholescr_x):
     spl_scr.addstr(0, 0, logo, curses.color_pair(1))
     spl_scr.addstr(logo_h+1, 1, "(pre-alpha) author:Pawel Hordyniak", curses.color_pair(2))
     spl_scr.refresh()
-    curses.napms(3000)
+    curses.napms(1000)

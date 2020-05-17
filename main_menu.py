@@ -10,14 +10,14 @@ class Mainmenu(game_control.Scene):
 	win_x = 0
 	focused_item = 0
 	
-	def __init__(self,  windows, input_window):
-		super().__init__(self,  windows, input_window)
+	def __init__(self, windows, input_window):
+		super().__init__(windows, input_window)
 		self.win_y, self.win_x = self.windows[0].getmaxyx()
 		self.draw_item_list()
 		
 	def draw_item_list(self):
-		start_pos_y = int(win_y/2-len(self.menu_items)/2-1)
-		start_pos_x = int(win_x/6)
+		start_pos_y = int(self.win_y/2-len(self.menu_items)/2-1)
+		start_pos_x = int(self.win_x/4)
 
 		for item in self.menu_items:
 			self.menu_buttons.append(ui.button(self.windows[0], start_pos_y+self.menu_items.index(item), start_pos_x, item, item))
