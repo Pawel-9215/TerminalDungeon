@@ -22,6 +22,18 @@ class button():
     def toggle(self):
         self.is_focused = not self.is_focused
 
+class Label():
+    content = ""
+    def __init__(self, window, content, pos_y, pos_x):
+        self.content = content
+        self.pos_y = pos_y
+        self.pos_x = pos_x
+        self.window = window
+
+    def draw(self):
+        self.window.addstr(self.pos_y, self.pos_x, self.content)
+
+
 def popup(mess, wholescr_y, wholescr_x):
     width = len(mess)+4
     height = 3

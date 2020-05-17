@@ -4,45 +4,46 @@ import curses
 from math import floor
 
 class Renderque():
-	#que is a list of all object that are to be rendered.
-	#Each renderable object need to have draw() method
-    que = []
-    #screens is a list of current screens that need to be refreshed and updated
-    screens = []
-    #border = True
+	#Only one Scene can be rendered at a time.
+    #Scene object already have all references of renderable objects within
+    scene = None
+    def __init__(self, scene=None):
+        self.scene = scene
     
     def renderpass(self):
     	#this func update screens and draws all objects from que
-        for screen in self.screens:
+        for screen in self.scene.windows:
             screen.clear()
             screen.border()
-        for obj in self.que:
+        for obj in self.scene.renderable_objects:
             obj.draw()
-        for screen in self.screens:
+        for screen in self.scene.windows:
             screen.refresh()
+
+class Updateque():
+    #Same as render but is updating (for example positions) instead of rendering
+
+    scene = None
+    def __init__(self, scene=None):
+        self.scene = scene
+
+    def updatepass(self):
+
+        for obj in self.scene.updatable_objects:
+            obj.update()
+
             
-    def addontop(self, obj):
-        self.que.append(obj)
-        
-    def removeobj(self, obj):
-        self.que.remove(obj)
-        
-    def setscreen(self, screen):
-        self.screens.append(screen)
-        
-    def removescreen(self, screen):
-        self.screen.remove(screen)
             
 class Keyboard():
     #this is keyboard controller
     #Idea is to send key presses to objects currenty focused objects
     #We can also edit key mapping here
-    active_window = None
+    scene = None
     last_pressed = ""
-    def __init__(self, window):
-        self.active_window = window
+    def __init__(self, scene=None):
+        self.scene = scene
     def key_listen(self):
-        key_pressed = self.active_window.getch()
+        key_pressed = self.scene.input_window.getch()
         symbol = chr(key_pressed)
         if symbol == "w":
             self.last_pressed = "up"
@@ -55,3 +56,12 @@ class Keyboard():
         else:
             self.last_pressed = symbol
         
+class Scene():
+    windows = []
+    renderable_objects = []
+    updatable_objects = []
+    input_window = None
+
+    def __init__(self, windows, input_window):
+        self.windows = windows
+        self.input_window = input_window
