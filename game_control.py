@@ -33,3 +33,24 @@ class Renderque():
     def removescreen(self, screen):
         self.screen.remove(screen)
             
+class Keyboard():
+    #this is keyboard controller
+    #Idea is to send key presses to objects currenty focused objects
+    #We can also edit key mapping here
+    active_window = None
+    def __init__(self, window):
+        self.active_window = window
+    def key_listen(self):
+        key_pressed = self.active_window.getch()
+        symbol = chr(key_pressed)
+        if symbol == "w":
+            return "up"
+        elif symbol == "s":
+            return "down"
+        elif symbol == "a":
+            return "left"
+        elif symbol == "d":
+            return "right"
+        else:
+            return symbol
+        
