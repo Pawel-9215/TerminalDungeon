@@ -38,19 +38,20 @@ class Keyboard():
     #Idea is to send key presses to objects currenty focused objects
     #We can also edit key mapping here
     active_window = None
+    last_pressed = ""
     def __init__(self, window):
         self.active_window = window
     def key_listen(self):
         key_pressed = self.active_window.getch()
         symbol = chr(key_pressed)
         if symbol == "w":
-            return "up"
+            self.last_pressed = "up"
         elif symbol == "s":
-            return "down"
+            self.last_pressed = "down"
         elif symbol == "a":
-            return "left"
+            self.last_pressed = "left"
         elif symbol == "d":
-            return "right"
+            self.last_pressed = "right"
         else:
-            return symbol
+            self.last_pressed = symbol
         
