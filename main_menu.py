@@ -9,6 +9,13 @@ class Mainmenu(game_control.Scene):
 	win_y = 0
 	win_x = 0
 	focused_item = 0
+	buttons_on_pressed = {
+		"Quit":quit,
+		"New Game":print,
+		"Options":print,
+		"Load Game":print,
+		"Credits":print,
+		}
 	
 	def __init__(self, windows, input_window):
 		super().__init__(windows, input_window)
@@ -20,7 +27,7 @@ class Mainmenu(game_control.Scene):
 		start_pos_x = int(self.win_x/4)
 
 		for item in self.menu_items:
-			self.menu_buttons.append(ui.button(self.windows[0], start_pos_y+self.menu_items.index(item), start_pos_x, item, item))
+			self.menu_buttons.append(ui.button(self.windows[0], start_pos_y+self.menu_items.index(item), start_pos_x, item, item, self.buttons_on_pressed[item]))
 		self.renderable_objects.extend(self.menu_buttons)
 		self.updatable_objects.append(self)
 		self.menu_buttons[self.focused_item].is_focused = True
@@ -41,6 +48,14 @@ class Mainmenu(game_control.Scene):
 				self.focused_item = len(self.menu_buttons)-1
 			else:
 				self.focused_item -= 1
+
+		if key == " ":
+			if self.menu_buttons[self.focused_item].name != "Quit":
+				self.menu_buttons[self.focused_item].on_pressed("button", self.menu_buttons[self.focused_item].name, "pressed")
+			else:
+				self.menu_buttons[self.focused_item].on_pressed()
+
+		
 
 		for key in self.menu_buttons:
 			key.is_focused = False

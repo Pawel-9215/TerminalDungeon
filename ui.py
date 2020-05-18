@@ -8,14 +8,17 @@ class button():
     pos_y = 0
     pos_x = 0
     window = None
+    on_pressed = None
     
-    def __init__(self, window, pos_y, pos_x, content, name):
+    def __init__(self, window, pos_y, pos_x, content, name, on_pressed):
 
         self.window = window
         self.pos_y = pos_y
         self.pos_x = pos_x
         self.content = content
         self.colors = ColorInit()
+        self.name = name
+        self.on_pressed = on_pressed
 
     def toggle(self):
         self.is_focused = not self.is_focused
