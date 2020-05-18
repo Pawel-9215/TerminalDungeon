@@ -29,16 +29,17 @@ class button():
 class Label():
     content = ""
 
-    def __init__(self, window, content, pos_y, pos_x, bg="black"):
+    def __init__(self, window, content, pos_y, pos_x, bg="white"):
         self.content = content
         self.pos_y = pos_y
         self.pos_x = pos_x
         self.window = window
         self.colors = ColorInit()
+        self.bg = bg
         
 
     def draw(self):
-        self.window.addstr(self.pos_y, self.pos_x, self.content)
+        self.window.addstr(self.pos_y, self.pos_x, self.content, curses.color_pair(self.colors.bg_color[self.bg]))
 
 class ColorInit():
 
@@ -48,15 +49,27 @@ class ColorInit():
         "red":4,
         "magenta":5,
     }
+    bg_color = {
+        "white":21,
+        "yellow":22,
+        "magenta":23
+    }
 
 
     def __init__(self):
+        #font colors
         curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
         curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_YELLOW)
 
         curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
         curses.init_pair(4, curses.COLOR_RED, curses.COLOR_BLACK)
         curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+
+
+        #bg colors
+        curses.init_pair(21, curses.COLOR_BLACK, curses.COLOR_WHITE)
+        curses.init_pair(22, curses.COLOR_BLACK, curses.COLOR_YELLOW)
+        curses.init_pair(23, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
 
 
 

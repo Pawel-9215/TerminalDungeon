@@ -42,7 +42,7 @@ def main(wholescr):
         print(input_control.last_pressed)
         update.updatepass(input_control.last_pressed)
         render.renderpass()
-    
+
             
             
             
