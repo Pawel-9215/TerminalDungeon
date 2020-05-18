@@ -27,10 +27,10 @@ class Updateque():
     def __init__(self, scene=None):
         self.scene = scene
 
-    def updatepass(self):
+    def updatepass(self, key):
 
         for obj in self.scene.updatable_objects:
-            obj.update()
+            obj.update(key)
 
             
             

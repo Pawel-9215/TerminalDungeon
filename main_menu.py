@@ -22,5 +22,23 @@ class Mainmenu(game_control.Scene):
 		for item in self.menu_items:
 			self.menu_buttons.append(ui.button(self.windows[0], start_pos_y+self.menu_items.index(item), start_pos_x, item, item))
 		self.renderable_objects = self.menu_buttons
+		self.updatable_objects.append(self)
+		self.menu_buttons[self.focused_item].is_focused = True
+
+		#title_bar = ui.Label
+
+	def update(self, key):
+
+		if key == "down":
+			self.focused_item += 1
+
+		if key == "up":
+			self.focused_item -= 1
+
+		for key in self.menu_buttons:
+			key.is_focused = False
+		self.menu_buttons[self.focused_item].is_focused = True
+
+
 
 

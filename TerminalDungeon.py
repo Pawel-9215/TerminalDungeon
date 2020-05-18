@@ -29,6 +29,7 @@ def main(wholescr):
 
     menu = main_menu.Mainmenu([wholescr], wholescr)
     #Game conrol classes
+    colors = ui.ColorInit()
     current_scene = menu
     render = game_control.Renderque(current_scene)
     update = game_control.Updateque(current_scene)
@@ -38,7 +39,8 @@ def main(wholescr):
 
     while True:
         input_control.key_listen()
-        update.updatepass()
+        print(input_control.last_pressed)
+        update.updatepass(input_control.last_pressed)
         render.renderpass()
     
             
@@ -47,20 +49,6 @@ def main(wholescr):
     
     
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 wrapper(main)
 
