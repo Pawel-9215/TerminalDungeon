@@ -8,9 +8,10 @@ class button():
     pos_y = 0
     pos_x = 0
     window = None
-    on_pressed = None
-    
-    def __init__(self, window, pos_y, pos_x, content, name, on_pressed):
+    func = None
+    arguments = []
+
+    def __init__(self, window, pos_y, pos_x, content, name, on_pressed, arguments):
 
         self.window = window
         self.pos_y = pos_y
@@ -18,7 +19,8 @@ class button():
         self.content = content
         self.colors = ColorInit()
         self.name = name
-        self.on_pressed = on_pressed
+        self.func = on_pressed
+        self.arguments = arguments
 
     def toggle(self):
         self.is_focused = not self.is_focused
@@ -28,6 +30,9 @@ class button():
             self.window.addstr(self.pos_y, self.pos_x, self.content, curses.A_STANDOUT)
         else:
             self.window.addstr(self.pos_y, self.pos_x, self.content, curses.color_pair(self.colors.font_color["magenta"]))
+
+    def on_pressed(self):
+        self.func(*self.arguments)
 
 class Label():
     content = ""

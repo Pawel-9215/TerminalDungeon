@@ -35,11 +35,14 @@ def main(wholescr):
     update = game_control.Updateque(current_scene)
     input_control = game_control.Keyboard(current_scene)
 
+    scene_control = game_control.Scene_Manager(render, update)
+    scene_control.current_scene = current_scene
+    menu.scene_controller = scene_control
+
     render.renderpass()
 
     while True:
         input_control.key_listen()
-        print(input_control.last_pressed)
         update.updatepass(input_control.last_pressed)
         render.renderpass()
 

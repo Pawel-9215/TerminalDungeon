@@ -61,7 +61,23 @@ class Scene():
     renderable_objects = []
     updatable_objects = []
     input_window = None
+    scene_controller = None
 
     def __init__(self, windows, input_window):
         self.windows = windows
         self.input_window = input_window
+
+class Scene_Manager():
+    all_scenes = []
+    current_scene = None
+    renderer = None
+    updater = None
+
+    def __init__(self, renderer, updater):
+        self.renderer = renderer
+        self.updater = updater
+
+    def change_scene(self, scene):
+        self.current_scene = scene
+        self.renderer.scene = scene
+        self.updater.scene = scene
