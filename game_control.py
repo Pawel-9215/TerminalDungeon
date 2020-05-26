@@ -81,3 +81,7 @@ class Scene_Manager():
         self.current_scene = scene
         self.renderer.scene = scene
         self.updater.scene = scene
+
+    #you are working on scene manager system
+    #update and render needs refactor as well as init screen in main module
+    #think about architecture!
