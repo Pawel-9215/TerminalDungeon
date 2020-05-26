@@ -34,7 +34,7 @@ class Mainmenu(game_control.Scene):
 		self.updatable_objects.append(self)
 		self.menu_buttons[self.focused_item].is_focused = True
 
-		title_bar = ui.Label(self.windows[0], "  MAIN MENU           ", start_pos_y-2, start_pos_x, bg="yellow")
+		title_bar = ui.Label(self.windows[0], "  MAIN MENU           ", start_pos_y-2, start_pos_x, bg="white")
 		self.renderable_objects.append(title_bar)
 
 	def update(self, key):
