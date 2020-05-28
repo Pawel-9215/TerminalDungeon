@@ -63,6 +63,7 @@ class Scene():
     input_window = None
     scene_controller = None
     scene_manager = None
+    keyboard_input = None
 
     def __init__(self, windows, input_window):
         self.windows = windows
@@ -89,6 +90,7 @@ class Scene_Manager():
         self.current_scene = scene
         self.renderer.scene = scene
         self.updater.scene = scene
+        self.input_controller.scene = scene
 
     #you are working on scene manager system
     #update and render needs refactor as well as init screen in main module

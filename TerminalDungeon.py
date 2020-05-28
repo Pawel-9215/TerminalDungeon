@@ -27,17 +27,18 @@ def main(wholescr):
     game_map.border()
     game_map.refresh()
 
+    render = game_control.Renderque()
+    update = game_control.Updateque()
+    input_control = game_control.Keyboard()
+
+    manager = game_control.Scene_Manager(render, update)
+    manager.input_controller = input_control
+
     menu = main_menu.Mainmenu([wholescr], wholescr)
     #Game conrol classes
     colors = ui.ColorInit()
-    current_scene = menu
-    render = game_control.Renderque(current_scene)
-    update = game_control.Updateque(current_scene)
-    input_control = game_control.Keyboard(current_scene)
-
-    scene_control = game_control.Scene_Manager(render, update)
-    scene_control.current_scene = current_scene
-    menu.scene_controller = scene_control
+    manager.change_scene(menu)
+    
 
     render.renderpass()
 
