@@ -61,13 +61,13 @@ class Scene():
     renderable_objects = []
     updatable_objects = []
     input_window = None
-    scene_controller = None
     scene_manager = None
     keyboard_input = None
 
-    def __init__(self, windows, input_window):
+    def __init__(self, windows, input_window, scene_manager):
         self.windows = windows
         self.input_window = input_window
+        self.scene_manager = scene_manager
 
 class Scene_Manager():
     #this would be engine class

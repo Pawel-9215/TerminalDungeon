@@ -17,8 +17,8 @@ class Mainmenu(game_control.Scene):
 		"Credits":[print, [credits]],
 		}
 	
-	def __init__(self, windows, input_window):
-		super().__init__(windows, input_window)
+	def __init__(self, windows, input_window, manager):
+		super().__init__(windows, input_window, manager)
 		self.win_y, self.win_x = self.windows[0].getmaxyx()
 		self.draw_item_list()
 		self.credits = Credits(self.windows, self.input_window)

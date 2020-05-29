@@ -34,7 +34,7 @@ def main(wholescr):
     manager = game_control.Scene_Manager(render, update)
     manager.input_controller = input_control
 
-    menu = main_menu.Mainmenu([wholescr], wholescr)
+    menu = main_menu.Mainmenu([wholescr], wholescr, manager)
     #Game conrol classes
     colors = ui.ColorInit()
     manager.change_scene(menu)
