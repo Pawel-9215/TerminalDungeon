@@ -15,10 +15,18 @@ class Renderque():
         for screen in self.scene.windows:
             screen.clear()
             screen.border()
+            screen.refresh()
+        print(self.scene.renderable_objects)
         for obj in self.scene.renderable_objects:
+            
             obj.draw()
+            pass
         for screen in self.scene.windows:
             screen.refresh()
+    def clearscene(self):
+        if self.scene != None:
+            for screen in self.scene.windows:
+                screen.clear()
 
 class Updateque():
     #Same as render but is updating (for example positions) instead of rendering
@@ -87,10 +95,11 @@ class Scene_Manager():
         self.updater = updater
 
     def change_scene(self, scene):
+        self.renderer.clearscene()
         self.current_scene = scene
-        self.renderer.scene = scene
-        self.updater.scene = scene
-        self.input_controller.scene = scene
+        self.renderer.scene = self.current_scene
+        self.updater.scene = self.current_scene
+        self.input_controller.scene = self.current_scene
         self.renderer.renderpass()
 
     #you are working on scene manager system

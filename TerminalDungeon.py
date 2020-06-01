@@ -22,6 +22,20 @@ def main(wholescr):
     ui_screen.border()
     ui_screen.refresh()
 
+    wholescr.clear()
+    label1 = ui.Label(wholescr, "This is LABEL-1", 5, 5)
+    label2 = ui.Label(wholescr, "This is LABEL-2", 6, 5)
+    label1.draw()
+    wholescr.refresh()
+    curses.napms(1000)
+    wholescr.clear()
+    label2.draw()
+    wholescr.refresh()
+    curses.napms(1000)
+
+
+
+
     game_map = curses.newwin(wholescr_y, wholescr_x-ui_screen_maxx, 0, ui_screen_maxx)
     game_map_maxy, game_map_maxx = game_map.getmaxyx()
     game_map.border()
@@ -37,21 +51,31 @@ def main(wholescr):
     menu = main_menu.Mainmenu([wholescr], wholescr, manager)
     credits1 = main_menu.Credits([wholescr], wholescr, manager)
     #Game conrol classes
+
     colors = ui.ColorInit()
-    manager.change_scene(credits1)
-    manager.renderer.renderpass()
-    curses.napms(2000)
-    manager.change_scene(menu)
-    manager.renderer.renderpass()
-    curses.napms(2000)
-    manager.change_scene(credits1)
-    manager.renderer.renderpass()
+    
+    render.scene=credits1
+    #update.updatepass("up")
+    render.renderpass()
 
+    curses.napms(2000)
+
+"""
+    wholescr.clear()
+    #manager.change_scene(menu)
+    curses.napms(2000)
+    wholescr.clear()
+    manager.change_scene(credits1)
+    
+    curses.napms(2000)
+    wholescr.clear()
+    """
+"""
     while True:
-        input_control.key_listen()
-        update.updatepass(input_control.last_pressed)
-        render.renderpass()
-
+        manager.input_controller.key_listen()
+        manager.updater.updatepass(input_control.last_pressed)
+        manager.renderer.renderpass()
+"""
             
             
             
