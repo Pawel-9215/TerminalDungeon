@@ -45,7 +45,7 @@ class Mainmenu(game_control.Scene):
 		"Load Game":[print, ['Load Game']],
 		"Credits":[self.manager.change_scene, [self.credits2]],
 		}
-		#self.draw_item_list()
+		self.draw_item_list()
 		
 		
 	def draw_item_list(self):

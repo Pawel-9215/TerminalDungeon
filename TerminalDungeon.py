@@ -39,15 +39,13 @@ def main(wholescr):
     #Game conrol classes
     colors = ui.ColorInit()
     manager.change_scene(credits1)
-    render.renderpass()
+    manager.renderer.renderpass()
     curses.napms(2000)
     manager.change_scene(menu)
-    menu.draw_item_list()s
-    render.renderpass()
+    manager.renderer.renderpass()
     curses.napms(2000)
     manager.change_scene(credits1)
-    render.renderpass()
-    
+    manager.renderer.renderpass()
 
     while True:
         input_control.key_listen()

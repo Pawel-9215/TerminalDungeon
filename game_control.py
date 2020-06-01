@@ -86,7 +86,7 @@ class Scene_Manager():
         self.renderer = renderer
         self.updater = updater
 
-    def change_scene(self, scene): #TUTAJ KURWA
+    def change_scene(self, scene):
         self.current_scene = scene
         self.renderer.scene = scene
         self.updater.scene = scene
