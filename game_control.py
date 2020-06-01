@@ -86,11 +86,12 @@ class Scene_Manager():
         self.renderer = renderer
         self.updater = updater
 
-    def change_scene(self, scene):
+    def change_scene(self, scene): #TUTAJ KURWA
         self.current_scene = scene
         self.renderer.scene = scene
         self.updater.scene = scene
         self.input_controller.scene = scene
+        self.renderer.renderpass()
 
     #you are working on scene manager system
     #update and render needs refactor as well as init screen in main module

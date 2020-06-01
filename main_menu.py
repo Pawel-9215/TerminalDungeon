@@ -3,25 +3,49 @@ import curses
 import game_control
 import ui
 
+class Credits(game_control.Scene):
+
+
+	def __init__(self, windows, input_window, manager):
+		super().__init__(windows, input_window, manager)
+		self.win_y, self.win_x = self.windows[0].getmaxyx()
+		self.updatable_objects.append(self)
+		self.print_content()
+		
+
+	def print_content(self):
+		start_pos_y = int(self.win_y/2)
+		start_pos_x = int(self.win_x/4)
+
+		info_bar = ui.Label(self.windows[0], "Everything is done by me - Pawel", start_pos_y-2, start_pos_x)
+		self.renderable_objects.append(info_bar)
+
+	def update(self, key):
+		pass
+		#go back to main-menu
+
 class Mainmenu(game_control.Scene):
 	menu_items = ["New Game", "Options", "Load Game", "Credits", "Quit"]
 	menu_buttons = []
 	win_y = 0
 	win_x = 0
 	focused_item = 0
-	buttons_on_pressed = {
-		"Quit":[quit, []],
-		"New Game":[print, ['New Game']],
-		"Options":[print, ['Options']],
-		"Load Game":[print, ['Load Game']],
-		"Credits":[print, [credits]],
-		}
+	buttons_on_pressed = {}
+	
 	
 	def __init__(self, windows, input_window, manager):
 		super().__init__(windows, input_window, manager)
 		self.win_y, self.win_x = self.windows[0].getmaxyx()
-		self.draw_item_list()
-		self.credits = Credits(self.windows, self.input_window)
+		self.manager = manager
+		self.credits2 = Credits(self.windows, self.input_window, manager)
+		self.buttons_on_pressed = {
+		"Quit":[quit, []],
+		"New Game":[print, ['New Game']],
+		"Options":[print, ['Options']],
+		"Load Game":[print, ['Load Game']],
+		"Credits":[self.manager.change_scene, [self.credits2]],
+		}
+		#self.draw_item_list()
 		
 		
 	def draw_item_list(self):
@@ -36,6 +60,7 @@ class Mainmenu(game_control.Scene):
 
 		title_bar = ui.Label(self.windows[0], "  MAIN MENU           ", start_pos_y-2, start_pos_x, bg="white")
 		self.renderable_objects.append(title_bar)
+		self.manager.change_scene(self.credits2)
 
 	def update(self, key):
 
@@ -62,21 +87,7 @@ class Mainmenu(game_control.Scene):
 
 
 
-class Credits(game_control.Scene):
 
-
-	def __init__(self, windows, input_window):
-		super().__init__(windows, input_window)
-		self.win_y, self.win_x = self.windows[0].getmaxyx()
-
-	def print_content():
-
-		info_bar = ui.Label(self.windows[0], "Everything is done by me - Pawel", start_pos_y-2, start_pos_x)
-		self.renderable_objects.append(info_bar)
-
-	def update(self, key):
-		pass
-		#go back to main-menu
 		
 
 
