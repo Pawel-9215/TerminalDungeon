@@ -49,7 +49,9 @@ def main(wholescr):
     manager.input_controller = input_control
 
     menu = main_menu.Mainmenu([wholescr], wholescr, manager)
+    menu.draw_item_list()
     credits1 = main_menu.Credits([wholescr], wholescr, manager)
+    credits1.print_content()
     #Game conrol classes
 
     colors = ui.ColorInit()

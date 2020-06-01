@@ -65,17 +65,16 @@ class Keyboard():
             self.last_pressed = symbol
         
 class Scene():
-    windows = []
-    renderable_objects = []
-    updatable_objects = []
-    input_window = None
-    scene_manager = None
-    keyboard_input = None
 
     def __init__(self, windows, input_window, scene_manager):
+        
         self.windows = windows
         self.input_window = input_window
         self.scene_manager = scene_manager
+        self.win_y, self.win_x = self.windows[0].getmaxyx()
+        self.renderable_objects = []
+        self.updatable_objects = []
+
 
 class Scene_Manager():
     #this would be engine class

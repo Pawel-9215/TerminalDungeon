@@ -5,13 +5,13 @@ import ui
 
 class Credits(game_control.Scene):
 
-
+	"""
 	def __init__(self, windows, input_window, manager):
-		super().__init__(windows, input_window, manager)
+		
 		self.win_y, self.win_x = self.windows[0].getmaxyx()
 		self.updatable_objects.append(self)
 		self.print_content()
-		
+	"""	
 
 	def print_content(self):
 		start_pos_y = int(self.win_y/2)
@@ -31,22 +31,22 @@ class Mainmenu(game_control.Scene):
 	win_x = 0
 	focused_item = 0
 	buttons_on_pressed = {}
-	
-	
-	def __init__(self, windows, input_window, manager):
-		super().__init__(windows, input_window, manager)
-		self.win_y, self.win_x = self.windows[0].getmaxyx()
-		self.manager = manager
-		self.credits2 = Credits(self.windows, self.input_window, manager)
-		self.buttons_on_pressed = {
+	buttons_on_pressed = {
 		"Quit":[quit, []],
 		"New Game":[print, ['New Game']],
 		"Options":[print, ['Options']],
 		"Load Game":[print, ['Load Game']],
-		"Credits":[self.manager.change_scene, [self.credits2]],
+		"Credits":[print, ['dupa']],
 		}
-		self.draw_item_list()
+	"""
+	def __init__(self):
+		#super().__init__(windows, input_window, manager)
+		self.win_y, self.win_x = self.windows[0].getmaxyx()
+		self.manager = manager
+		self.credits2 = Credits(self.windows, self.input_window, manager)
 		
+		self.draw_item_list()
+	"""	
 		
 	def draw_item_list(self):
 		start_pos_y = int(self.win_y/2-len(self.menu_items)/2-1)
