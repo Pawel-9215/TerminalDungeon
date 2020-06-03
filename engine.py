@@ -1,5 +1,5 @@
 # So this is supposed to be engine class.
-# We are going to store here a lot of shit :D
+# We are going to store here a lot of shit :D and so on
 import game_control
 import ui
 
