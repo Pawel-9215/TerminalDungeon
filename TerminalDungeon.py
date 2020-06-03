@@ -30,6 +30,7 @@ def main(wholescr):
     curses.napms(2000)
 
     td_engine = engine.Engine(wholescr, ui_screen, game_map)
+    td_engine.run_game()
 
 
 wrapper(main)
