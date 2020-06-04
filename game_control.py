@@ -11,24 +11,27 @@ class Renderque():
     # Scene object already have all references of renderable objects within
 
     def __init__(self, engine: engine.Engine):
-        self.scene = engine.current_scene
+        self.engine = engine
 
     def renderpass(self):
+        scene = self.engine.current_scene
         # this func update screens and draws all objects from que
-        for screen in self.scene.windows:
+        for screen in scene.windows:
             screen.clear()
             screen.border()
             screen.refresh()
         #print(self.scene.renderable_objects)
-        for obj in self.scene.renderable_objects:
+
+        for obj in scene.renderable_objects:
             obj.draw()
             pass
-        for screen in self.scene.windows:
+        for screen in scene.windows:
             screen.refresh()
 
     def clearscene(self):
-        if self.scene != None:
-            for screen in self.scene.windows:
+        scene = self.engine.current_scene
+        if scene != None:
+            for screen in scene.windows:
                 screen.clear()
 
 
@@ -37,10 +40,11 @@ class Updateque():
 
 
     def __init__(self, engine: engine.Engine):
-        self.scene = engine.current_scene
+        self.engine = engine
 
     def updatepass(self, key):
-        for obj in self.scene.updatable_objects:
+        scene = self.engine.current_scene
+        for obj in scene.updatable_objects:
             obj.update(key)
 
 
@@ -51,10 +55,11 @@ class Keyboard():
     last_pressed = ""
 
     def __init__(self, engine: engine.Engine):
-        self.scene = engine.current_scene
+        self.engine = engine
 
     def key_listen(self):
-        key_pressed = self.scene.input_window.getch()
+        scene = self.engine.current_scene
+        key_pressed = scene.input_window.getch()
         symbol = chr(key_pressed)
         if symbol == "w":
             self.last_pressed = "up"

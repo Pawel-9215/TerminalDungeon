@@ -18,7 +18,19 @@ class Engine():
 
 
     def run_game(self):
+
+        test_scene_1 = game_control.Scene([self.left_bar, self.right_bar], "Test_1", self)
+        test_scene_2 = game_control.Scene([self.full_screen], "Test_2", self)
+
         self.key_input.key_listen()
+        self.updater.updatepass(self.key_input.last_pressed)
+        self.renderer.renderpass()
+        self.key_input.key_listen()
+        self.current_scene = test_scene_1
+        self.updater.updatepass(self.key_input.last_pressed)
+        self.renderer.renderpass()
+        self.key_input.key_listen()
+        self.current_scene = test_scene_2
         self.updater.updatepass(self.key_input.last_pressed)
         self.renderer.renderpass()
         self.key_input.key_listen()

@@ -35,7 +35,6 @@ class button():
         self.func(*self.arguments)
 
 class Label():
-    content = ""
 
     def __init__(self, window, content, pos_y, pos_x, bg="white"):
         self.content = content
