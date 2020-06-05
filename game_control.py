@@ -3,14 +3,14 @@
 import curses
 from math import floor
 import ui
-import engine
+
 
 
 class Renderque():
     # Only one Scene can be rendered at a time.
     # Scene object already have all references of renderable objects within
 
-    def __init__(self, engine: engine.Engine):
+    def __init__(self, engine: object):
         self.engine = engine
 
     def renderpass(self):
@@ -39,7 +39,7 @@ class Updateque():
     # Same as render but is updating (for example positions) instead of rendering
 
 
-    def __init__(self, engine: engine.Engine):
+    def __init__(self, engine: object):
         self.engine = engine
 
     def updatepass(self, key):
@@ -54,7 +54,7 @@ class Keyboard():
     # We can also edit key mapping here
     last_pressed = ""
 
-    def __init__(self, engine: engine.Engine):
+    def __init__(self, engine: object):
         self.engine = engine
 
     def key_listen(self):
@@ -82,9 +82,13 @@ class Scene():
         self.win_y, self.win_x = self.windows[0].getmaxyx()
         self.renderable_objects = []
         self.updatable_objects = []
-        self.name = name
+        self.name = name #debug only
         self.scene_label = ui.Label(windows[0], name, 0, 0)
         self.renderable_objects.append(self.scene_label)
+        self.print_content()
+        
+    def print_content(self):
+        pass
 
 
 

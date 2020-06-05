@@ -48,6 +48,18 @@ class Label():
     def draw(self):
         self.window.addstr(self.pos_y, self.pos_x, self.content, curses.color_pair(self.colors.bg_color[self.bg]))
 
+class Plain_text():
+
+    def __init__(self, window, content, pos_y, pos_x):
+        self.content = content
+        self.pos_y = pos_y
+        self.pos_x = pos_x
+        self.window = window
+        
+
+    def draw(self):
+        self.window.addstr(self.pos_y, self.pos_x, self.content)
+
 class ColorInit():
 
     font_color = {

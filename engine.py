@@ -2,6 +2,7 @@
 # We are going to store here a lot of shit :D and so on and on
 import game_control
 import ui
+import main_menu
 
 class Engine():
     def __init__(self, full_screen: object, left_bar: object, right_bar: object):
@@ -21,7 +22,8 @@ class Engine():
 
         test_scene_1 = game_control.Scene([self.left_bar, self.right_bar], "Test_1", self)
         test_scene_2 = game_control.Scene([self.full_screen], "Test_2", self)
-
+        credits_scene = main_menu.Credits([self.full_screen], "Credits", self)
+        
         self.key_input.key_listen()
         self.updater.updatepass(self.key_input.last_pressed)
         self.renderer.renderpass()
@@ -31,6 +33,10 @@ class Engine():
         self.renderer.renderpass()
         self.key_input.key_listen()
         self.current_scene = test_scene_2
+        self.updater.updatepass(self.key_input.last_pressed)
+        self.renderer.renderpass()
+        self.key_input.key_listen()
+        self.current_scene = credits_scene
         self.updater.updatepass(self.key_input.last_pressed)
         self.renderer.renderpass()
         self.key_input.key_listen()

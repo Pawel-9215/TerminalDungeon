@@ -3,21 +3,27 @@ import curses
 import game_control
 import ui
 
+
+
 class Credits(game_control.Scene):
 
-	"""
-	def __init__(self, windows, input_window, manager):
-		
-		self.win_y, self.win_x = self.windows[0].getmaxyx()
-		self.updatable_objects.append(self)
-		self.print_content()
-	"""	
-
 	def print_content(self):
-		start_pos_y = int(self.win_y/2)
-		start_pos_x = int(self.win_x/4)
+		start_pos_y = int(self.win_y/6)
+		start_pos_x = int(self.win_x/6)
+		credits = ["Code and Design: Pawel Hordyniak",
+                           "Website: Pawel Hordyniak",
+                           "",
+                           "Special Thanks to:",
+                           "DmD",
+                           "Bartek",
+                           "ONE",
+                           "Pawel",
+                           ]
 
-		info_bar = ui.Label(self.windows[0], "Everything is done by me - Pawel", start_pos_y-2, start_pos_x)
+		info_bar = ui.Label(self.windows[0], "Credits:", start_pos_y, start_pos_x)
+		for num, obj in enumerate(credits):
+                    self.renderable_objects.append(ui.Plain_text(self.windows[0], obj, start_pos_y+1+num, start_pos_x))
+		
 		self.renderable_objects.append(info_bar)
 
 	def update(self, key):
