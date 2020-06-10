@@ -15,28 +15,14 @@ class Engine():
         self.renderer = game_control.Renderque(self)
         self.updater = game_control.Updateque(self)
 
-
+    def change_scene(self, scene = game_control.Scene):
+        self.current_scene = scene
 
 
     def run_game(self):
-
-        test_scene_1 = game_control.Scene([self.left_bar, self.right_bar], "Test_1", self)
-        test_scene_2 = game_control.Scene([self.full_screen], "Test_2", self)
-        credits_scene = main_menu.Credits([self.full_screen], "Credits", self)
-        
-        self.key_input.key_listen()
-        self.updater.updatepass(self.key_input.last_pressed)
+        self.current_scene = main_menu.Mainmenu([self.full_screen], "MainMenu", self)
         self.renderer.renderpass()
-        self.key_input.key_listen()
-        self.current_scene = test_scene_1
-        self.updater.updatepass(self.key_input.last_pressed)
-        self.renderer.renderpass()
-        self.key_input.key_listen()
-        self.current_scene = test_scene_2
-        self.updater.updatepass(self.key_input.last_pressed)
-        self.renderer.renderpass()
-        self.key_input.key_listen()
-        self.current_scene = credits_scene
-        self.updater.updatepass(self.key_input.last_pressed)
-        self.renderer.renderpass()
-        self.key_input.key_listen()
+        while True:
+            self.key_input.key_listen()
+            self.updater.updatepass(self.key_input.last_pressed)
+            self.renderer.renderpass()

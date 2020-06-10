@@ -85,10 +85,9 @@ class Scene():
         self.name = name #debug only
         self.scene_label = ui.Label(windows[0], name, 0, 0)
         self.renderable_objects.append(self.scene_label)
-        self.print_content()
+
         
-    def print_content(self):
-        pass
+
 
 
 

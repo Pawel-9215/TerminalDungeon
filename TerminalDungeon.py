@@ -27,7 +27,7 @@ def main(wholescr):
     game_map_maxy, game_map_maxx = game_map.getmaxyx()
     game_map.border()
     game_map.refresh()
-    curses.napms(2000)
+    #curses.napms(500)
 
     td_engine = engine.Engine(wholescr, ui_screen, game_map)
     td_engine.run_game()
