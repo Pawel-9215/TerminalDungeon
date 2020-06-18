@@ -7,9 +7,16 @@ class Cell():
     def __init__(self, y, x, type, glyph, occupation="free"):
         self.y = y
         self.x = x
-        self.type = type
+        self.floor_type = "grass"
         self.glyph = glyph
         self.occupation = occupation
+
+class Body():
+    def __init__(self, y, x):
+        self.y = y
+        self.x = x
+        self.destructable = False
+        self.glyph = "@"
 
 
 class game_instance(game_control.Scene):

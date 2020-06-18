@@ -16,7 +16,7 @@ def load_map(map_name):
                 grid[y][x] = "█"
             if grid[y][x] == "P":
                 player_yx = [x, y]
-                grid[y][x] = " "
+                grid[y][x] = "P"
     for y in range(1, len(grid) - 1):
         for x in range(1, len(grid[y]) - 1):
             if grid[y][x] == " ":
