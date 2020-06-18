@@ -13,7 +13,7 @@ class Credits(game_control.Scene):
 		start_pos_y = int(self.win_y / 6)
 		start_pos_x = int(self.win_x / 6)
 		credits = ["Code and Design: Pawel Hordyniak",
-				   "Website: Pawel Hordyniak",
+				   "Website: www.terminaldungeon.com",
 				   "",
 				   "Special Thanks to:",
 				   "DmD",
@@ -59,6 +59,9 @@ class Mainmenu(game_control.Scene):
 		self.renderable_objects.extend(self.menu_buttons)
 		self.updatable_objects.append(self)
 		self.menu_buttons[self.focused_item].is_focused = True
+		
+		instruction = ui.Plain_text(self.windows[0], " WSAD to move, spacebar to confirm ", self.win_y-1, 2)
+		self.renderable_objects.append(instruction)
 
 		title_bar = ui.Label(self.windows[0], "  MAIN MENU           ", start_pos_y - 2, start_pos_x, bg="white")
 		self.renderable_objects.append(title_bar)
