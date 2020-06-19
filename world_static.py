@@ -37,4 +37,5 @@ class PlayerStart():
 
     def remove_self(self):
         # this should be replaced by reference to player instance
+        # on game start
         pass
