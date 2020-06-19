@@ -2,8 +2,6 @@ import game_control
 import map_loader
 
 
-
-
 class GameInstance(game_control.Scene):
     def __init__(self, windows, name: str, engine: object):
         super().__init__(windows, name, engine)
