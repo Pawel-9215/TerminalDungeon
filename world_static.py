@@ -6,6 +6,18 @@ class Cell():
         self.floor_glyph = floor_glyph
         self.occupation = occupation
 
+    def __repr__(self):
+        if self.occupation != "free":
+            return self.occupation.glyph
+        else:
+            return self.floor_glyph
+
+    def check_if_empty(self):
+        if self.occupation == "free":
+            return True
+        else:
+            return self.occupation
+
 
 class SolidBody():
     def __init__(self):
@@ -31,11 +43,16 @@ class StoneWall(SolidBody):
 
 
 class PlayerStart():
+    """
+    This object should be replaced by player class when the game starts.
+    """
+
     def __init__(self, y, x):
         self.y = y
         self.x = x
+        self.glyph = "P"
 
     def remove_self(self):
         # this should be replaced by reference to player instance
         # on game start
-        pass
+        del self

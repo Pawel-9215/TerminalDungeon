@@ -1,9 +1,9 @@
 # This is main application body
 import curses
 import splash_screen
-import ui
-import game_control
-import main_menu
+# import ui
+# import game_control
+# import main_menu
 from curses import wrapper
 from math import floor
 import engine
@@ -27,7 +27,7 @@ def main(wholescr):
     game_map_maxy, game_map_maxx = game_map.getmaxyx()
     game_map.border()
     game_map.refresh()
-    #curses.napms(500)
+    # curses.napms(500)
 
     td_engine = engine.Engine(wholescr, ui_screen, game_map)
     td_engine.run_game()
