@@ -13,6 +13,7 @@ class GameInstance(game_control.Scene):
         self.GP_window = self.windows[0]  # Gameplay window - map and player
         self.grid = None
         self.current_player = None
+        self.load_map("Test_map_1")
 
     def load_map(self, map_name: "str"):
         """
@@ -21,6 +22,11 @@ class GameInstance(game_control.Scene):
         self.grid = map_loader.WorldMap(map_name)
         self.current_player = player.Player(self.grid.player_y, self.grid.player_x, "↑")
         self.grid.grid[self.grid.player_y][self.grid.player_x] = self.current_player
+
+        grid_map = SituationMap(self.GP_window, self.grid, self)
+        self.renderable_objects.append(grid_map)
+
+
 
 class SituationMap:
     """
@@ -43,5 +49,15 @@ class SituationMap:
         max_x = self.window_x - 1
         center_y = int(self.window_y/2)
         center_x = int(self.window_x/2)
+
+        #get beginning
+        diff_y = self.grid.player_y - center_y
+        diff_x = self.grid.player_x - center_x
+
+        for y in range(min_y, max_y):
+            for x in range(min_x, max_x):
+                self.window.addstr(y, x, str(self.grid.grid[y+diff_y][x+diff_x]))
+
+        #draw static map elements first, then dynamic objects like player
 
         self.window.addstr(center_y, center_x, self.game_instance.current_player.glyph)
