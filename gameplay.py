@@ -21,11 +21,12 @@ class GameInstance(game_control.Scene):
         This loads map and sets reference in game instance
         """
         self.grid = map_loader.WorldMap(map_name)
-        self.current_player = player.Player(self.grid.player_y, self.grid.player_x, "↑")
+        self.current_player = player.Player(self.grid.player_y, self.grid.player_x, "↑", self.grid)
         self.grid.grid[self.grid.player_y][self.grid.player_x].occupation = self.current_player
 
         grid_map = SituationMap(self.GP_window, self.grid, self)
         self.renderable_objects.append(grid_map)
+        self.updatable_objects.append(self.current_player)
 
 
 class SituationMap:

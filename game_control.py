@@ -85,6 +85,8 @@ class Keyboard():
             self.last_pressed = "left"
         elif symbol == "d":
             self.last_pressed = "right"
+        elif symbol == "q":
+            quit()
         else:
             self.last_pressed = symbol
 

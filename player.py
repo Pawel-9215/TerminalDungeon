@@ -17,7 +17,12 @@ class Player():
         self.glyph = glyph
         self.world_map = world_map
 
-    def update(self):
+    def update(self, key):
+
+        if key in ["up", "down", "left", "right"]:
+            self.move(key)
+        else:
+            pass
         pass
 
     def move(self, direction):
