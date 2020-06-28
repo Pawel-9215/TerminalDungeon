@@ -58,7 +58,7 @@ class SituationMap:
 
         for y in range(min_y, max_y):
             for x in range(min_x, max_x):
-                try:
+                try: #raplace with proper if statements
                     self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]))
                 except:
                     self.window.addstr(y, x, "#")
