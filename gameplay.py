@@ -58,9 +58,9 @@ class SituationMap:
 
         for y in range(min_y, max_y):
             for x in range(min_x, max_x):
-                try: #raplace with proper if statements
+                if 0 < y + diff_y < len(self.grid.grid) and 0 < x + diff_x < len(self.grid.grid[y]):
                     self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]))
-                except:
+                else:
                     self.window.addstr(y, x, "#")
 
                     # draw static map elements first, then dynamic objects like player
