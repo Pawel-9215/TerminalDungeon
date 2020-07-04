@@ -3,6 +3,7 @@ import curses
 import game_control
 import ui
 import gameplay
+import charcter_creation
 
 
 class Credits(game_control.Scene):
@@ -39,15 +40,17 @@ class Mainmenu(game_control.Scene):
 
     def __init__(self, windows, name: str, engine: object):
         super().__init__(windows, name, engine)
-        self.menu_items = ["New Game", "Credits", "Quit"]
+        self.menu_items = ["New Game", "Create Character", "Credits", "Quit"]
         self.menu_buttons = []
         self.focused_item = 0
         self.test_gameplay = gameplay.GameInstance([self.engine.right_bar, self.engine.left_bar], "Gameplay", self.engine)
+        self.character_creator = charcter_creation.CharacterCreation(self.windows, "Character Creator", self.engine)
         self.credits_scene = Credits(self.windows, "Credits", self.engine)
         self.buttons_on_pressed = {
             "Quit": [quit, []],
             "New Game": [self.engine.change_scene, [self.test_gameplay]],
             "Credits": [self.engine.change_scene, [self.credits_scene]],
+            "Create Character": [self.engine.change_scene, [self.character_creator]],
         }
         self.print_content()
 
