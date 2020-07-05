@@ -21,6 +21,7 @@ class Engine():
 
     def run_game(self):
         self.current_scene = main_menu.Mainmenu([self.full_screen], "MainMenu", self)
+        self.base_menu = self.current_scene
         self.renderer.renderpass()
         while True:
             self.key_input.key_listen()

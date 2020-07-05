@@ -7,8 +7,9 @@ import charcter_creation
 
 
 class Credits(game_control.Scene):
-    def __init__(self, windows, name: str, engine: object):
+    def __init__(self, windows, name: str, engine: object, escape):
         super().__init__(windows, name, engine)
+        self.escape = escape
         self.print_content()
         self.updatable_objects.append(self)
 
@@ -32,7 +33,7 @@ class Credits(game_control.Scene):
         self.renderable_objects.append(info_bar)
 
     def update(self, key):
-        self.engine.change_scene(Mainmenu([self.engine.full_screen], "Main Menu", self.engine))
+        self.engine.change_scene(self.escape)
 # go back to main-menu
 
 
@@ -44,8 +45,8 @@ class Mainmenu(game_control.Scene):
         self.menu_buttons = []
         self.focused_item = 0
         self.test_gameplay = gameplay.GameInstance([self.engine.right_bar, self.engine.left_bar], "Gameplay", self.engine)
-        self.character_creator = charcter_creation.CharacterCreation(self.windows, "Character Creator", self.engine)
-        self.credits_scene = Credits(self.windows, "Credits", self.engine)
+        self.character_creator = charcter_creation.CharacterCreation(self.windows, "Character Creator", self.engine, self)
+        self.credits_scene = Credits(self.windows, "Credits", self.engine, self)
         self.buttons_on_pressed = {
             "Quit": [quit, []],
             "New Game": [self.engine.change_scene, [self.test_gameplay]],

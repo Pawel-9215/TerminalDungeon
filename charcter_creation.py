@@ -5,8 +5,9 @@ import random
 import pickle
 
 class CharacterCreation(game_control.Scene):
-    def __init__(self, windows, name: str, engine: object):
+    def __init__(self, windows, name: str, engine: object, escape):
         super().__init__(windows, name, engine)
+        self.escape = escape
         self.updatable_objects.append(self)
         self.focused_item = 0
         self.health = 5 + random.randint(2, 20)
@@ -19,6 +20,7 @@ class CharacterCreation(game_control.Scene):
         self.character_name= "______"
         self.skill_points = 10
         self.print_content()
+        self.monit = None
         self.initial_values = {
             "health":self.health,
             "melee":self.melee_skill,
@@ -69,6 +71,9 @@ class CharacterCreation(game_control.Scene):
         accept_btn = ui.button(self.windows[0], 15, 4, "Accept", "accept", self.save_character, [])
         self.renderable_objects.append(accept_btn)
         self.buttons.append(accept_btn)
+        return1 = ui.button(self.windows[0], 16, 4, "Return to Main Menu", "return", self.engine.change_scene, [self.escape])
+        self.renderable_objects.append(return1)
+        self.buttons.append(return1)
         
         
         self.buttons[self.focused_item].is_focused = True
@@ -113,6 +118,11 @@ class CharacterCreation(game_control.Scene):
             else:
                 self.focused_item -= 1
 
+        if key == "up" or key == "down":
+            if self.monit in self.renderable_objects:
+                self.renderable_objects.remove(self.monit)
+                self.monit = None
+
         if key == " ":
             self.buttons[self.focused_item].on_pressed()
 
@@ -129,9 +139,13 @@ class CharacterCreation(game_control.Scene):
     def set_name(self):
         self.character_name = ""
         self.update("none")
+        info = ui.Label(self.windows[0], "press ENTER to confirm", 4, 4)
+        self.renderable_objects.append(info)
+        self.monit = info
         self.engine.renderer.renderpass()
         curses.echo()
         self.character_name = self.windows[0].getstr(3, 4+15, 16).decode('utf-8')
+        self.update("down")
 
     def modify_param(self, amount, param):
         if (self.skill_points>0 and amount == 1) or (self.skill_points<10 and amount == -1):
@@ -160,10 +174,12 @@ class CharacterCreation(game_control.Scene):
 
         try:
             check = characters[self.character_name]
-            warning = ui.Label(self.windows[0], "Character with that name already exists!/n Pick different name!", int(self.win_y/2), int(self.win_x/2-20))
-            self.renderable_objects.append(warning)
-            self.values.append(warning)
-            self.engine.renderer.renderpass()
+            if self.monit == None:
+                warning = ui.Label(self.windows[0], "Character with that name already exists!", int(self.win_y/2), int(self.win_x/2-24))
+                self.renderable_objects.append(warning)
+                self.engine.renderer.renderpass()
+                self.monit = warning
+
         except:
             character = {
                 "name":self.character_name,
