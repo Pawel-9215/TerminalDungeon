@@ -1,22 +1,31 @@
 import ui
 import game_control
 import curses
+import random
+import pickle
 
 class CharacterCreation(game_control.Scene):
     def __init__(self, windows, name: str, engine: object):
         super().__init__(windows, name, engine)
         self.updatable_objects.append(self)
         self.focused_item = 0
-        self.health = 10
-        self.melee_skill = 0
-        self.range_skill = 0
-        self.strengh = 0
-        self.endurance = 0
+        self.health = 5 + random.randint(2, 20)
+        self.melee_skill = 20 + random.randint(2, 20)
+        self.range_skill = 20 + random.randint(2, 20)
+        self.strengh = random.randint(10, 60)
+        self.endurance = random.randint(10, 30)
         self.buttons = []
         self.values = []
         self.character_name= "______"
         self.skill_points = 10
         self.print_content()
+        self.initial_values = {
+            "health":self.health,
+            "melee":self.melee_skill,
+            "range":self.range_skill,
+            "strengh":self.strengh,
+            "endurance":self.endurance,
+        }
         
         
     def print_content(self):
@@ -27,7 +36,7 @@ class CharacterCreation(game_control.Scene):
         add_health = ui.button(self.windows[0], 4, 4, "+", "add_health", self.modify_param, [1, "health"])
         self.buttons.append(add_health)
         self.renderable_objects.append(add_health)
-        health_par = ui.Plain_text(self.windows[0], "Health: ", 4, 6)
+        health_par = ui.Plain_text(self.windows[0], "Health (Hp): ", 4, 6)
         self.renderable_objects.append(health_par)
         substract_health = ui.button(self.windows[0], 5, 4, "-", "substract_health", self.modify_param, [-1, "health"])
         self.buttons.append(substract_health)
@@ -56,9 +65,14 @@ class CharacterCreation(game_control.Scene):
         substract_endurance = ui.button(self.windows[0], 13, 4, "-", "substract_endurance", self.modify_param, [-1, "endurance"])
         self.buttons.append(substract_endurance)
         self.renderable_objects.append(substract_endurance)
+
+        accept_btn = ui.button(self.windows[0], 15, 4, "Accept", "accept", self.save_character, [])
+        self.renderable_objects.append(accept_btn)
+        self.buttons.append(accept_btn)
         
         
-        
+        self.buttons[self.focused_item].is_focused = True
+
         self.print_values()
 
     def print_values(self):
@@ -68,19 +82,19 @@ class CharacterCreation(game_control.Scene):
         char_name = ui.Plain_text(self.windows[0], self.character_name, 3, 4+15)
         self.renderable_objects.append(char_name)
         self.values.append(char_name)
-        health_val = ui.Plain_text(self.windows[0], str(self.health), 4, 14)
+        health_val = ui.Plain_text(self.windows[0], str(self.health), 4, 20)
         self.renderable_objects.append(health_val)
         self.values.append(health_val)
-        meelee_val = ui.Plain_text(self.windows[0], "".join(["Melee Skill: ", str(self.melee_skill)]), 6, 6)
+        meelee_val = ui.Plain_text(self.windows[0], "".join(["Melee Skill (Mel): ", str(self.melee_skill)]), 6, 6)
         self.renderable_objects.append(meelee_val)
         self.values.append(meelee_val)
-        range_val = ui.Plain_text(self.windows[0], "".join(["Range Skill: ", str(self.range_skill)]), 8, 6)
+        range_val = ui.Plain_text(self.windows[0], "".join(["Range Skill (Rng): ", str(self.range_skill)]), 8, 6)
         self.renderable_objects.append(range_val)
         self.values.append(range_val)
-        strengh_val = ui.Plain_text(self.windows[0], "".join(["Strengh: ", str(self.strengh)]), 10, 6)
+        strengh_val = ui.Plain_text(self.windows[0], "".join(["Strengh (Str): ", str(self.strengh), " Actual/10: ", str(round(self.strengh/10))]), 10, 6)
         self.renderable_objects.append(strengh_val)
         self.values.append(strengh_val)
-        endurance_val = ui.Plain_text(self.windows[0], "".join(["Endurance (End): ", str(self.endurance)]), 12, 6)
+        endurance_val = ui.Plain_text(self.windows[0], "".join(["Endurance (End): ", str(self.endurance), " Actual/10: ", str(round(self.endurance/10))]), 12, 6)
         self.renderable_objects.append(endurance_val)
         self.values.append(endurance_val)
 
@@ -117,21 +131,61 @@ class CharacterCreation(game_control.Scene):
         self.update("none")
         self.engine.renderer.renderpass()
         curses.echo()
-        self.character_name = self.windows[0].getstr(3, 4+15, 16)
+        self.character_name = self.windows[0].getstr(3, 4+15, 16).decode('utf-8')
 
     def modify_param(self, amount, param):
-        if self.skill_points>0:
-            if param == "health":
+        if (self.skill_points>0 and amount == 1) or (self.skill_points<10 and amount == -1):
+            if param == "health" and ((self.health > self.initial_values[param] and amount == -1) or amount == 1):
                 self.health = self.health + amount
-            elif param == "melee":
+                self.skill_points = self.skill_points - amount
+            elif param == "melee" and ((self.melee_skill > self.initial_values[param] and amount == -1) or amount == 1):
                 self.melee_skill = self.melee_skill + amount
-            elif param == "range":
+                self.skill_points = self.skill_points - amount
+            elif param == "range" and ((self.range_skill > self.initial_values[param] and amount == -1) or amount == 1):
                 self.range_skill = self.range_skill + amount
-            elif param == "strenght":
+                self.skill_points = self.skill_points - amount
+            elif param == "strengh" and ((self.strengh > self.initial_values[param] and amount == -1) or amount == 1):
                 self.strengh = self.strengh + amount
-            elif param == "endurance":
+                self.skill_points = self.skill_points - amount
+            elif param == "endurance" and ((self.endurance > self.initial_values[param] and amount == -1) or amount == 1):
                 self.endurance = self.endurance + amount
+                self.skill_points = self.skill_points - amount
 
-            self.skill_points = self.skill_points - amount
+    def save_character(self):
+        try:
+            characters = pickle.load(open("resources/char", "rb"))
+        except:
+            pickle.dump({}, open("resources/char", "wb"))
+            characters = pickle.load(open("resources/char", "rb"))
+
+        try:
+            check = characters[self.character_name]
+            warning = ui.Label(self.windows[0], "Character with that name already exists!/n Pick different name!", int(self.win_y/2), int(self.win_x/2-20))
+            self.renderable_objects.append(warning)
+            self.values.append(warning)
+            self.engine.renderer.renderpass()
+        except:
+            character = {
+                "name":self.character_name,
+                "health":self.health,
+                "melee":self.melee_skill,
+                "range":self.range_skill,
+                "str":self.strengh,
+                "end":self.endurance,
+                "arm_head":None,
+                "arm_torso":None,
+                "arm_hands":None,
+                "arm_legs":None,
+                "weapon":None,
+                "inv_1":None,
+                "inv_2":None,
+                "inv_3":None,
+                "inv_4":None,
+                "current_map":1
+            }
+            characters[self.character_name] = character
+            pickle.dump(characters, open("resources/char", "wb"), -1)
+
+            
 
 
