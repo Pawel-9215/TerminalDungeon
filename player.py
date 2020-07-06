@@ -8,7 +8,7 @@ from map_loader import WorldMap
 
 class Player():
     """
-    PLayer class
+    Player class
     """
 
     def __init__(self, y, x, glyph, world_map:WorldMap):
@@ -16,6 +16,11 @@ class Player():
         self.x = x
         self.glyph = glyph
         self.world_map = world_map
+
+        # character sheet:
+
+        #self.name = character_sheet[name]
+
 
     def update(self, key):
 

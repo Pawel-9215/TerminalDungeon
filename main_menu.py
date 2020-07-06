@@ -5,6 +5,20 @@ import ui
 import gameplay
 import charcter_creation
 
+class ChooseCharacter(game_control.Scene):
+    def __init__(self, windows, name: str, engine: object, escape):
+        super().__init__(windows,name,engine)
+        self.escape = escape
+        self.print_content
+        self.updatable_objects.append(self)
+        self.buttons = ["↑", "↓", "Create new Character", "Start Game", "Return to Menu"]
+        self.buttons_on_pressed = {
+            "↑":[print, ["up"]],
+            "↓":[print, ["down"]],
+            "Create new Character":[print, ["new char"]],
+            "Start Game":[print, ["Start Game"]],
+            "Return to Menu":[self.engine.change_scene, [self.escape]]
+        }
 
 class Credits(game_control.Scene):
     def __init__(self, windows, name: str, engine: object, escape):
@@ -41,7 +55,7 @@ class Mainmenu(game_control.Scene):
 
     def __init__(self, windows, name: str, engine: object):
         super().__init__(windows, name, engine)
-        self.menu_items = ["New Game", "Create Character", "Credits", "Quit"]
+        self.menu_items = ["Start Game", "Create Character", "Credits", "Quit"]
         self.menu_buttons = []
         self.focused_item = 0
         self.test_gameplay = gameplay.GameInstance([self.engine.right_bar, self.engine.left_bar], "Gameplay", self.engine)
@@ -49,7 +63,7 @@ class Mainmenu(game_control.Scene):
         self.credits_scene = Credits(self.windows, "Credits", self.engine, self)
         self.buttons_on_pressed = {
             "Quit": [quit, []],
-            "New Game": [self.engine.change_scene, [self.test_gameplay]],
+            "Start Game": [self.engine.change_scene, [self.test_gameplay]],
             "Credits": [self.engine.change_scene, [self.credits_scene]],
             "Create Character": [self.engine.change_scene, [self.character_creator]],
         }
