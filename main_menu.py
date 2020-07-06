@@ -9,7 +9,7 @@ class ChooseCharacter(game_control.Scene):
     def __init__(self, windows, name: str, engine: object, escape):
         super().__init__(windows,name,engine)
         self.escape = escape
-        self.print_content
+        self.start_pos = (2, 4)
         self.updatable_objects.append(self)
         self.buttons = ["↑", "↓", "Create new Character", "Start Game", "Return to Menu"]
         self.buttons_on_pressed = {
@@ -19,6 +19,12 @@ class ChooseCharacter(game_control.Scene):
             "Start Game":[print, ["Start Game"]],
             "Return to Menu":[self.engine.change_scene, [self.escape]]
         }
+        self.print_content()
+    
+    def print_content(self):
+
+        choose_char = ui.Plain_text(self.windows[0], "Choose character or create new one", self.start_pos[0], self.start_pos[1])
+        self.renderable_objects.append(choose_char)
 
 class Credits(game_control.Scene):
     def __init__(self, windows, name: str, engine: object, escape):
@@ -61,9 +67,10 @@ class Mainmenu(game_control.Scene):
         self.test_gameplay = gameplay.GameInstance([self.engine.right_bar, self.engine.left_bar], "Gameplay", self.engine)
         self.character_creator = charcter_creation.CharacterCreation(self.windows, "Character Creator", self.engine, self)
         self.credits_scene = Credits(self.windows, "Credits", self.engine, self)
+        self.char_choice = ChooseCharacter(self.windows, "Character Selection", self.engine, self)
         self.buttons_on_pressed = {
             "Quit": [quit, []],
-            "Start Game": [self.engine.change_scene, [self.test_gameplay]],
+            "Start Game": [self.engine.change_scene, [self.char_choice]],
             "Credits": [self.engine.change_scene, [self.credits_scene]],
             "Create Character": [self.engine.change_scene, [self.character_creator]],
         }
