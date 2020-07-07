@@ -4,6 +4,7 @@ import game_control
 import ui
 import gameplay
 import charcter_creation
+import pickle
 
 
 class ChooseCharacter(game_control.Scene):
@@ -46,8 +47,23 @@ class ChooseCharacter(game_control.Scene):
         for btn in self.menu_buttons:
             self.renderable_objects.append(btn)
 
+        characters = self.load_characters()
+
+
+
+        self.menu_buttons[self.focused_item].is_focused = True
+
     def update(self, key):
         self.button_toggle(key)
+
+    def load_characters(self):
+
+        try:
+            characters = pickle.load(open("resources/char", rb))
+        except:
+            characters = {"No characters": {"name": "No characters"}}
+
+        return characters
 
 
 class Credits(game_control.Scene):
@@ -134,5 +150,4 @@ class Mainmenu(game_control.Scene):
     # self.manager.change_scene(self.credits2)
 
     def update(self, key):
-
         self.button_toggle(key)
