@@ -15,7 +15,6 @@ class ChooseCharacter(game_control.Scene):
         self.buttons_names = [
             "↑", "↓", "Create new Character", "Start Game", "Return to Menu",
         ]
-        self.buttons = []
         self.buttons_on_pressed = {
             "↑": [print, ["up"]],
             "↓": [print, ["down"]],
@@ -35,7 +34,7 @@ class ChooseCharacter(game_control.Scene):
 
             if button == "↓" or button == "Create new Character":
                 extra += 1
-            self.buttons.append(
+            self.menu_buttons.append(
                 ui.button(self.windows[0],
                           self.start_pos[0] + 2 + num + extra,
                           self.start_pos[1],
@@ -44,8 +43,11 @@ class ChooseCharacter(game_control.Scene):
                           self.buttons_on_pressed[button][0],
                           self.buttons_on_pressed[button][1],
                           ))
-        for btn in self.buttons:
+        for btn in self.menu_buttons:
             self.renderable_objects.append(btn)
+
+    def update(self, key):
+        self.button_toggle(key)
 
 
 class Credits(game_control.Scene):
@@ -133,21 +135,4 @@ class Mainmenu(game_control.Scene):
 
     def update(self, key):
 
-        if key == "down":
-            if self.focused_item + 1 > len(self.menu_buttons) - 1:
-                self.focused_item = 0
-            else:
-                self.focused_item += 1
-
-        if key == "up":
-            if self.focused_item - 1 < 0:
-                self.focused_item = len(self.menu_buttons) - 1
-            else:
-                self.focused_item -= 1
-
-        if key == " ":
-            self.menu_buttons[self.focused_item].on_pressed()
-
-        for key in self.menu_buttons:
-            key.is_focused = False
-        self.menu_buttons[self.focused_item].is_focused = True
+        self.button_toggle(key)

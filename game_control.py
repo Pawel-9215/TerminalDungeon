@@ -1,14 +1,14 @@
 """This module will be responsible for rendering stuff and gathering player input"""
 
-#import curses
-#from math import floor
+# import curses
+# from math import floor
 import ui
-
 
 
 class Renderque():
     """This class is responsible for drawing objects in current scene
     """
+
     # Only one Scene can be rendered at a time.
     # Scene object already have all references of renderable objects within
 
@@ -24,7 +24,7 @@ class Renderque():
             screen.clear()
             screen.border()
             screen.refresh()
-        #print(self.scene.renderable_objects)
+        # print(self.scene.renderable_objects)
 
         for obj in scene.renderable_objects:
             obj.draw()
@@ -44,8 +44,8 @@ class Renderque():
 class Updateque():
     """This class is responsible for updating all objects in current scene
     """
-    # Same as render but is updating (for example positions) instead of rendering
 
+    # Same as render but is updating (for example positions) instead of rendering
 
     def __init__(self, engine: object):
         self.engine = engine
@@ -102,6 +102,29 @@ class Scene():
         self.win_y, self.win_x = self.windows[0].getmaxyx()
         self.renderable_objects = []
         self.updatable_objects = []
-        self.name = name #debug only
+        self.name = name  # debug only?
         self.scene_label = ui.Label(windows[0], name, 0, 0)
         self.renderable_objects.append(self.scene_label)
+        self.focused_item = 0
+        self.menu_buttons = []
+
+    def button_toggle(self, key: object) -> object:
+
+        if key == "down":
+            if self.focused_item + 1 > len(self.menu_buttons) - 1:
+                self.focused_item = 0
+            else:
+                self.focused_item += 1
+
+        if key == "up":
+            if self.focused_item - 1 < 0:
+                self.focused_item = len(self.menu_buttons) - 1
+            else:
+                self.focused_item -= 1
+
+        if key == " ":
+            self.menu_buttons[self.focused_item].on_pressed()
+
+        for key in self.menu_buttons:
+            key.is_focused = False
+        self.menu_buttons[self.focused_item].is_focused = True
