@@ -13,12 +13,14 @@ class ChooseCharacter(game_control.Scene):
         self.escape = escape
         self.start_pos = (2, 4)
         self.updatable_objects.append(self)
+        self.characters = self.load_characters()
+        self.rotator = ui.Rotator(self.windows[0], list(self.characters.keys()), 4, 7)
         self.buttons_names = [
             "↑", "↓", "Create new Character", "Start Game", "Return to Menu",
         ]
         self.buttons_on_pressed = {
-            "↑": [print, ["up"]],
-            "↓": [print, ["down"]],
+            "↑": [self.rotator.rotate, [-1]],
+            "↓": [self.rotator.rotate, [1]],
             "Create new Character": [print, ["new char"]],
             "Start Game": [print, ["Start Game"]],
             "Return to Menu": [self.engine.change_scene, [self.escape]],
@@ -47,7 +49,7 @@ class ChooseCharacter(game_control.Scene):
         for btn in self.menu_buttons:
             self.renderable_objects.append(btn)
 
-        characters = self.load_characters()
+        self.renderable_objects.append(self.rotator)
 
 
 
@@ -59,7 +61,7 @@ class ChooseCharacter(game_control.Scene):
     def load_characters(self):
 
         try:
-            characters = pickle.load(open("resources/char", rb))
+            characters = pickle.load(open("resources/char", "rb"))
         except:
             characters = {"No characters": {"name": "No characters"}}
 

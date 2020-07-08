@@ -128,3 +128,4 @@ class Scene():
         for key in self.menu_buttons:
             key.is_focused = False
         self.menu_buttons[self.focused_item].is_focused = True
+

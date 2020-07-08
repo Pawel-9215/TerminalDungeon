@@ -91,8 +91,35 @@ class ColorInit():
         curses.init_pair(23, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
 
 
+class Rotator():
 
+    def __init__(self, window, items: list, y, x):
+        self.items = items
+        self.choosen_item = 0
+        self.y = y
+        self.x = x
+        self.window = window
 
+    def draw(self):
+        if len(self.items) <= 1:
+            self.window.addstr(self.y + 1, self.x, ">" + self.items[self.choosen_item], curses.A_STANDOUT)
+        else:
+            for i in range(3):
+                if i == 1:
+                    self.window.addstr(self.y+i, self.x, ">"+self.items[self.choosen_item-1+i], curses.A_STANDOUT)
+                else:
+                    self.window.addstr(self.y+i, self.x+1, self.items[self.choosen_item-1+i])
+
+    def rotate(self, direction:int):
+        if self.choosen_item + direction > len(self.items):
+            self.choosen_item = 0
+        elif self.choosen_item + direction < 0:
+            self.choosen_item = len(self.items) - 1
+        else:
+            self.choosen_item = self.choosen_item + direction
+
+    def get_chosen_item(self):
+        return self.items[self.choosen_item]
 
 def popup(mess, wholescr_y, wholescr_x):
     width = len(mess)+4
