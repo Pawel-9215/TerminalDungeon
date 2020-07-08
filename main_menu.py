@@ -76,7 +76,7 @@ class Credits(game_control.Scene):
     def print_content(self):
         start_pos_y = int(self.win_y / 6)
         start_pos_x = int(self.win_x / 6)
-        credits = [
+        game_credits = [
             "Code and Design: Pawel Hordyniak",
             "Website: www.terminaldungeon.com",
             "",
@@ -88,7 +88,7 @@ class Credits(game_control.Scene):
         ]
 
         info_bar = ui.Label(self.windows[0], "Credits:", start_pos_y, start_pos_x)
-        for num, obj in enumerate(credits):
+        for num, obj in enumerate(game_credits):
             self.renderable_objects.append(
                 ui.Plain_text(self.windows[0], obj, start_pos_y + 1 + num, start_pos_x))
 
