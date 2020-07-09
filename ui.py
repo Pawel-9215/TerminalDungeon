@@ -106,12 +106,14 @@ class Rotator():
         else:
             for i in range(3):
                 if i == 1:
-                    self.window.addstr(self.y+i, self.x, ">"+self.items[self.choosen_item-1+i], curses.A_STANDOUT)
+                    self.window.addstr(self.y+i, self.x, ">"+self.items[self.choosen_item-1+i]+" "*(16-len(self.items[self.choosen_item])), curses.A_STANDOUT)
+                elif self.choosen_item-1+i >= len(self.items):
+                    self.window.addstr(self.y+i, self.x, " "+self.items[0])
                 else:
-                    self.window.addstr(self.y+i, self.x+1, self.items[self.choosen_item-1+i])
+                    self.window.addstr(self.y + i, self.x, " " + self.items[self.choosen_item - 1 + i])
 
     def rotate(self, direction:int):
-        if self.choosen_item + direction > len(self.items):
+        if self.choosen_item + direction >= len(self.items):
             self.choosen_item = 0
         elif self.choosen_item + direction < 0:
             self.choosen_item = len(self.items) - 1
