@@ -15,13 +15,15 @@ class ChooseCharacter(game_control.Scene):
         self.updatable_objects.append(self)
         self.characters = self.load_characters()
         self.rotator = ui.Rotator(self.windows[0], list(self.characters.keys()), 4, 7)
+        self.character_creator = charcter_creation.CharacterCreation(
+            self.windows, "Character Creator", self.engine, self)
         self.buttons_names = [
             "↑", "↓", "Create new Character", "Start Game", "Return to Menu",
         ]
         self.buttons_on_pressed = {
             "↑": [self.rotator.rotate, [-1]],
             "↓": [self.rotator.rotate, [1]],
-            "Create new Character": [print, ["new char"]],
+            "Create new Character": [self.engine.change_scene, [self.character_creator]],
             "Start Game": [print, ["Start Game"]],
             "Return to Menu": [self.engine.change_scene, [self.escape]],
         }

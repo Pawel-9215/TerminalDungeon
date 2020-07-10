@@ -90,6 +90,10 @@ class Keyboard():
         else:
             self.last_pressed = symbol
 
+class Characters():
+    # I need to create class that holds all characters and is updated after every character creation.
+    pass
+
 
 class Scene():
     """Base Scene class. Most stuff in game is going to be some sort of scene
