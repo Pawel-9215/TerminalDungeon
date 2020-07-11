@@ -3,6 +3,7 @@
 # import curses
 # from math import floor
 import ui
+import pickle
 
 
 class Renderque():
@@ -90,9 +91,19 @@ class Keyboard():
         else:
             self.last_pressed = symbol
 
+
 class Characters():
-    # I need to create class that holds all characters and is updated after every character creation.
-    pass
+    def __init__(self):
+        self.characters = None
+        self.load_characters()
+
+    def load_characters(self):
+        try:
+            characters = pickle.load(open("resources/char", "rb"))
+        except:
+            characters = {"No characters": {"name": "No characters"}}
+
+        self.characters = characters
 
 
 class Scene():
@@ -132,4 +143,3 @@ class Scene():
         for key in self.menu_buttons:
             key.is_focused = False
         self.menu_buttons[self.focused_item].is_focused = True
-

@@ -1,6 +1,7 @@
 import curses
 from math import floor
 
+
 class button():
     is_focused = False
     state = {True:2, False:1}

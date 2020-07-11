@@ -189,3 +189,4 @@ class CharacterCreation(game_control.Scene):
             }
             characters[self.character_name] = character
             pickle.dump(characters, open("resources/char", "wb"), -1)
+        self.escape.characters_holder.load_characters()

@@ -13,10 +13,10 @@ class ChooseCharacter(game_control.Scene):
         self.escape = escape
         self.start_pos = (2, 4)
         self.updatable_objects.append(self)
-        self.characters = self.load_characters()
+        self.characters = escape.characters_holder.characters
         self.rotator = ui.Rotator(self.windows[0], list(self.characters.keys()), 4, 7)
         self.character_creator = charcter_creation.CharacterCreation(
-            self.windows, "Character Creator", self.engine, self)
+            self.windows, "Character Creator", self.engine, self.escape)
         self.buttons_names = [
             "↑", "↓", "Create new Character", "Start Game", "Return to Menu",
         ]
@@ -28,6 +28,9 @@ class ChooseCharacter(game_control.Scene):
             "Return to Menu": [self.engine.change_scene, [self.escape]],
         }
         self.print_content()
+
+    def update_rotator(self):
+        self.rotator.items = list(self.escape.characters_holder.characters.keys())
 
     def print_content(self):
         # huh
@@ -59,15 +62,6 @@ class ChooseCharacter(game_control.Scene):
 
     def update(self, key):
         self.button_toggle(key)
-
-    def load_characters(self):
-
-        try:
-            characters = pickle.load(open("resources/char", "rb"))
-        except:
-            characters = {"No characters": {"name": "No characters"}}
-
-        return characters
 
 
 class Credits(game_control.Scene):
@@ -111,6 +105,7 @@ class Mainmenu(game_control.Scene):
         self.menu_items = ["Start Game", "Create Character", "Credits", "Quit"]
         self.menu_buttons = []
         self.focused_item = 0
+        self.characters_holder = game_control.Characters()
         self.test_gameplay = gameplay.GameInstance(
             [self.engine.right_bar, self.engine.left_bar], "Gameplay", self.engine)
         self.character_creator = charcter_creation.CharacterCreation(
@@ -120,7 +115,7 @@ class Mainmenu(game_control.Scene):
                                            self.engine, self)
         self.buttons_on_pressed = {
             "Quit": [quit, []],
-            "Start Game": [self.engine.change_scene, [self.char_choice]],
+            "Start Game": [self.new_game, []],
             "Credits": [self.engine.change_scene, [self.credits_scene]],
             "Create Character": [self.engine.change_scene, [self.character_creator]],
         }
@@ -155,3 +150,10 @@ class Mainmenu(game_control.Scene):
 
     def update(self, key):
         self.button_toggle(key)
+
+    def new_game(self):
+        self.characters_holder.load_characters()
+        self.char_choice.update_rotator()
+        self.engine.change_scene(self.char_choice)
+
+
