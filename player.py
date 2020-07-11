@@ -11,7 +11,7 @@ class Player():
     Player class
     """
 
-    def __init__(self, y, x, glyph, world_map:WorldMap):
+    def __init__(self, y, x, glyph, character_sheet, world_map:WorldMap):
         self.y = y
         self.x = x
         self.glyph = glyph
@@ -19,7 +19,19 @@ class Player():
 
         # character sheet:
 
-        #self.name = character_sheet[name]
+        self.name = character_sheet["name"]
+        self.health = character_sheet["health"]
+        self.melee_skill = character_sheet["melee"]
+        self.range_skill = character_sheet["range"]
+        self.strengh = character_sheet["str"]
+        self.endurance = character_sheet["end"]
+
+        # clothes:
+
+        self.arm_head = character_sheet["arm_head"]
+        self.arm_torso = character_sheet["arm_torso"]
+        self.arm_hands = character_sheet["arm_hands"]
+        self.arm_legs = character_sheet["arm_legs"]
 
 
     def update(self, key):
