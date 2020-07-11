@@ -111,10 +111,10 @@ class CharacterCreation(game_control.Scene):
 
         self.button_toggle(key)
 
-        if key == "up" or key == "down":
-            if self.monit in self.renderable_objects:
-                self.renderable_objects.remove(self.monit)
-                self.monit = None
+        # if key == "up" or key == "down":
+        if self.monit in self.renderable_objects:
+            self.renderable_objects.remove(self.monit)
+            self.monit = None
 
         self.print_values()
         for value in self.values:
@@ -153,40 +153,51 @@ class CharacterCreation(game_control.Scene):
                 self.skill_points = self.skill_points - amount
 
     def save_character(self):
-        try:
-            characters = pickle.load(open("resources/char", "rb"))
-        except:
-            pickle.dump({}, open("resources/char", "wb"))
-            characters = pickle.load(open("resources/char", "rb"))
+        if self.skill_points > 0:
+            warning = ui.Label(self.windows[0], "SKILL POINTS LEFT!!!", int(self.win_y / 2),
+                               int(self.win_x / 2 - 10))
+            self.renderable_objects.append(warning)
+            self.engine.renderer.renderpass()
+            _ = self.input_window.getch()
+            self.monit = warning
+        else:
+            try:
+                characters = pickle.load(open("resources/char", "rb"))
+            except:
+                pickle.dump({}, open("resources/char", "wb"))
+                characters = pickle.load(open("resources/char", "rb"))
 
-        try:
-            check = characters[self.character_name]
-            if self.monit == None:
+            try:
+                check = characters[self.character_name]
+
                 warning = ui.Label(self.windows[0], "Character with that name already exists!", int(self.win_y / 2),
                                    int(self.win_x / 2 - 24))
                 self.renderable_objects.append(warning)
                 self.engine.renderer.renderpass()
+                _ = self.input_window.getch()
                 self.monit = warning
 
-        except:
-            character = {
-                "name": self.character_name,
-                "health": self.health,
-                "melee": self.melee_skill,
-                "range": self.range_skill,
-                "str": self.strengh,
-                "end": self.endurance,
-                "arm_head": None,
-                "arm_torso": None,
-                "arm_hands": None,
-                "arm_legs": None,
-                "weapon": None,
-                "inv_1": None,
-                "inv_2": None,
-                "inv_3": None,
-                "inv_4": None,
-                "current_map": 1
-            }
-            characters[self.character_name] = character
-            pickle.dump(characters, open("resources/char", "wb"), -1)
-        self.escape.characters_holder.load_characters()
+
+
+            except:
+                character = {
+                    "name": self.character_name,
+                    "health": self.health,
+                    "melee": self.melee_skill,
+                    "range": self.range_skill,
+                    "str": self.strengh,
+                    "end": self.endurance,
+                    "arm_head": None,
+                    "arm_torso": None,
+                    "arm_hands": None,
+                    "arm_legs": None,
+                    "weapon": None,
+                    "inv_1": None,
+                    "inv_2": None,
+                    "inv_3": None,
+                    "inv_4": None,
+                    "current_map": 1
+                }
+                characters[self.character_name] = character
+                pickle.dump(characters, open("resources/char", "wb"), -1)
+            self.escape.characters_holder.load_characters()
