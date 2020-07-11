@@ -8,8 +8,9 @@ class GameInstance(game_control.Scene):
     Game Instance - object for playthrough of a level
     """
 
-    def __init__(self, windows, name: str, engine: object):
+    def __init__(self, windows, name: str, engine: object, character_sheet):
         super().__init__(windows, name, engine)
+        self.character_sheet = character_sheet
         self.UI_window = self.windows[-1]  # window for UI data
         self.GP_window = self.windows[0]  # Gameplay window - map and player
         self.grid = None
@@ -21,13 +22,39 @@ class GameInstance(game_control.Scene):
         This loads map and sets reference in game instance
         """
         self.grid = map_loader.WorldMap(map_name)
-        self.current_player = player.Player(self.grid.player_y, self.grid.player_x, "↑", self.grid)
+        self.current_player = player.Player(self.grid.player_y,
+                                            self.grid.player_x,
+                                            "↑",
+                                            self.character_sheet,
+                                            self.grid)
         self.grid.grid[self.grid.player_y][self.grid.player_x].occupation = self.current_player
 
         grid_map = SituationMap(self.GP_window, self.grid, self)
         self.renderable_objects.append(grid_map)
+        character_info = Character_Sheet(self.UI_window, self)
+        self.renderable_objects.append(character_info)
         self.updatable_objects.append(self.current_player)
 
+class Character_Sheet():
+    """
+    UI info in the left window
+    """
+    def __init__(self, window, game_instance: GameInstance):
+        self.window = window
+        self.window_y, self.window_x = window.getmaxyx()
+        self.game_instance = game_instance
+
+    def draw(self):
+
+        min_y = 1
+        max_y = self.window_y - 1
+        min_x = 1
+        max_x = self.window_x - 1
+        center_y = int(self.window_y / 2)
+        center_x = int(self.window_x / 2)
+
+        self.window.addstr(1, center_x, "Hp:"+str(self.game_instance.current_player.health))
+        self.window.addstr(2, min_x, "Mel:"+str(self.game_instance.current_player.melee_skill))
 
 class SituationMap:
     """

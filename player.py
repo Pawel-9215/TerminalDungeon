@@ -33,6 +33,21 @@ class Player():
         self.arm_hands = character_sheet["arm_hands"]
         self.arm_legs = character_sheet["arm_legs"]
 
+        # weapon:
+
+        self.weapon = character_sheet["weapon"]
+
+        # inventory:
+
+        self.inv_1 = character_sheet["inv_1"]
+        self.inv_2 = character_sheet["inv_2"]
+        self.inv_3 = character_sheet["inv_3"]
+        self.inv_4 = character_sheet["inv_4"]
+
+        # "save game"
+
+        self.current_map = character_sheet["current_map"]
+
 
     def update(self, key):
 

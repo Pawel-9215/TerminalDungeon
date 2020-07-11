@@ -24,10 +24,20 @@ class ChooseCharacter(game_control.Scene):
             "↑": [self.rotator.rotate, [-1]],
             "↓": [self.rotator.rotate, [1]],
             "Create new Character": [self.engine.change_scene, [self.character_creator]],
-            "Start Game": [print, ["Start Game"]],
+            "Start Game": [self.start_game, []],
             "Return to Menu": [self.engine.change_scene, [self.escape]],
         }
         self.print_content()
+
+    def start_game(self):
+
+        game_instance = gameplay.GameInstance([self.engine.right_bar,
+                                               self.engine.left_bar],
+                                              self.characters[self.rotator.get_chosen_item()]["name"],
+                                              self.engine,
+                                              self.characters[self.rotator.get_chosen_item()])
+
+        self.engine.change_scene(game_instance)
 
     def update_rotator(self):
         self.rotator.items = list(self.escape.characters_holder.characters.keys())
@@ -106,8 +116,6 @@ class Mainmenu(game_control.Scene):
         self.menu_buttons = []
         self.focused_item = 0
         self.characters_holder = game_control.Characters()
-        self.test_gameplay = gameplay.GameInstance(
-            [self.engine.right_bar, self.engine.left_bar], "Gameplay", self.engine)
         self.character_creator = charcter_creation.CharacterCreation(
             self.windows, "Character Creator", self.engine, self)
         self.credits_scene = Credits(self.windows, "Credits", self.engine, self)
