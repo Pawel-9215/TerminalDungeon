@@ -54,7 +54,7 @@ class CharacterSheet():
         center_y = int(self.window_y / 2)
         center_x = int(self.window_x / 2)
 
-        self.window.addstr(1, center_x-3, "Hp:" + str(self.game_instance.current_player.health))
+        self.window.addstr(min_y, center_x-3, "Hp:" + str(self.game_instance.current_player.health))
         self.window.addstr(2, min_x, "Mel:" + str(self.game_instance.current_player.melee_skill))
         self.window.addstr(2, max_x-len("Ran:" + str(self.game_instance.current_player.range_skill)),
                            "Ran:" + str(self.game_instance.current_player.range_skill))
@@ -80,6 +80,11 @@ class CharacterSheet():
                            "Weapon:[" + str(self.game_instance.current_player.weapon) + "]")
         self.window.addstr(10, min_x, "Inventory:")
         self.window.addstr(11, min_x, "1:["+str(self.game_instance.current_player.inv_1)+"]")
+        self.window.addstr(11, max_x-(len("2:[" + str(self.game_instance.current_player.inv_2) + "]")), "2:[" + str(self.game_instance.current_player.inv_2) + "]")
+        self.window.addstr(12, min_x, "3:[" + str(self.game_instance.current_player.inv_3) + "]")
+        self.window.addstr(12, max_x - (len("3:[" + str(self.game_instance.current_player.inv_3) + "]")),
+                           "3:[" + str(self.game_instance.current_player.inv_3) + "]")
+
 
 class SituationMap:
     """
