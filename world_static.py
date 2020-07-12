@@ -5,6 +5,7 @@ class Cell():
     def __init__(self, floor_glyph, occupation="free"):
         self.floor_glyph = floor_glyph
         self.occupation = occupation
+        self.pickable = None
 
     def __repr__(self):
         if self.occupation != "free":
@@ -40,6 +41,7 @@ class StoneWall(SolidBody):
     def __init__(self):
         super().__init__()
         self.glyph = "█"
+        self.destructable = True
 
 
 class PlayerStart():

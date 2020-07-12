@@ -69,6 +69,10 @@ class WorldMap():
 
         return base_grid
 
+    def check_content(self, y, x):
+
+        return self.grid[y][x].occupation
+
 
 if __name__ == '__main__':
     my_map = WorldMap('Test_map_1')

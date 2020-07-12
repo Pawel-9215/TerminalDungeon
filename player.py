@@ -16,6 +16,8 @@ class Player():
         self.x = x
         self.glyph = glyph
         self.world_map = world_map
+        self.look_at_y = self.y + 1
+        self.look_at_x = self.x
 
         # character sheet:
 
@@ -53,6 +55,8 @@ class Player():
 
         if key in ["up", "down", "left", "right"]:
             self.move(key)
+        elif key == " ":
+            self.attack()
         else:
             pass
         pass
@@ -61,22 +65,19 @@ class Player():
         """
         method to move player on grid
         """
-        self.vacate_position()
+        way_to_go = {"left":[0, -1, "←"], "right":[0, 1, "→"], "up":[-1, 0, "↑"], "down":[1, 0, "↓"]}
+        if self.world_map.check_content(self.y + way_to_go[direction][0],
+                                        self.x + way_to_go[direction][1]) == "free":
 
-        if direction == "left":
-            self.x -= 1
-            self.glyph = "←"
-        elif direction == "right":
-            self.x += 1
-            self.glyph = "→"
-        elif direction == "up":
-            self.y -= 1
-            self.glyph = "↑"
-        elif direction == "down":
-            self.y += 1
-            self.glyph = "↓"
+            self.vacate_position()
+            self.y = self.y + way_to_go[direction][0]
+            self.x = self.x + way_to_go[direction][1]
+            self.update_position()
 
-        self.update_position()
+        self.glyph = way_to_go[direction][2]
+        self.look_at_y = self.y + way_to_go[direction][0]
+        self.look_at_x = self.x + way_to_go[direction][1]
+
 
     def vacate_position(self):
 
@@ -87,3 +88,12 @@ class Player():
         self.world_map.player_y = self.y
         self.world_map.player_x = self.x
         self.world_map.grid[self.y][self.x].occupation = self
+
+    def attack(self):
+
+        if self.world_map.grid[self.look_at_y][self.look_at_x].occupation == "free":
+            pass
+        elif self.world_map.grid[self.look_at_y][self.look_at_x].occupation.destructable:
+            self.world_map.grid[self.look_at_y][self.look_at_x].occupation = "free"
+        else:
+            pass
