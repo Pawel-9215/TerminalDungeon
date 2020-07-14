@@ -3,6 +3,7 @@ This is module for player class
 """
 from map_loader import WorldMap
 
+
 # ← ↑ → ↓
 
 
@@ -11,7 +12,7 @@ class Player():
     Player class
     """
 
-    def __init__(self, y, x, glyph, character_sheet, world_map:WorldMap):
+    def __init__(self, y, x, glyph, character_sheet, world_map: WorldMap):
         self.y = y
         self.x = x
         self.glyph = glyph
@@ -50,7 +51,6 @@ class Player():
 
         self.current_map = character_sheet["current_map"]
 
-
     def update(self, key):
 
         if key in ["up", "down", "left", "right"]:
@@ -65,10 +65,9 @@ class Player():
         """
         method to move player on grid
         """
-        way_to_go = {"left":[0, -1, "←"], "right":[0, 1, "→"], "up":[-1, 0, "↑"], "down":[1, 0, "↓"]}
+        way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
         if self.world_map.check_content(self.y + way_to_go[direction][0],
                                         self.x + way_to_go[direction][1]) == "free":
-
             self.vacate_position()
             self.y = self.y + way_to_go[direction][0]
             self.x = self.x + way_to_go[direction][1]
@@ -77,7 +76,6 @@ class Player():
         self.glyph = way_to_go[direction][2]
         self.look_at_y = self.y + way_to_go[direction][0]
         self.look_at_x = self.x + way_to_go[direction][1]
-
 
     def vacate_position(self):
 

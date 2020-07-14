@@ -6,6 +6,17 @@ import ui
 import pickle
 
 
+class Animationque():
+    """
+    This class is responsible for that short period of time
+    after player makes action like attack to give
+    any visual feedback to what is happening
+    """
+
+    def __init__(self, engine: object):
+        self.engine = engine
+
+
 class Renderque():
     """This class is responsible for drawing objects in current scene
     """
