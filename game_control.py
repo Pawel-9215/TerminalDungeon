@@ -1,6 +1,6 @@
 """This module will be responsible for rendering stuff and gathering player input"""
 
-# import curses
+import curses
 # from math import floor
 import ui
 import pickle
@@ -15,6 +15,18 @@ class Animationque():
 
     def __init__(self, engine: object):
         self.engine = engine
+        self.anim_objects = []
+
+    def animation_pass(self):
+        for obj in self.anim_objects:
+            obj.animate()
+
+        curses.napms(100)
+
+        for obj in self.anim_objects:
+            del obj
+
+        self.anim_objects = []
 
 
 class Renderque():
