@@ -56,7 +56,7 @@ class Player():
         if key in ["up", "down", "left", "right"]:
             self.move(key)
         elif key == " ":
-            self.attack()
+            self.use()
         else:
             pass
         pass
@@ -87,7 +87,7 @@ class Player():
         self.world_map.player_x = self.x
         self.world_map.grid[self.y][self.x].occupation = self
 
-    def attack(self):
+    def use(self):
 
         if self.world_map.grid[self.look_at_y][self.look_at_x].occupation == "free":
             pass
