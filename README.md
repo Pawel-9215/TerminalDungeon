@@ -13,4 +13,4 @@ RPG hack'n'slash game for terminal with ascii graphics
 ```
 http://terminaldungeon.com/
 
--temporary website is up!
+- Main website is up! 
