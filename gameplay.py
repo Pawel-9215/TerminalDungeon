@@ -56,8 +56,8 @@ class CharacterSheet():
 
         self.window.addstr(min_y, center_x-3, "Hp:" + str(self.game_instance.current_player.health))
         self.window.addstr(2, min_x, "Mel:" + str(self.game_instance.current_player.melee_skill))
-        self.window.addstr(2, max_x-len("Ran:" + str(self.game_instance.current_player.range_skill)),
-                           "Ran:" + str(self.game_instance.current_player.range_skill))
+        self.window.addstr(2, max_x - len("AP:" + str(self.game_instance.current_player.action_points)),
+                           "AP:" + str(self.game_instance.current_player.action_points))
         self.window.addstr(3, min_x, "Str:"+str(self.game_instance.current_player.strengh))
         self.window.addstr(3, max_x-len("End:" + str(self.game_instance.current_player.endurance)),
                            "End:" + str(self.game_instance.current_player.endurance))

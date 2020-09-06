@@ -25,7 +25,7 @@ class Player():
         self.name = character_sheet["name"]
         self.health = character_sheet["health"]
         self.melee_skill = character_sheet["melee"]
-        self.range_skill = character_sheet["range"]
+        self.action_points = character_sheet["action_points"]
         self.strengh = character_sheet["str"]
         self.endurance = character_sheet["end"]
 

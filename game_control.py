@@ -1,40 +1,17 @@
 """This module will be responsible for rendering stuff and gathering player input"""
 
-import curses
+#import curses
 # from math import floor
 import ui
 import pickle
 
 
-class Animationque():
-    """
-    This class is responsible for that short period of time
-    after player makes action like attack to give
-    any visual feedback to what is happening
-    """
-
-    def __init__(self, engine: object):
-        self.engine = engine
-        self.anim_objects = []
-
-    def animation_pass(self):
-        for obj in self.anim_objects:
-            obj.animate()
-
-        curses.napms(100)
-
-        for obj in self.anim_objects:
-            del obj
-
-        self.anim_objects = []
-
-
-class Renderque():
+class Renderque:
     """This class is responsible for drawing objects in current scene
     """
 
     # Only one Scene can be rendered at a time.
-    # Scene object already have all references of renderable objects within
+    # Scene object already have all references of rendered objects within
 
     def __init__(self, engine: object):
         self.engine = engine
@@ -48,7 +25,6 @@ class Renderque():
             screen.clear()
             screen.border()
             screen.refresh()
-        # print(self.scene.renderable_objects)
 
         for obj in scene.renderable_objects:
             obj.draw()
@@ -65,7 +41,7 @@ class Renderque():
                 screen.clear()
 
 
-class Updateque():
+class Updateque:
     """This class is responsible for updating all objects in current scene
     """
 
@@ -85,7 +61,7 @@ class Updateque():
             obj.update(key)
 
 
-class Keyboard():
+class Keyboard:
     """ # this is keyboard controller
         # Idea is to send key presses to objects currenty focused objects
         # We can also edit key mapping here
@@ -115,7 +91,7 @@ class Keyboard():
             self.last_pressed = symbol
 
 
-class Characters():
+class Characters:
     def __init__(self):
         self.characters = None
         self.load_characters()
@@ -129,7 +105,7 @@ class Characters():
         self.characters = characters
 
 
-class Scene():
+class Scene:
     """Base Scene class. Most stuff in game is going to be some sort of scene
     """
 
@@ -146,7 +122,7 @@ class Scene():
         self.focused_item = 0
         self.menu_buttons = []
 
-    def button_toggle(self, key: object) -> object:
+    def button_toggle(self, key: object):
 
         if key == "down":
             if self.focused_item + 1 > len(self.menu_buttons) - 1:

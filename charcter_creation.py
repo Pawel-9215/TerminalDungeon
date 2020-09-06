@@ -12,7 +12,7 @@ class CharacterCreation(game_control.Scene):
         self.updatable_objects.append(self)
         self.health = 5 + random.randint(2, 20)
         self.melee_skill = 20 + random.randint(2, 20)
-        self.range_skill = 20 + random.randint(2, 20)
+        self.action_points = 2 + random.randint(2, 4)
         self.strengh = random.randint(10, 60)
         self.endurance = random.randint(10, 30)
         self.menu_buttons = []
@@ -24,7 +24,7 @@ class CharacterCreation(game_control.Scene):
         self.initial_values = {
             "health": self.health,
             "melee": self.melee_skill,
-            "range": self.range_skill,
+            "range": self.action_points,
             "strengh": self.strengh,
             "endurance": self.endurance,
         }
@@ -95,7 +95,7 @@ class CharacterCreation(game_control.Scene):
         meelee_val = ui.Plain_text(self.windows[0], "".join(["Melee Skill (Mel): ", str(self.melee_skill)]), 6, 6)
         self.renderable_objects.append(meelee_val)
         self.values.append(meelee_val)
-        range_val = ui.Plain_text(self.windows[0], "".join(["Range Skill (Rng): ", str(self.range_skill)]), 8, 6)
+        range_val = ui.Plain_text(self.windows[0], "".join(["Range Skill (Rng): ", str(self.action_points)]), 8, 6)
         self.renderable_objects.append(range_val)
         self.values.append(range_val)
         strengh_val = ui.Plain_text(self.windows[0], "".join(
@@ -141,8 +141,8 @@ class CharacterCreation(game_control.Scene):
             elif param == "melee" and ((self.melee_skill > self.initial_values[param] and amount == -1) or amount == 1):
                 self.melee_skill = self.melee_skill + amount
                 self.skill_points = self.skill_points - amount
-            elif param == "range" and ((self.range_skill > self.initial_values[param] and amount == -1) or amount == 1):
-                self.range_skill = self.range_skill + amount
+            elif param == "range" and ((self.action_points > self.initial_values[param] and amount == -1) or amount == 1):
+                self.action_points = self.action_points + amount
                 self.skill_points = self.skill_points - amount
             elif param == "strengh" and ((self.strengh > self.initial_values[param] and amount == -1) or amount == 1):
                 self.strengh = self.strengh + amount
@@ -184,7 +184,7 @@ class CharacterCreation(game_control.Scene):
                     "name": self.character_name,
                     "health": self.health,
                     "melee": self.melee_skill,
-                    "range": self.range_skill,
+                    "action_points": self.action_points,
                     "str": self.strengh,
                     "end": self.endurance,
                     "arm_head": None,
