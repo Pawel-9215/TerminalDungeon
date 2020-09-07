@@ -7,7 +7,7 @@ class WorldMap():
     This is world map object. This is where grid lives,
     this is object to ask what's around us,
     this is the object that let's us go forward.
-    Respect this object
+    Respect this object.
     """
     def __init__(self, map_name: str):
         self.player_y = 0

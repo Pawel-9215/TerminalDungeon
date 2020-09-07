@@ -30,7 +30,7 @@ class ChooseCharacter(game_control.Scene):
         self.print_content()
 
     def start_game(self):
-
+        self.characters = self.escape.characters_holder.characters
         game_instance = gameplay.GameInstance([self.engine.right_bar,
                                                self.engine.left_bar],
                                               self.characters[self.rotator.get_chosen_item()]["name"],

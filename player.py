@@ -6,10 +6,23 @@ from map_loader import WorldMap
 
 # ← ↑ → ↓
 
-
-class Player():
+class Character:
     """
-    Player class
+    Base class for characters - This should be inherited by both player and mobs alike
+    """
+
+    def __init__(self, y, x, glyph, world_map: WorldMap):
+        self.y = y
+        self.x = x
+        self.glyph = glyph
+        self.world_map = world_map
+        self.look_at_y = self.y + 1
+        self.look_at_x = self.x
+
+
+class Player:
+    """
+    Player class !warning - This needs refactor to inherit from character class
     """
 
     def __init__(self, y, x, glyph, character_sheet, world_map: WorldMap):
@@ -25,7 +38,7 @@ class Player():
         self.name = character_sheet["name"]
         self.health = character_sheet["health"]
         self.melee_skill = character_sheet["melee"]
-        self.range_skill = character_sheet["range"]
+        self.action_points = character_sheet["action_points"]
         self.strengh = character_sheet["str"]
         self.endurance = character_sheet["end"]
 
@@ -56,7 +69,7 @@ class Player():
         if key in ["up", "down", "left", "right"]:
             self.move(key)
         elif key == " ":
-            self.attack()
+            self.use()
         else:
             pass
         pass
@@ -87,7 +100,7 @@ class Player():
         self.world_map.player_x = self.x
         self.world_map.grid[self.y][self.x].occupation = self
 
-    def attack(self):
+    def use(self):
 
         if self.world_map.grid[self.look_at_y][self.look_at_x].occupation == "free":
             pass
