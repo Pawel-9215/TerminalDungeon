@@ -6,10 +6,23 @@ from map_loader import WorldMap
 
 # ← ↑ → ↓
 
-
-class Player():
+class Character:
     """
-    Player class
+    Base class for characters - This should be inherited by both player and mobs alike
+    """
+
+    def __init__(self, y, x, glyph, world_map: WorldMap):
+        self.y = y
+        self.x = x
+        self.glyph = glyph
+        self.world_map = world_map
+        self.look_at_y = self.y + 1
+        self.look_at_x = self.x
+
+
+class Player:
+    """
+    Player class !warning - This needs refactor to inherit from character class
     """
 
     def __init__(self, y, x, glyph, character_sheet, world_map: WorldMap):
