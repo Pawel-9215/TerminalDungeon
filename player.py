@@ -19,6 +19,35 @@ class Character:
         self.look_at_y = self.y + 1
         self.look_at_x = self.x
 
+        # character sheet:
+
+        self.name = "Character"
+        self.health = 10
+        self.melee_skill = 20
+        self.action_points = 4
+        self.strenght = 4
+        self.endurance = 4
+
+        # clothes:
+
+        self.arm_head = None
+        self.arm_torso = None
+        self.arm_hands = None
+        self.arm_legs = None
+
+        # weapon
+
+        self.weapon = None
+
+        # inventory
+
+        self.inv_1 = None
+        self.inv_2 = None
+        self.inv_3 = None
+        self.inv_4 = None
+
+    def update(self):
+        pass
 
 class Player:
     """

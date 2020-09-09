@@ -1,6 +1,6 @@
 """This module will be responsible for rendering stuff and gathering player input"""
 
-#import curses
+# import curses
 # from math import floor
 import ui
 import pickle
