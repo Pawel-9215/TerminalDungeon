@@ -46,15 +46,48 @@ class Character:
         self.inv_3 = None
         self.inv_4 = None
 
-    def update(self):
+    def update(self, *args, **kwargs):
+        """
+        This is place for character logic
+        """
         pass
 
-class Player:
+    def move(self, direction):
+        """
+        method to move character on grid
+        """
+        way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
+        if self.world_map.check_content(self.y + way_to_go[direction][0],
+                                        self.x + way_to_go[direction][1]) == "free":
+            self.vacate_position()
+            self.y = self.y + way_to_go[direction][0]
+            self.x = self.x + way_to_go[direction][1]
+            self.update_position()
+
+        # self.glyph = way_to_go[direction][2]
+        self.look_at_y = self.y + way_to_go[direction][0]
+        self.look_at_x = self.x + way_to_go[direction][1]
+
+    def vacate_position(self):
+
+        self.world_map.grid[self.y][self.x].occupation = "free"
+
+    def update_position(self):
+
+        self.world_map.grid[self.y][self.x].occupation = self
+
+    def __str__(self):
+
+        return self.name
+
+
+class Player(Character):
     """
     Player class !warning - This needs refactor to inherit from character class
     """
 
     def __init__(self, y, x, glyph, character_sheet, world_map: WorldMap):
+        super().__init__(y, x, glyph, world_map)
         self.y = y
         self.x = x
         self.glyph = glyph
@@ -94,7 +127,9 @@ class Player:
         self.current_map = character_sheet["current_map"]
 
     def update(self, key):
-
+        """
+        This is logic of players character based on players input
+        """
         if key in ["up", "down", "left", "right"]:
             self.move(key)
         elif key == " ":
