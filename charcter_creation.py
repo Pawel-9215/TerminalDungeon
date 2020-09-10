@@ -24,7 +24,7 @@ class CharacterCreation(game_control.Scene):
         self.initial_values = {
             "health": self.health,
             "melee": self.melee_skill,
-            "range": self.action_points,
+            "ap": self.action_points,
             "strengh": self.strengh,
             "endurance": self.endurance,
         }
@@ -48,10 +48,10 @@ class CharacterCreation(game_control.Scene):
         substract_melee = ui.button(self.windows[0], 7, 4, "-", "substract_melee", self.modify_param, [-1, "melee"])
         self.menu_buttons.append(substract_melee)
         self.renderable_objects.append(substract_melee)
-        add_range = ui.button(self.windows[0], 8, 4, "+", "add_range", self.modify_param, [1, "range"])
+        add_range = ui.button(self.windows[0], 8, 4, "+", "add_Action_Points", self.modify_param, [1, "ap"])
         self.menu_buttons.append(add_range)
         self.renderable_objects.append(add_range)
-        substract_range = ui.button(self.windows[0], 9, 4, "-", "substract_range", self.modify_param, [-1, "range"])
+        substract_range = ui.button(self.windows[0], 9, 4, "-", "substract_Action_Points", self.modify_param, [-1, "ap"])
         self.menu_buttons.append(substract_range)
         self.renderable_objects.append(substract_range)
         add_strengh = ui.button(self.windows[0], 10, 4, "+", "add_strenght", self.modify_param, [1, "strengh"])
@@ -95,7 +95,7 @@ class CharacterCreation(game_control.Scene):
         meelee_val = ui.Plain_text(self.windows[0], "".join(["Melee Skill (Mel): ", str(self.melee_skill)]), 6, 6)
         self.renderable_objects.append(meelee_val)
         self.values.append(meelee_val)
-        range_val = ui.Plain_text(self.windows[0], "".join(["Range Skill (Rng): ", str(self.action_points)]), 8, 6)
+        range_val = ui.Plain_text(self.windows[0], "".join(["Action Points (AP): ", str(self.action_points)]), 8, 6)
         self.renderable_objects.append(range_val)
         self.values.append(range_val)
         strengh_val = ui.Plain_text(self.windows[0], "".join(
@@ -141,7 +141,7 @@ class CharacterCreation(game_control.Scene):
             elif param == "melee" and ((self.melee_skill > self.initial_values[param] and amount == -1) or amount == 1):
                 self.melee_skill = self.melee_skill + amount
                 self.skill_points = self.skill_points - amount
-            elif param == "range" and ((self.action_points > self.initial_values[param] and amount == -1) or amount == 1):
+            elif param == "ap" and ((self.action_points > self.initial_values[param] and amount == -1) or amount == 1):
                 self.action_points = self.action_points + amount
                 self.skill_points = self.skill_points - amount
             elif param == "strengh" and ((self.strengh > self.initial_values[param] and amount == -1) or amount == 1):
