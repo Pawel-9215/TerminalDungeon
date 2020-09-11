@@ -2,13 +2,15 @@ import random
 import world_static
 from mobs import Rat
 
-class WorldMap():
+
+class WorldMap:
     """
     This is world map object. This is where grid lives,
     this is object to ask what's around us,
     this is the object that let's us go forward.
     Respect this object.
     """
+
     def __init__(self, map_name: str):
         self.player_y = 0
         self.player_x = 0
@@ -80,10 +82,17 @@ class WorldMap():
         mobs_to_spawn = self.mobs_number
         available_spaces = []
 
-        for y in self.grid:
-            for x in self.grid[y]:
+        for y in range(len(self.grid)):
+            for x in range(len(self.grid[y])):
                 if self.grid[y][x].occupation == "free":
                     available_spaces.append((y, x))
+
+        for i in range(mobs_to_spawn):
+            mob_coords = random.choice(available_spaces)
+            self.grid[mob_coords[0]][mob_coords[1]].occupation = Rat(mob_coords[0],
+                                                                     mob_coords[1],
+                                                                     "R",
+                                                                     self)
 
 
 if __name__ == '__main__':
