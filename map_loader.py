@@ -1,6 +1,6 @@
+from __future__ import annotations
 import random
 import world_static
-from mobs import Rat
 
 
 class WorldMap:
@@ -16,8 +16,6 @@ class WorldMap:
         self.player_x = 0
         self.map_name = map_name
         self.grid = self.populate_map()
-        self.mobs = [Rat]
-        self.mobs_number = 5
 
     def load_map(self):
         """
@@ -25,9 +23,9 @@ class WorldMap:
         """
 
         grid = []
-        map = open('resources/maps/' + self.map_name, 'r')
+        dungeon_map = open('resources/maps/' + self.map_name, 'r')
 
-        for line in map:
+        for line in dungeon_map:
             grid.append(list(line.rstrip("\n")))
 
         for y in range(1, len(grid) - 1):
@@ -35,8 +33,7 @@ class WorldMap:
                 if grid[y][x] == "/":
                     grid[y][x] = "█"
                 if grid[y][x] == "@" and (
-                        grid[y][x + 1] == " " or grid[y][x - 1] == " " or grid[y - 1][x] == " " or grid[y + 1][
-                    x] == " "):
+                        grid[y][x + 1] == " " or grid[y][x - 1] == " " or grid[y - 1][x] == " " or grid[y + 1][x] == " "):
                     grid[y][x] = "█"
                 if grid[y][x] == "P":
                     self.player_y = y
@@ -77,9 +74,8 @@ class WorldMap:
 
         return self.grid[y][x].occupation
 
-    def spawn_mobs(self):
+    def get_available_spaces(self):
 
-        mobs_to_spawn = self.mobs_number
         available_spaces = []
 
         for y in range(len(self.grid)):
@@ -87,18 +83,13 @@ class WorldMap:
                 if self.grid[y][x].occupation == "free":
                     available_spaces.append((y, x))
 
-        for i in range(mobs_to_spawn):
-            mob_coords = random.choice(available_spaces)
-            self.grid[mob_coords[0]][mob_coords[1]].occupation = Rat(mob_coords[0],
-                                                                     mob_coords[1],
-                                                                     "R",
-                                                                     self)
+        return available_spaces
 
 
 if __name__ == '__main__':
     my_map = WorldMap('Test_map_1')
-    map = my_map.load_map()
-    for row in map:
+    dungeon_map2 = my_map.load_map()
+    for row in dungeon_map2:
         print("".join(row))
 
     print(my_map.grid)

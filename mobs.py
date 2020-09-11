@@ -1,16 +1,16 @@
 """This is were we ad basic mobs"""
-
+from __future__ import annotations
 from player import Character
-from map_loader import WorldMap
 import random
 
 
 # Basic level 1 mobs:
 
 class Rat(Character):
-    def __init__(self, y, x, glyph, world_map: WorldMap):
+    def __init__(self, y, x, glyph, world_map):
         super().__init__(y, x, glyph, world_map)
         self.glyph = "R"
+
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right"]

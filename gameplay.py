@@ -1,6 +1,9 @@
 import game_control
 import map_loader
 import player
+import mobs
+import random
+import curses
 
 
 class GameInstance(game_control.Scene):
@@ -13,6 +16,7 @@ class GameInstance(game_control.Scene):
         self.character_sheet = character_sheet
         self.UI_window = self.windows[-1]  # window for UI data
         self.GP_window = self.windows[0]  # Gameplay window - map and player
+        self.mobs = []
         self.grid = None
         self.current_player = None
         self.load_map("Test_map_1")
@@ -35,8 +39,19 @@ class GameInstance(game_control.Scene):
         self.renderable_objects.append(character_info)
         self.updatable_objects.append(self.current_player)
 
+        # test_mobs
 
-class CharacterSheet():
+        for i in range(5):
+            available_cells = self.grid.get_available_spaces()
+            mob_coord = random.choice(available_cells)
+            self.mobs.append(mobs.Rat(mob_coord[0], mob_coord[1], "R", self.grid))
+            self.grid.grid[mob_coord[0]][mob_coord[1]].occupation = self.mobs[i]
+
+        for mob in self.mobs:
+            self.updatable_objects.append(mob)
+
+
+class CharacterSheet:
     """
     UI info in the left window
     """
@@ -54,17 +69,17 @@ class CharacterSheet():
         center_y = int(self.window_y / 2)
         center_x = int(self.window_x / 2)
 
-        self.window.addstr(min_y, center_x-3, "Hp:" + str(self.game_instance.current_player.health))
+        self.window.addstr(min_y, center_x - 3, "Hp:" + str(self.game_instance.current_player.health))
         self.window.addstr(2, min_x, "Mel:" + str(self.game_instance.current_player.melee_skill))
         self.window.addstr(2, max_x - len("AP:" + str(self.game_instance.current_player.action_points)),
                            "AP:" + str(self.game_instance.current_player.action_points))
-        self.window.addstr(3, min_x, "Str:"+str(self.game_instance.current_player.strengh))
-        self.window.addstr(3, max_x-len("End:" + str(self.game_instance.current_player.endurance)),
+        self.window.addstr(3, min_x, "Str:" + str(self.game_instance.current_player.strengh))
+        self.window.addstr(3, max_x - len("End:" + str(self.game_instance.current_player.endurance)),
                            "End:" + str(self.game_instance.current_player.endurance))
 
         self.window.addstr(4,
-                           int(center_x-len("Head:["+str(self.game_instance.current_player.arm_head)+"]")/2),
-                           "Head:["+str(self.game_instance.current_player.arm_head)+"]")
+                           int(center_x - len("Head:[" + str(self.game_instance.current_player.arm_head) + "]") / 2),
+                           "Head:[" + str(self.game_instance.current_player.arm_head) + "]")
         self.window.addstr(5,
                            int(center_x - len("Torso:[" + str(self.game_instance.current_player.arm_torso) + "]") / 2),
                            "Torso:[" + str(self.game_instance.current_player.arm_torso) + "]")
@@ -79,8 +94,9 @@ class CharacterSheet():
                            int(center_x - len("Weapon:[" + str(self.game_instance.current_player.weapon) + "]") / 2),
                            "Weapon:[" + str(self.game_instance.current_player.weapon) + "]")
         self.window.addstr(10, min_x, "Inventory:")
-        self.window.addstr(11, min_x, "1:["+str(self.game_instance.current_player.inv_1)+"]")
-        self.window.addstr(11, max_x-(len("2:[" + str(self.game_instance.current_player.inv_2) + "]")), "2:[" + str(self.game_instance.current_player.inv_2) + "]")
+        self.window.addstr(11, min_x, "1:[" + str(self.game_instance.current_player.inv_1) + "]")
+        self.window.addstr(11, max_x - (len("2:[" + str(self.game_instance.current_player.inv_2) + "]")),
+                           "2:[" + str(self.game_instance.current_player.inv_2) + "]")
         self.window.addstr(12, min_x, "3:[" + str(self.game_instance.current_player.inv_3) + "]")
         self.window.addstr(12, max_x - (len("3:[" + str(self.game_instance.current_player.inv_3) + "]")),
                            "3:[" + str(self.game_instance.current_player.inv_3) + "]")
@@ -116,7 +132,11 @@ class SituationMap:
         for y in range(min_y, max_y):
             for x in range(min_x, max_x):
                 if 0 < y + diff_y < len(self.grid.grid) and 0 < x + diff_x < len(self.grid.grid[0]):
-                    self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]))
+                    if isinstance(self.grid.grid[y + diff_y][x + diff_x].occupation, player.Character):
+                        # print("YES THERE IS CHARACTER ON SCREEN")
+                        self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]), curses.color_pair(4))
+                    else:
+                        self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]))
                 else:
                     self.window.addstr(y, x, "#")
 

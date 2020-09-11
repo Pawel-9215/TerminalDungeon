@@ -1,7 +1,7 @@
 """
 This is module for player class
 """
-from map_loader import WorldMap
+from __future__ import annotations
 
 
 # ← ↑ → ↓
@@ -11,13 +11,14 @@ class Character:
     Base class for characters - This should be inherited by both player and mobs alike
     """
 
-    def __init__(self, y, x, glyph, world_map: WorldMap):
+    def __init__(self, y, x, glyph, world_map):
         self.y = y
         self.x = x
         self.glyph = glyph
         self.world_map = world_map
         self.look_at_y = self.y + 1
         self.look_at_x = self.x
+        self.is_mob = True
 
         # character sheet:
 
@@ -86,7 +87,7 @@ class Player(Character):
     Player class !warning - This needs refactor to inherit from character class
     """
 
-    def __init__(self, y, x, glyph, character_sheet, world_map: WorldMap):
+    def __init__(self, y, x, glyph, character_sheet, world_map):
         super().__init__(y, x, glyph, world_map)
         self.y = y
         self.x = x
@@ -94,6 +95,7 @@ class Player(Character):
         self.world_map = world_map
         self.look_at_y = self.y + 1
         self.look_at_x = self.x
+        self.is_mob = False
 
         # character sheet:
 

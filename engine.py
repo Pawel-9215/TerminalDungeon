@@ -14,6 +14,7 @@ class Engine():
         self.key_input = game_control.Keyboard(self)
         self.renderer = game_control.Renderque(self)
         self.updater = game_control.Updateque(self)
+        self.colors = ui.ColorInit()
 
     def change_scene(self, scene = game_control.Scene):
         self.current_scene = scene
