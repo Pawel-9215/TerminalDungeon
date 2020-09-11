@@ -1,6 +1,6 @@
 import random
 import world_static
-
+from mobs import Rat
 
 class WorldMap():
     """
@@ -14,6 +14,8 @@ class WorldMap():
         self.player_x = 0
         self.map_name = map_name
         self.grid = self.populate_map()
+        self.mobs = [Rat]
+        self.mobs_number = 5
 
     def load_map(self):
         """
@@ -72,6 +74,16 @@ class WorldMap():
     def check_content(self, y, x):
 
         return self.grid[y][x].occupation
+
+    def spawn_mobs(self):
+
+        mobs_to_spawn = self.mobs_number
+        available_spaces = []
+
+        for y in self.grid:
+            for x in self.grid[y]:
+                if self.grid[y][x].occupation == "free":
+                    available_spaces.append((y, x))
 
 
 if __name__ == '__main__':
