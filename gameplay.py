@@ -7,6 +7,7 @@ import curses
 import pickables
 import world_static
 
+
 class GameInstance(game_control.Scene):
     """
     Game Instance - object for playthrough of a level
@@ -39,6 +40,7 @@ class GameInstance(game_control.Scene):
         character_info = CharacterSheet(self.UI_window, self)
         self.renderable_objects.append(character_info)
         self.updatable_objects.append(self.current_player)
+        self.updatable_objects.append(character_info)
 
         # test_mobs
 
@@ -56,7 +58,6 @@ class GameInstance(game_control.Scene):
         for i in range(4):
             item_coord = random.choice(available_cells)
             self.grid.grid[item_coord[0]][item_coord[1]].pickable = pickables.Dagger()
-
 
 
 class CharacterSheet:
@@ -108,6 +109,9 @@ class CharacterSheet:
         self.window.addstr(12, min_x, "3:[" + str(self.game_instance.current_player.inv_3) + "]")
         self.window.addstr(12, max_x - (len("3:[" + str(self.game_instance.current_player.inv_3) + "]")),
                            "3:[" + str(self.game_instance.current_player.inv_3) + "]")
+
+    def update(self, key):
+        self.draw()
 
 
 class SituationMap:

@@ -75,3 +75,6 @@ class Pickable:
         self.health = 0
         self.strenght = 0
         self.endurance = 0
+
+    def __repr__(self):
+        return self.name

@@ -70,15 +70,12 @@ class Character:
         self.look_at_x = self.x + way_to_go[direction][1]
 
     def vacate_position(self):
-
         self.world_map.grid[self.y][self.x].occupation = "free"
 
     def update_position(self):
-
         self.world_map.grid[self.y][self.x].occupation = self
 
     def __str__(self):
-
         return self.name
 
 
@@ -135,7 +132,10 @@ class Player(Character):
         if key in ["up", "down", "left", "right"]:
             self.move(key)
         elif key == " ":
-            self.use()
+            if self.world_map.grid[self.y][self.x].pickable != "free":
+                self.pickup()
+            else:
+                self.use()
         else:
             pass
         pass
@@ -174,3 +174,47 @@ class Player(Character):
             self.world_map.grid[self.look_at_y][self.look_at_x].occupation = "free"
         else:
             pass
+
+    def get_bodypart_state(self, bodypart: str):
+        if bodypart == "weapon":
+            return self.weapon
+        elif bodypart == "arm_head":
+            return self.arm_head
+        elif bodypart  == "arm_torso":
+            return self.arm_torso
+        elif bodypart == "arm_hands":
+            return self.arm_hands
+        elif bodypart == "arm_legs":
+            return self.arm_legs
+
+    def set_bodypart_state(self, bodypart, item):
+        if bodypart == "weapon":
+            self.weapon = item
+        elif bodypart == "arm_head":
+            self.arm_head = item
+        elif bodypart  == "arm_torso":
+            self.arm_torso = item
+        elif bodypart == "arm_hands":
+            self.arm_hands = item
+        elif bodypart == "arm_legs":
+            self.arm_legs = item
+
+    def pickup(self):
+
+        object_to_pick = self.world_map.grid[self.y][self.x].pickable
+
+        # check if default body part is available:
+
+        if self.get_bodypart_state(object_to_pick.destination) is None:
+            self.set_bodypart_state(object_to_pick.destination, object_to_pick)
+        elif self.inv_1 is None:
+            self.inv_1 = object_to_pick
+        elif self.inv_2 is None:
+            self.inv_2 = object_to_pick
+        elif self.inv_3 is None:
+            self.inv_3 = object_to_pick
+        elif self.inv_4 is None:
+            self.inv_4 = object_to_pick
+        else:
+            return "No place in inventory. Throw something out"
+        self.world_map.grid[self.y][self.x].pickable = "free"
