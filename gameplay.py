@@ -87,6 +87,7 @@ class CharacterSheet:
         self.window.addstr(3, max_x - len("End:" + str(self.game_instance.current_player.endurance)),
                            "End:" + str(self.game_instance.current_player.endurance))
 
+        # Weapon and armour
         self.window.addstr(4,
                            int(center_x - len("Head:[" + str(self.game_instance.current_player.arm_head) + "]") / 2),
                            "Head:[" + str(self.game_instance.current_player.arm_head) + "]")
@@ -103,13 +104,19 @@ class CharacterSheet:
         self.window.addstr(9,
                            int(center_x - len("Weapon:[" + str(self.game_instance.current_player.weapon) + "]") / 2),
                            "Weapon:[" + str(self.game_instance.current_player.weapon) + "]")
+
+        # Inventory
         self.window.addstr(10, min_x, "Inventory:")
+
         self.window.addstr(11, min_x, "1:[" + str(self.game_instance.current_player.inv_1) + "]")
+
         self.window.addstr(11, max_x - (len("2:[" + str(self.game_instance.current_player.inv_2) + "]")),
                            "2:[" + str(self.game_instance.current_player.inv_2) + "]")
+
         self.window.addstr(12, min_x, "3:[" + str(self.game_instance.current_player.inv_3) + "]")
-        self.window.addstr(12, max_x - (len("3:[" + str(self.game_instance.current_player.inv_3) + "]")),
-                           "3:[" + str(self.game_instance.current_player.inv_3) + "]")
+
+        self.window.addstr(12, max_x - (len("4:[" + str(self.game_instance.current_player.inv_4) + "]")),
+                           "4:[" + str(self.game_instance.current_player.inv_4) + "]")
 
     def update(self, key):
         self.draw()
