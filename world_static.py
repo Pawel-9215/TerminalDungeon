@@ -1,15 +1,18 @@
 # Map classes
+from __future__ import annotations
 
 
 class Cell():
     def __init__(self, floor_glyph, occupation="free"):
         self.floor_glyph = floor_glyph
         self.occupation = occupation
-        self.pickable = None
+        self.pickable = "free"
 
     def __repr__(self):
         if self.occupation != "free":
             return self.occupation.glyph
+        elif self.pickable != "free":
+            return self.pickable.glyph
         else:
             return self.floor_glyph
 
@@ -58,3 +61,17 @@ class PlayerStart():
         # this should be replaced by reference to player instance
         # on game start
         del self
+
+
+class Pickable:
+    def __init__(self):
+        self.glyph = "P"
+        self.destination = "weapon"
+        self.consumable = False
+        self.name = "Pickable"
+
+        # player mod:
+
+        self.health = 0
+        self.strenght = 0
+        self.endurance = 0

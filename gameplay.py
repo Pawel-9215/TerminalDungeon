@@ -4,7 +4,8 @@ import player
 import mobs
 import random
 import curses
-
+import pickables
+import world_static
 
 class GameInstance(game_control.Scene):
     """
@@ -49,6 +50,13 @@ class GameInstance(game_control.Scene):
 
         for mob in self.mobs:
             self.updatable_objects.append(mob)
+
+        # test pickable
+
+        for i in range(4):
+            item_coord = random.choice(available_cells)
+            self.grid.grid[item_coord[0]][item_coord[1]].pickable = pickables.Dagger()
+
 
 
 class CharacterSheet:
@@ -135,6 +143,8 @@ class SituationMap:
                     if isinstance(self.grid.grid[y + diff_y][x + diff_x].occupation, player.Character):
                         # print("YES THERE IS CHARACTER ON SCREEN")
                         self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]), curses.color_pair(4))
+                    elif isinstance(self.grid.grid[y + diff_y][x + diff_x].pickable, world_static.Pickable):
+                        self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]), curses.color_pair(2))
                     else:
                         self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]))
                 else:
