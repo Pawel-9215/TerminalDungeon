@@ -56,6 +56,7 @@ class GameInstance(game_control.Scene):
         # test pickable
 
         for i in range(4):
+            available_cells = self.grid.get_available_spaces()
             item_coord = random.choice(available_cells)
             self.grid.grid[item_coord[0]][item_coord[1]].pickable = pickables.Dagger()
 
