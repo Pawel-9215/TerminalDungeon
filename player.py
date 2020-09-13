@@ -133,7 +133,7 @@ class Player(Character):
         if key in ["up", "down", "left", "right"]:
             self.move(key)
         elif key in ["1", "2", "3", "4"]:
-            #ask if dump or equip
+            self.game_instance.ask_Dump_or_Equip(key)
             pass
             
         elif key == " ":

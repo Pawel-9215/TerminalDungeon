@@ -62,6 +62,10 @@ class GameInstance(game_control.Scene):
             item_coord = random.choice(available_cells)
             self.grid.grid[item_coord[0]][item_coord[1]].pickable = pickables.Dagger()
 
+    def ask_Dump_or_Equip(self, key):
+        scene = DumpOrEquip([self.engine.full_screen], "Dump or Equip?", self.engine, self, key)
+        self.engine.change_scene(scene)
+
 
 class CharacterSheet:
     """
@@ -180,14 +184,31 @@ class DumpOrEquip(game_control.Scene):
             "EQUIP": [print, ["Rotating"]],
             "DUMP": [print, ["Dumping"]],
         }
+        self.print_content()
     
     def print_content(self):
         main_label = "What do you want to do with"
         
-        self.renderable_objects.append(ui.Label(self.window[0],
+        self.renderable_objects.append(ui.Label(self.windows[0],
                                                 main_label,
                                                 self.center_y-1,
-                                                self.center_x-(int(len(main_label/2))),
+                                                self.center_x-(int(len(main_label)/2)),
                                                 bg="white")
                                        )
+        for num, button in enumerate(self.button_names):
+            self.menu_buttons.append(ui.button(self.windows[0],
+            self.center_y+1+num,
+            self.center_x-(int(len(button)/2)),
+            button,
+            button,
+            self.buttons_on_pressed[button][0],
+            self.buttons_on_pressed[button][1]))
+
+        for button in self.menu_buttons:
+            self.renderable_objects.append(button)
         
+        self.menu_buttons[self.focused_item].is_focused = True
+
+    def update(self, key):
+        self.button_toggle(key)
+
