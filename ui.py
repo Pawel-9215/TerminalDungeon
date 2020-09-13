@@ -2,6 +2,7 @@ import curses
 from math import floor
 
 
+
 class button():
     is_focused = False
     state = {True:2, False:1}
@@ -123,6 +124,7 @@ class Rotator():
 
     def get_chosen_item(self):
         return self.items[self.choosen_item]
+        
 
 def popup(mess, wholescr_y, wholescr_x):
     width = len(mess)+4

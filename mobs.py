@@ -7,8 +7,8 @@ import random
 # Basic level 1 mobs:
 
 class Rat(Character):
-    def __init__(self, y, x, glyph, world_map):
-        super().__init__(y, x, glyph, world_map)
+    def __init__(self, y, x, glyph, world_map, game_instance):
+        super().__init__(y, x, glyph, world_map, game_instance)
         self.glyph = "R"
 
 

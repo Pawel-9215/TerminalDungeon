@@ -6,6 +6,7 @@ import random
 import curses
 import pickables
 import world_static
+import ui
 
 
 class GameInstance(game_control.Scene):
@@ -32,7 +33,8 @@ class GameInstance(game_control.Scene):
                                             self.grid.player_x,
                                             "↑",
                                             self.character_sheet,
-                                            self.grid)
+                                            self.grid,
+                                            self)
         self.grid.grid[self.grid.player_y][self.grid.player_x].occupation = self.current_player
 
         grid_map = SituationMap(self.GP_window, self.grid, self)
@@ -47,7 +49,7 @@ class GameInstance(game_control.Scene):
         for i in range(5):
             available_cells = self.grid.get_available_spaces()
             mob_coord = random.choice(available_cells)
-            self.mobs.append(mobs.Rat(mob_coord[0], mob_coord[1], "R", self.grid))
+            self.mobs.append(mobs.Rat(mob_coord[0], mob_coord[1], "R", self.grid, self))
             self.grid.grid[mob_coord[0]][mob_coord[1]].occupation = self.mobs[i]
 
         for mob in self.mobs:
@@ -165,3 +167,27 @@ class SituationMap:
                     # draw static map elements first, then dynamic objects like player
 
         # self.window.addstr(center_y, center_x, self.game_instance.current_player.glyph)
+        
+class DumpOrEquip(game_control.Scene):
+    def __init__(self, windows, name: str, engine: object, escape, key):
+        super().__init__(windows, name, engine)
+        self.escape = escape
+        self.center_y = int(self.win_y/2)
+        self.center_x = int(self.win_x/2)
+        self.updatable_objects.append(self)
+        self.button_names = ["EQUIP", "DUMP"]
+        self.buttons_on_pressed = {
+            "EQUIP": [print, ["Rotating"]],
+            "DUMP": [print, ["Dumping"]],
+        }
+    
+    def print_content(self):
+        main_label = "What do you want to do with"
+        
+        self.renderable_objects.append(ui.Label(self.window[0],
+                                                main_label,
+                                                self.center_y-1,
+                                                self.center_x-(int(len(main_label/2))),
+                                                bg="white")
+                                       )
+        

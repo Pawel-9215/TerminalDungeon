@@ -11,7 +11,8 @@ class Character:
     Base class for characters - This should be inherited by both player and mobs alike
     """
 
-    def __init__(self, y, x, glyph, world_map):
+    def __init__(self, y, x, glyph, world_map, game_instance):
+        self.game_instance = game_instance
         self.y = y
         self.x = x
         self.glyph = glyph
@@ -81,11 +82,11 @@ class Character:
 
 class Player(Character):
     """
-    Player class !warning - This needs refactor to inherit from character class
+    Player class
     """
 
-    def __init__(self, y, x, glyph, character_sheet, world_map):
-        super().__init__(y, x, glyph, world_map)
+    def __init__(self, y, x, glyph, character_sheet, world_map, game_instance):
+        super().__init__(y, x, glyph, world_map, game_instance)
         self.y = y
         self.x = x
         self.glyph = glyph
@@ -131,6 +132,10 @@ class Player(Character):
         """
         if key in ["up", "down", "left", "right"]:
             self.move(key)
+        elif key in ["1", "2", "3", "4"]:
+            #ask if dump or equip
+            pass
+            
         elif key == " ":
             if self.world_map.grid[self.y][self.x].pickable != "free":
                 self.pickup()
