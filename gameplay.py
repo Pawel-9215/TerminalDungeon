@@ -62,8 +62,8 @@ class GameInstance(game_control.Scene):
             item_coord = random.choice(available_cells)
             self.grid.grid[item_coord[0]][item_coord[1]].pickable = pickables.Dagger()
 
-    def ask_Dump_or_Equip(self, key, player_inventory):
-        scene = DumpOrEquip([self.engine.popup_screen], "Dump or Equip?", self.engine, self, player_inventory)
+    def ask_Dump_or_Equip(self, key):
+        scene = DumpOrEquip([self.engine.popup_screen], "Dump or Equip?", self.engine, self, self.current_player, key)
         self.engine.change_scene(scene)
 
 
@@ -171,13 +171,16 @@ class SituationMap:
                     # draw static map elements first, then dynamic objects like player
 
         # self.window.addstr(center_y, center_x, self.game_instance.current_player.glyph)
-        
+
+
 class DumpOrEquip(game_control.Scene):
-    def __init__(self, windows, name: str, engine: object, escape, player_inventory):
+    def __init__(self, windows, name: str, engine: object, escape, current_player, key):
         super().__init__(windows, name, engine)
+        self.current_player = current_player
+        self.item_slot = key
         self.escape = escape
-        self.center_y = int(self.win_y/2)
-        self.center_x = int(self.win_x/2)
+        self.center_y = int(self.win_y / 2)
+        self.center_x = int(self.win_x / 2)
         self.updatable_objects.append(self)
         self.button_names = ["EQUIP", "DUMP"]
         self.buttons_on_pressed = {
@@ -185,30 +188,47 @@ class DumpOrEquip(game_control.Scene):
             "DUMP": [print, ["Dumping"]],
         }
         self.print_content()
-    
+
+    def get_item(self):
+        if self.item_slot == "1":
+            return self.current_player.inv_1
+        elif self.item_slot == "2":
+            return self.current_player.inv_2
+        elif self.item_slot == "3":
+            return self.current_player.inv_3
+        elif self.item_slot == "4":
+            return self.current_player.inv_4
+        else:
+            pass
+
     def print_content(self):
-        main_label = "What do you want to do with"
-        
+        main_label = "What do you want to do with ["+self.get_item().name+"]"
+
         self.renderable_objects.append(ui.Label(self.windows[0],
                                                 main_label,
                                                 2,
-                                                self.center_x-(int(len(main_label)/2)),
+                                                self.center_x - (int(len(main_label) / 2)),
                                                 bg="white")
                                        )
         for num, button in enumerate(self.button_names):
             self.menu_buttons.append(ui.button(self.windows[0],
-            2+1+num,
-            self.center_x-(int(len(button)/2)),
-            button,
-            button,
-            self.buttons_on_pressed[button][0],
-            self.buttons_on_pressed[button][1]))
+                                               2 + 1 + num,
+                                               self.center_x - (int(len(button) / 2)),
+                                               button,
+                                               button,
+                                               self.buttons_on_pressed[button][0],
+                                               self.buttons_on_pressed[button][1]))
 
         for button in self.menu_buttons:
             self.renderable_objects.append(button)
-        
+
         self.menu_buttons[self.focused_item].is_focused = True
 
     def update(self, key):
         self.button_toggle(key)
 
+    def dump(self):
+        pass
+
+    def equip(self):
+        pass
