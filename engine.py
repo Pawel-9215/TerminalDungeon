@@ -5,10 +5,11 @@ import ui
 import main_menu
 
 class Engine():
-    def __init__(self, full_screen: object, left_bar: object, right_bar: object):
+    def __init__(self, full_screen: object, left_bar: object, right_bar: object, popup_screen: object):
         self.full_screen = full_screen
         self.left_bar = left_bar
         self.right_bar = right_bar
+        self.popup_screen = popup_screen
         self.base_scene = game_control.Scene([full_screen], "Blank Page", self)
         self.current_scene = self.base_scene
         self.key_input = game_control.Keyboard(self)

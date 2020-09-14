@@ -62,8 +62,8 @@ class GameInstance(game_control.Scene):
             item_coord = random.choice(available_cells)
             self.grid.grid[item_coord[0]][item_coord[1]].pickable = pickables.Dagger()
 
-    def ask_Dump_or_Equip(self, key):
-        scene = DumpOrEquip([self.engine.full_screen], "Dump or Equip?", self.engine, self, key)
+    def ask_Dump_or_Equip(self, key, player_inventory):
+        scene = DumpOrEquip([self.engine.popup_screen], "Dump or Equip?", self.engine, self, player_inventory)
         self.engine.change_scene(scene)
 
 
@@ -173,7 +173,7 @@ class SituationMap:
         # self.window.addstr(center_y, center_x, self.game_instance.current_player.glyph)
         
 class DumpOrEquip(game_control.Scene):
-    def __init__(self, windows, name: str, engine: object, escape, key):
+    def __init__(self, windows, name: str, engine: object, escape, player_inventory):
         super().__init__(windows, name, engine)
         self.escape = escape
         self.center_y = int(self.win_y/2)
@@ -191,13 +191,13 @@ class DumpOrEquip(game_control.Scene):
         
         self.renderable_objects.append(ui.Label(self.windows[0],
                                                 main_label,
-                                                self.center_y-1,
+                                                2,
                                                 self.center_x-(int(len(main_label)/2)),
                                                 bg="white")
                                        )
         for num, button in enumerate(self.button_names):
             self.menu_buttons.append(ui.button(self.windows[0],
-            self.center_y+1+num,
+            2+1+num,
             self.center_x-(int(len(button)/2)),
             button,
             button,

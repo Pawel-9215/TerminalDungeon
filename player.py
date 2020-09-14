@@ -133,8 +133,16 @@ class Player(Character):
         if key in ["up", "down", "left", "right"]:
             self.move(key)
         elif key in ["1", "2", "3", "4"]:
-            self.game_instance.ask_Dump_or_Equip(key)
-            pass
+            if key == "1" and self.inv_1 is not None:
+                self.game_instance.ask_Dump_or_Equip(key, self.inv_1)
+            elif key == "2" and self.inv_2 is not None:
+                self.game_instance.ask_Dump_or_Equip(key, self.inv_2)
+            elif key == "3" and self.inv_3 is not None:
+                self.game_instance.ask_Dump_or_Equip(key, self.inv_3)
+            elif key == "4" and self.inv_4 is not None:
+                self.game_instance.ask_Dump_or_Equip(key, self.inv_4)
+            else:
+                pass
             
         elif key == " ":
             if self.world_map.grid[self.y][self.x].pickable != "free":

@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 
-class Cell():
+class Cell:
     def __init__(self, floor_glyph, occupation="free"):
         self.floor_glyph = floor_glyph
         self.occupation = occupation
@@ -23,7 +23,7 @@ class Cell():
             return self.occupation
 
 
-class SolidBody():
+class SolidBody:
     def __init__(self):
         self.destructable = False
         self.glyph = "@"
@@ -47,7 +47,7 @@ class StoneWall(SolidBody):
         self.destructable = True
 
 
-class PlayerStart():
+class PlayerStart:
     """
     This object should be replaced by player class when the game starts.
     """

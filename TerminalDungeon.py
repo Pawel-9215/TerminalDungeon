@@ -29,7 +29,12 @@ def main(wholescr):
     game_map.refresh()
     # curses.napms(500)
 
-    td_engine = engine.Engine(wholescr, ui_screen, game_map)
+    popup_screen = curses.newwin(int(wholescr_y/2), int(wholescr_x/2), int(wholescr_y/4), int(wholescr_x/4))
+    popup_screen.border()
+    popup_screen.refresh()
+    curses.napms(500)
+
+    td_engine = engine.Engine(wholescr, ui_screen, game_map, popup_screen)
     td_engine.run_game()
 
 
