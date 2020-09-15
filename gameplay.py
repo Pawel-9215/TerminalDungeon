@@ -189,20 +189,9 @@ class DumpOrEquip(game_control.Scene):
         }
         self.print_content()
 
-    def get_item(self):
-        if self.item_slot == "1":
-            return self.current_player.inv_1
-        elif self.item_slot == "2":
-            return self.current_player.inv_2
-        elif self.item_slot == "3":
-            return self.current_player.inv_3
-        elif self.item_slot == "4":
-            return self.current_player.inv_4
-        else:
-            pass
-
     def print_content(self):
-        main_label = "What do you want to do with [" + self.get_item().name + "]"
+        main_label = \
+            "What do you want to do with [" + self.current_player.get_inventory_state(self.item_slot).name + "]"
 
         self.renderable_objects.append(ui.Label(self.windows[0],
                                                 main_label,
@@ -228,18 +217,11 @@ class DumpOrEquip(game_control.Scene):
         self.button_toggle(key)
 
     def dump(self):
-        self.escape.grid.grid[self.current_player.y][self.current_player.x].pickable = self.get_item()
+        self.escape.grid.grid[self.current_player.y][self.current_player.x].pickable = \
+            self.current_player.get_inventory_state(self.item_slot)
 
-        if self.item_slot == "1":
-            self.current_player.inv_1 = None
-        elif self.item_slot == "2":
-            self.current_player.inv_2 = None
-        elif self.item_slot == "3":
-            self.current_player.inv_3 = None
-        elif self.item_slot == "4":
-            self.current_player.inv_4 = None
-        else:
-            pass
+        self.current_player.set_inventory_state(self.item_slot, None)
+
         self.engine.change_scene(self.escape)
 
     def equip(self):

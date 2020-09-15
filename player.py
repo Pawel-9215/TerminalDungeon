@@ -212,6 +212,32 @@ class Player(Character):
         elif bodypart == "arm_legs":
             self.arm_legs = item
 
+    def get_inventory_state(self, item_slot):
+
+        if item_slot == "1":
+            return self.inv_1
+        elif item_slot == "2":
+            return self.inv_2
+        elif item_slot == "3":
+            return self.inv_3
+        elif item_slot == "4":
+            return self.inv_4
+        else:
+            pass
+
+    def set_inventory_state(self, item_slot, item):
+
+        if item_slot == "1":
+            self.inv_1 = item
+        elif item_slot == "2":
+            self.inv_2 = item
+        elif item_slot == "3":
+            self.inv_3 = item
+        elif item_slot == "4":
+            self.inv_4 = item
+        else:
+            pass
+
     def pickup(self):
 
         object_to_pick = self.world_map.grid[self.y][self.x].pickable
