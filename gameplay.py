@@ -60,7 +60,7 @@ class GameInstance(game_control.Scene):
         for i in range(4):
             available_cells = self.grid.get_available_spaces()
             item_coord = random.choice(available_cells)
-            self.grid.grid[item_coord[0]][item_coord[1]].pickable = pickables.Dagger()
+            self.grid.grid[item_coord[0]][item_coord[1]].pickable = random.choice([pickables.Dagger(), pickables.Mace()])
 
     def ask_Dump_or_Equip(self, key):
         scene = DumpOrEquip([self.engine.popup_screen], "Dump or Equip?", self.engine, self, self.current_player, key)
@@ -184,7 +184,7 @@ class DumpOrEquip(game_control.Scene):
         self.updatable_objects.append(self)
         self.button_names = ["EQUIP", "DUMP"]
         self.buttons_on_pressed = {
-            "EQUIP": [print, ["Rotating"]],
+            "EQUIP": [self.equip, []],
             "DUMP": [self.dump, []],
         }
         self.print_content()
@@ -229,3 +229,9 @@ class DumpOrEquip(game_control.Scene):
         bodypart = self.current_player.get_bodypart_state(item.destination)
         if self.current_player.get_bodypart_state(item.destination) is None:
             self.current_player.set_bodypart_state(bodypart, item)
+        else:
+            item_to_swap = self.current_player.get_bodypart_state(item.destination)
+            self.current_player.set_bodypart_state(bodypart, item)
+            self.current_player.set_inventory_state(self.item_slot, item_to_swap)
+
+        self.engine.change_scene(self.escape)

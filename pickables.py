@@ -8,3 +8,11 @@ class Dagger(Pickable):
         self.glyph = "W"
         self.name = "Dagger"
         self.strenght = 1
+
+
+class Mace(Pickable):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "W"
+        self.name = "Mace"
+        self.strenght = 1
