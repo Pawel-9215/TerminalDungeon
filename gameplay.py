@@ -174,7 +174,7 @@ class SituationMap:
 
 
 class DumpOrEquip(game_control.Scene):
-    def __init__(self, windows, name: str, engine: object, escape, current_player, key):
+    def __init__(self, windows, name: str, engine: object, escape: GameInstance, current_player, key):
         super().__init__(windows, name, engine)
         self.current_player = current_player
         self.item_slot = key
@@ -185,7 +185,7 @@ class DumpOrEquip(game_control.Scene):
         self.button_names = ["EQUIP", "DUMP"]
         self.buttons_on_pressed = {
             "EQUIP": [print, ["Rotating"]],
-            "DUMP": [print, ["Dumping"]],
+            "DUMP": [self.dump, []],
         }
         self.print_content()
 
@@ -202,7 +202,7 @@ class DumpOrEquip(game_control.Scene):
             pass
 
     def print_content(self):
-        main_label = "What do you want to do with ["+self.get_item().name+"]"
+        main_label = "What do you want to do with [" + self.get_item().name + "]"
 
         self.renderable_objects.append(ui.Label(self.windows[0],
                                                 main_label,
@@ -228,7 +228,19 @@ class DumpOrEquip(game_control.Scene):
         self.button_toggle(key)
 
     def dump(self):
-        pass
+        self.escape.grid.grid[self.current_player.y][self.current_player.x].pickable = self.get_item()
+
+        if self.item_slot == "1":
+            self.current_player.inv_1 = None
+        elif self.item_slot == "2":
+            self.current_player.inv_2 = None
+        elif self.item_slot == "3":
+            self.current_player.inv_3 = None
+        elif self.item_slot == "4":
+            self.current_player.inv_4 = None
+        else:
+            pass
+        self.engine.change_scene(self.escape)
 
     def equip(self):
         pass
