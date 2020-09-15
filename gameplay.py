@@ -226,7 +226,7 @@ class DumpOrEquip(game_control.Scene):
 
     def equip(self):
         item = self.current_player.get_inventory_state(self.item_slot)
-        bodypart = self.current_player.get_bodypart_state(item.destination)
+        bodypart = self.current_player.get_inventory_state(self.item_slot).destination
         if self.current_player.get_bodypart_state(item.destination) is None:
             self.current_player.set_bodypart_state(bodypart, item)
         else:
