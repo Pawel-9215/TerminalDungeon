@@ -14,3 +14,6 @@ RPG hack'n'slash game for terminal with ascii graphics
 http://terminaldungeon.com/
 
 - Main website is up! 
+
+Design Document is available at Main Website:
+https://www.terminaldungeon.com/gdd/
