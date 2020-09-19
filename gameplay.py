@@ -217,10 +217,10 @@ class DumpOrEquip(game_control.Scene):
         self.button_toggle(key)
 
     def dump(self):
-        self.escape.grid.grid[self.current_player.y][self.current_player.x].pickable = \
-            self.current_player.get_inventory_state(self.item_slot)
-
-        self.current_player.set_inventory_state(self.item_slot, None)
+        if self.escape.grid.grid[self.current_player.y][self.current_player.x].pickable == "free"
+            self.escape.grid.grid[self.current_player.y][self.current_player.x].pickable = \
+                self.current_player.get_inventory_state(self.item_slot)
+            self.current_player.set_inventory_state(self.item_slot, None)
 
         self.engine.change_scene(self.escape)
 
