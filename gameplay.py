@@ -241,3 +241,18 @@ class DumpOrEquip(game_control.Scene):
             self.current_player.set_inventory_state(self.item_slot, item_to_swap)
 
         self.engine.change_scene(self.escape)
+
+class CombatScreen(game_control.Scene):
+    def __init__(self, windows,
+                 name: str, engine: object,
+                 escape: GameInstance,
+                 current_player: player.Player,
+                 current_enemy: player.Character):
+        super().__init__(windows, name, engine)
+        self.current_player = current_player
+        self.current_enemy = current_enemy
+        self.escape = escape
+
+    def print_player_stats(self):
+        pass
+
