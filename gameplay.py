@@ -60,7 +60,8 @@ class GameInstance(game_control.Scene):
         for i in range(4):
             available_cells = self.grid.get_available_spaces()
             item_coord = random.choice(available_cells)
-            self.grid.grid[item_coord[0]][item_coord[1]].pickable = random.choice([pickables.Dagger(), pickables.Mace()])
+            self.grid.grid[item_coord[0]][item_coord[1]].pickable = random.choice(
+                [pickables.Dagger(), pickables.Mace()])
 
     def ask_Dump_or_Equip(self, key):
         scene = DumpOrEquip([self.engine.popup_screen], "Dump or Equip?", self.engine, self, self.current_player, key)
@@ -227,7 +228,6 @@ class DumpOrEquip(game_control.Scene):
                 self.current_player.get_inventory_state(self.item_slot)
             self.current_player.set_inventory_state(self.item_slot, item_to_swap)
 
-
         self.engine.change_scene(self.escape)
 
     def equip(self):
@@ -242,6 +242,7 @@ class DumpOrEquip(game_control.Scene):
 
         self.engine.change_scene(self.escape)
 
+
 class CombatScreen(game_control.Scene):
     def __init__(self, windows,
                  name: str, engine: object,
@@ -255,4 +256,3 @@ class CombatScreen(game_control.Scene):
 
     def print_player_stats(self):
         pass
-
