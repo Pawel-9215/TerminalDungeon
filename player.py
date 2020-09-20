@@ -130,6 +130,7 @@ class Player(Character):
         """
         This is logic of players character based on players input
         """
+
         if key in ["up", "down", "left", "right"]:
             self.move(key)
         elif key in ["1", "2", "3", "4"]:
@@ -151,7 +152,9 @@ class Player(Character):
                 self.use()
         else:
             pass
-        pass
+
+        self.game_instance.check_neighbours()
+
 
     def move(self, direction):
         """

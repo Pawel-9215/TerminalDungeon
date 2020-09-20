@@ -41,7 +41,7 @@ class GameInstance(game_control.Scene):
         self.renderable_objects.append(grid_map)
         character_info = CharacterSheet(self.UI_window, self)
         self.renderable_objects.append(character_info)
-        self.updatable_objects.append(self.current_player)
+        self.secondary_update.append(self.current_player)
         self.updatable_objects.append(character_info)
 
         # test_mobs
@@ -67,6 +67,34 @@ class GameInstance(game_control.Scene):
         scene = DumpOrEquip([self.engine.popup_screen], "Dump or Equip?", self.engine, self, self.current_player, key)
         self.engine.change_scene(scene)
 
+    def check_neighbours(self, enemies=True):
+        if enemies:
+            # directions
+            up = [self.grid.player_y-1, self.grid.player_x]
+            down = [self.grid.player_y+1, self.grid.player_x]
+            left = [self.grid.player_y, self.grid.player_x-1]
+            right = [self.grid.player_y, self.grid.player_x+1]
+
+            found_enemies = []
+
+            if isinstance(self.grid.grid[up[0]][up[1]].occupation, player.Character):
+                found_enemies.append(self.grid.grid[up[0]][up[1]].occupation)
+            elif isinstance(self.grid.grid[down[0]][down[1]].occupation, player.Character):
+                found_enemies.append(self.grid.grid[down[0]][down[1]].occupation)
+            elif isinstance(self.grid.grid[left[0]][left[1]].occupation, player.Character):
+                found_enemies.append(self.grid.grid[left[0]][left[1]].occupation)
+            elif isinstance(self.grid.grid[right[0]][right[1]].occupation, player.Character):
+                found_enemies.append(self.grid.grid[right[0]][right[1]].occupation)
+            else:
+                pass
+
+            if len(found_enemies)>0:
+                for enemy in found_enemies:
+                    new_combat_screen = CombatScreen([self.engine.full_screen], "Combat Screen", self.engine, self, self.current_player, enemy)
+                    self.engine.change_scene(new_combat_screen)
+        else:
+            pass
+
 
 class CharacterSheet:
     """
@@ -78,7 +106,7 @@ class CharacterSheet:
         self.window_y, self.window_x = window.getmaxyx()
         self.game_instance = game_instance
 
-    def draw(self):
+    def draw(self, inventory=True):
         min_y = 1
         max_y = self.window_y - 1
         min_x = 1
@@ -113,20 +141,21 @@ class CharacterSheet:
                            "Weapon:[" + str(self.game_instance.current_player.weapon) + "]")
 
         # Inventory
-        self.window.addstr(10, min_x, "Inventory:")
+        if inventory:
+            self.window.addstr(10, min_x, "Inventory:")
 
-        self.window.addstr(11, min_x, "1:[" + str(self.game_instance.current_player.inv_1) + "]")
+            self.window.addstr(11, min_x, "1:[" + str(self.game_instance.current_player.inv_1) + "]")
 
-        self.window.addstr(11, max_x - (len("2:[" + str(self.game_instance.current_player.inv_2) + "]")),
-                           "2:[" + str(self.game_instance.current_player.inv_2) + "]")
+            self.window.addstr(11, max_x - (len("2:[" + str(self.game_instance.current_player.inv_2) + "]")),
+                               "2:[" + str(self.game_instance.current_player.inv_2) + "]")
 
-        self.window.addstr(12, min_x, "3:[" + str(self.game_instance.current_player.inv_3) + "]")
+            self.window.addstr(12, min_x, "3:[" + str(self.game_instance.current_player.inv_3) + "]")
 
-        self.window.addstr(12, max_x - (len("4:[" + str(self.game_instance.current_player.inv_4) + "]")),
-                           "4:[" + str(self.game_instance.current_player.inv_4) + "]")
+            self.window.addstr(12, max_x - (len("4:[" + str(self.game_instance.current_player.inv_4) + "]")),
+                               "4:[" + str(self.game_instance.current_player.inv_4) + "]")
 
     def update(self, key):
-        self.draw()
+        self.draw(True)
 
 
 class SituationMap:
@@ -253,6 +282,18 @@ class CombatScreen(game_control.Scene):
         self.current_player = current_player
         self.current_enemy = current_enemy
         self.escape = escape
+        self.player_sheet = CharacterSheet(windows[0], escape)
+        self.draw_content()
+
+    def draw_content(self):
+        self.updatable_objects.append(self)
+        self.renderable_objects.append(self.player_sheet)
+
 
     def print_player_stats(self):
-        pass
+        self.player_sheet.draw(inventory=False)
+
+    def update(self, key):
+        # debug:
+        self.engine.change_scene(self.escape)
+

@@ -60,6 +60,9 @@ class Updateque:
         for obj in scene.updatable_objects:
             obj.update(key)
 
+        for obj in scene.secondary_update:
+            obj.update(key)
+
 
 class Keyboard:
     """ # this is keyboard controller
@@ -121,6 +124,7 @@ class Scene:
         self.renderable_objects.append(self.scene_label)
         self.focused_item = 0
         self.menu_buttons = []
+        self.secondary_update = []
 
     def button_toggle(self, key: object):
 
