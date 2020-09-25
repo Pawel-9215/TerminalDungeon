@@ -297,3 +297,16 @@ class CombatScreen(game_control.Scene):
         # debug:
         self.engine.change_scene(self.escape)
 
+
+class CombatPlayerStats:
+    def __init__(self, window, player, CombatScreen: CombatScreen):
+        self.window = window
+        self.player = player
+        self.combat_screen = CombatScreen
+
+    def draw_stats(self):
+        pass
+
+    def update(self, key):
+        pass
+
