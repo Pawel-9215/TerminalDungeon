@@ -25,6 +25,7 @@ class Character:
 
         self.name = "Character"
         self.health = 10
+        self.current_health = self.health
         self.melee_skill = 20
         self.action_points = 4
         self.strenght = 4

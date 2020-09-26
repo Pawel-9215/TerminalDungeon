@@ -37,6 +37,7 @@ class CombatPlayerStats:
         self.current_player = current_player
         self.combat_screen = combat_screen
         self.window_y, self.window_x = window.getmaxyx()
+        self.current_action_points = self.current_player.action_points
 
     def draw(self):
 
@@ -47,7 +48,15 @@ class CombatPlayerStats:
         center_y = int(self.window_y / 2)
         center_x = int(self.window_x / 2)
 
+        # Name
         self.window.addstr(min_y+1, min_x+1, self.current_player.name)
+        
+        # Parameters
+        self.window.addstr(min_y+3, min_x+1, ("HEALTH: "+str(self.current_player.current_health)+"/"+str(self.current_player.health)))
+        self.window.addstr(min_y+4, min_x+1, ("MELEE: "+str(self.current_player.melee_skill)))
+        self.window.addstr(min_y+5, min_x+1, ("AP: "+str(self.current_action_points)+"/"+str(self.current_player.action_points)))
+        self.window.addstr(min_y+6, min_x+1, ("STRENGHT: "+str(self.current_player.strenght)))
+        self.window.addstr(min_y+7, min_x+1, ("ENDURANCE: "+str(self.current_player.melee_skill)))
 
     def update(self, key):
         pass
