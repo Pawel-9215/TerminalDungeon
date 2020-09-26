@@ -2,10 +2,9 @@ import curses
 from math import floor
 
 
-
 class button():
     is_focused = False
-    state = {True:2, False:1}
+    state = {True: 2, False: 1}
     content = ""
     pos_y = 0
     pos_x = 0
@@ -31,10 +30,12 @@ class button():
         if self.is_focused:
             self.window.addstr(self.pos_y, self.pos_x, self.content, curses.A_STANDOUT)
         else:
-            self.window.addstr(self.pos_y, self.pos_x, self.content, curses.color_pair(self.colors.font_color["magenta"]))
+            self.window.addstr(self.pos_y, self.pos_x, self.content,
+                               curses.color_pair(self.colors.font_color["magenta"]))
 
     def on_pressed(self):
         self.func(*self.arguments)
+
 
 class Label():
 
@@ -45,10 +46,10 @@ class Label():
         self.window = window
         self.colors = ColorInit()
         self.bg = bg
-        
 
     def draw(self):
         self.window.addstr(self.pos_y, self.pos_x, self.content, curses.color_pair(self.colors.bg_color[self.bg]))
+
 
 class Plain_text():
 
@@ -57,28 +58,26 @@ class Plain_text():
         self.pos_y = pos_y
         self.pos_x = pos_x
         self.window = window
-        
 
     def draw(self):
         self.window.addstr(self.pos_y, self.pos_x, self.content)
 
-class ColorInit():
 
+class ColorInit():
     font_color = {
-        "yellow":1,
-        "blue":3,
-        "red":4,
-        "magenta":5,
+        "yellow": 1,
+        "blue": 3,
+        "red": 4,
+        "magenta": 5,
     }
     bg_color = {
-        "white":21,
-        "yellow":22,
-        "magenta":23
+        "white": 21,
+        "yellow": 22,
+        "magenta": 23
     }
 
-
     def __init__(self):
-        #font colors
+        # font colors
         curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
         curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_YELLOW)
 
@@ -86,8 +85,7 @@ class ColorInit():
         curses.init_pair(4, curses.COLOR_RED, curses.COLOR_BLACK)
         curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
 
-
-        #bg colors
+        # bg colors
         curses.init_pair(21, curses.COLOR_BLACK, curses.COLOR_WHITE)
         curses.init_pair(22, curses.COLOR_BLACK, curses.COLOR_YELLOW)
         curses.init_pair(23, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
@@ -108,13 +106,14 @@ class Rotator():
         else:
             for i in range(3):
                 if i == 1:
-                    self.window.addstr(self.y+i, self.x, ">"+self.items[self.choosen_item-1+i]+" "*(16-len(self.items[self.choosen_item])), curses.A_STANDOUT)
-                elif self.choosen_item-1+i >= len(self.items):
-                    self.window.addstr(self.y+i, self.x, " "+self.items[0])
+                    self.window.addstr(self.y + i, self.x, ">" + self.items[self.choosen_item - 1 + i] + " " * (
+                                16 - len(self.items[self.choosen_item])), curses.A_STANDOUT)
+                elif self.choosen_item - 1 + i >= len(self.items):
+                    self.window.addstr(self.y + i, self.x, " " + self.items[0])
                 else:
                     self.window.addstr(self.y + i, self.x, " " + self.items[self.choosen_item - 1 + i])
 
-    def rotate(self, direction:int):
+    def rotate(self, direction: int):
         if self.choosen_item + direction >= len(self.items):
             self.choosen_item = 0
         elif self.choosen_item + direction < 0:
@@ -124,14 +123,13 @@ class Rotator():
 
     def get_chosen_item(self):
         return self.items[self.choosen_item]
-        
+
 
 def popup(mess, wholescr_y, wholescr_x):
-    width = len(mess)+4
+    width = len(mess) + 4
     height = 3
 
-    popup = curses.newwin(height, width, floor(wholescr_y/2)-2, floor(wholescr_x/2)-floor(width/2))
+    popup = curses.newwin(height, width, floor(wholescr_y / 2) - 2, floor(wholescr_x / 2) - floor(width / 2))
     popup.border()
     popup.addstr(1, 2, mess)
     popup.refresh()
-

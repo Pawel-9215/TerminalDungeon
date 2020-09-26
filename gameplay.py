@@ -1,3 +1,4 @@
+from __future__ import annotations
 import game_control
 import map_loader
 import player
@@ -7,6 +8,7 @@ import curses
 import pickables
 import world_static
 import ui
+import combat
 
 
 class GameInstance(game_control.Scene):
@@ -46,7 +48,7 @@ class GameInstance(game_control.Scene):
 
         # test_mobs
 
-        for i in range(5):
+        for i in range(8):
             available_cells = self.grid.get_available_spaces()
             mob_coord = random.choice(available_cells)
             self.mobs.append(mobs.Rat(mob_coord[0], mob_coord[1], "R", self.grid, self))
@@ -70,10 +72,10 @@ class GameInstance(game_control.Scene):
     def check_neighbours(self, enemies=True):
         if enemies:
             # directions
-            up = [self.grid.player_y-1, self.grid.player_x]
-            down = [self.grid.player_y+1, self.grid.player_x]
-            left = [self.grid.player_y, self.grid.player_x-1]
-            right = [self.grid.player_y, self.grid.player_x+1]
+            up = [self.grid.player_y - 1, self.grid.player_x]
+            down = [self.grid.player_y + 1, self.grid.player_x]
+            left = [self.grid.player_y, self.grid.player_x - 1]
+            right = [self.grid.player_y, self.grid.player_x + 1]
 
             found_enemies = []
 
@@ -88,9 +90,10 @@ class GameInstance(game_control.Scene):
             else:
                 pass
 
-            if len(found_enemies)>0:
+            if len(found_enemies) > 0:
                 for enemy in found_enemies:
-                    new_combat_screen = CombatScreen([self.engine.full_screen], "Combat Screen", self.engine, self, self.current_player, enemy)
+                    new_combat_screen = combat.CombatScreen([self.engine.full_screen], "Combat Screen", self.engine,
+                                                            self, self.current_player, enemy)
                     self.engine.change_scene(new_combat_screen)
         else:
             pass
@@ -270,43 +273,3 @@ class DumpOrEquip(game_control.Scene):
             self.current_player.set_inventory_state(self.item_slot, item_to_swap)
 
         self.engine.change_scene(self.escape)
-
-
-class CombatScreen(game_control.Scene):
-    def __init__(self, windows,
-                 name: str, engine: object,
-                 escape: GameInstance,
-                 current_player: player.Player,
-                 current_enemy: player.Character):
-        super().__init__(windows, name, engine)
-        self.current_player = current_player
-        self.current_enemy = current_enemy
-        self.escape = escape
-        self.player_sheet = CharacterSheet(windows[0], escape)
-        self.draw_content()
-
-    def draw_content(self):
-        self.updatable_objects.append(self)
-        self.renderable_objects.append(self.player_sheet)
-
-
-    def print_player_stats(self):
-        self.player_sheet.draw(inventory=False)
-
-    def update(self, key):
-        # debug:
-        self.engine.change_scene(self.escape)
-
-
-class CombatPlayerStats:
-    def __init__(self, window, player, CombatScreen: CombatScreen):
-        self.window = window
-        self.player = player
-        self.combat_screen = CombatScreen
-
-    def draw_stats(self):
-        pass
-
-    def update(self, key):
-        pass
-
