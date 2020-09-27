@@ -16,6 +16,7 @@ class CombatScreen(game_control.Scene):
         self.escape = escape
         self.player_sheet = CombatPlayerStats(windows[0], self.current_player, self)
         self.enemy_sheet = CombatEnemyStats(windows[0], self.current_enemy, self)
+        self.situation_report = SitRaport(self.windows[0], self)
         self.button_names = ["Attack", "Defend", "Card 1", "Card 2", "Card 3", "End Turn"]
         self.buttons_on_pressed = {
             "Attack": [print, ["Attack"]],
@@ -36,6 +37,7 @@ class CombatScreen(game_control.Scene):
         self.updatable_objects.append(self)
         self.renderable_objects.append(self.player_sheet)
         self.renderable_objects.append(self.enemy_sheet)
+        self.renderable_objects.append(self.situation_report)
 
         for num, button in enumerate(self.button_names):
             if button == "End Turn":
@@ -72,6 +74,7 @@ class CombatPlayerStats:
         self.combat_screen = combat_screen
         self.window_y, self.window_x = window.getmaxyx()
         self.current_action_points = self.current_player.action_points
+        self.defences = 0
 
     def draw(self):
         min_y = 1
@@ -94,7 +97,12 @@ class CombatPlayerStats:
         self.window.addstr(min_y + 4, min_x + 1,
                            ("AP: " + str(self.current_action_points) + "/" + str(self.current_player.action_points)))
         self.window.addstr(min_y + 5, min_x + 1, ("STRENGHT: " + str(self.current_player.strenght)))
-        self.window.addstr(min_y + 6, min_x + 1, ("ENDURANCE: " + str(self.current_player.endurance)))
+        # endurance situation:
+        if self.defences > 0:
+            endurance_str = "ENDURANCE: " + str(self.current_player.endurance)+" + DEF: "+str(self.current_player.strenght)+" x "+str(self.defences)
+        else:
+            endurance_str = "ENDURANCE: " + str(self.current_player.endurance)
+        self.window.addstr(min_y + 6, min_x + 1, endurance_str)
 
         # inventory
         # weapon
@@ -157,3 +165,34 @@ class CombatEnemyStats:
 
     def update(self):
         pass
+
+class SitRaport:
+    def __init__(self, window, combat_screen: CombatScreen):
+        self.window = window
+        self.combat_screen = combat_screen
+        self.window_y, self.window_x = window.getmaxyx()
+        self.max_y = self.window_y - 2
+        self.min_y = 14
+        self.min_x = 1
+        self.max_x = self.window_x - 1
+        self.lines = {}
+        self.clean_dialogue()
+
+    def generate_line(self):
+        pass
+
+    def clean_dialogue(self):
+        empty_line = "[->"+" "*(self.max_x-5)+"]"
+
+        # calculate how many lines we have
+        no_of_lines = self.max_y - self.min_y
+        for i in range(no_of_lines):
+            self.lines[i] = empty_line
+
+    def draw(self):
+
+        for line in self.lines:
+            self.window.addstr(self.max_y-line, self.min_x, self.lines[line])
+
+
+

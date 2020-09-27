@@ -15,7 +15,8 @@ class Rat(Character):
         super().__init__(y, x, glyph, world_map, game_instance)
         self.glyph = "R"
         global rat_names
-        self.name = random.choice(rat_names)+" the Rat"
+        self.short_name = random.choice(rat_names)
+        self.name = self.short_name+" the Rat"
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right"]

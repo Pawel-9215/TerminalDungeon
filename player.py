@@ -24,6 +24,7 @@ class Character:
         # character sheet:
 
         self.name = "Character"
+        self.short_name = self.name[0:5]
         self.health = 10
         self.current_health = self.health
         self.melee_skill = 20
