@@ -3,6 +3,10 @@ from __future__ import annotations
 from player import Character
 import random
 
+rat_names = ["Feskit", "Tredkit", "Paskrokin", "Rikeskit", "Morskit",
+             "Ratchit", "Quoto", "Quotisk", "Paskratt", "Quorkat",
+             "Trakat", "Dragkirt"]
+
 
 # Basic level 1 mobs:
 
@@ -10,6 +14,8 @@ class Rat(Character):
     def __init__(self, y, x, glyph, world_map, game_instance):
         super().__init__(y, x, glyph, world_map, game_instance)
         self.glyph = "R"
+        global rat_names
+        self.name = random.choice(rat_names)+" the Rat"
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right"]

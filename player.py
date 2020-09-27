@@ -100,6 +100,7 @@ class Player(Character):
 
         self.name = character_sheet["name"]
         self.health = character_sheet["health"]
+        self.current_health = self.health
         self.melee_skill = character_sheet["melee"]
         self.action_points = character_sheet["action_points"]
         self.strengh = character_sheet["str"]
