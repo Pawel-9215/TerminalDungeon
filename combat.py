@@ -60,14 +60,27 @@ class CombatScreen(game_control.Scene):
                 self.situation_report.generate_line(text)
             else:
                 hit = True  # Hit!
-                text = self.current_player.short_name + " attacks and HITS! " + \
+                body_target = random.choice(["head", "torso", "hands", "legs"])
+                text = self.current_player.short_name + " attacks and HITS his "+ body_target + \
                         str(roll_k100) + "<" + str(self.current_player.melee_skill)
                 self.situation_report.generate_line(text)
 
             if hit:
-                attack_strenght = 0
+                # players attack:
+                if self.current_player.weapon is not None:
+                    attack_strenght = self.current_player.strenght + self.current_player.weapon.strenght
+                else:
+                    attack_strenght = self.current_player.strenght
+
+                # enemys defence:
+                if self.enemy_defences > 0:
+                    enemy_defence = self.current_enemy.endurance + self.current_player.strenght
+                else: enemy_defence = self.current_enemy.endurance
+
+                # enemys armour:
+
                 if self.current_enemy.current_health > 0:
-                    self.current_enemy.current_health -=
+                    self.current_enemy.current_health -= 1
 
     def draw_content(self):
 
