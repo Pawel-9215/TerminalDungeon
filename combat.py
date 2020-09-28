@@ -1,6 +1,7 @@
 import game_control
 import player
 import ui
+import random
 
 
 class CombatScreen(game_control.Scene):
@@ -18,9 +19,13 @@ class CombatScreen(game_control.Scene):
         self.enemy_sheet = CombatEnemyStats(windows[0], self.current_enemy, self)
         self.situation_report = SitRaport(self.windows[0], self)
         self.button_names = ["Attack", "Defend", "Card 1", "Card 2", "Card 3", "End Turn"]
+        self.player_defences = 0
+        self.enemy_defences = 0
+        self.player_AP = self.current_player.action_points
+        self.enemy_AP = self.current_enemy.action_points
         self.buttons_on_pressed = {
-            "Attack": [print, ["Attack"]],
-            "Defend": [print, ["Defend"]],
+            "Attack": [self.player_attack, []],
+            "Defend": [self.player_defend, []],
             "Card 1": [print, ["Card 1"]],
             "Card 2": [print, ["Card 2"]],
             "Card 3": [print, ["Card 3"]],
@@ -28,6 +33,34 @@ class CombatScreen(game_control.Scene):
         }
 
         self.draw_content()
+
+    def player_defend(self):
+
+        cost = 2
+        if self.player_AP >= cost:
+            self.player_AP -= cost
+            self.player_defences += 1
+            self.situation_report.generate_line(self.current_player.short_name + " is prepairing to defend.")
+
+    def player_attack(self):
+
+        cost = 1
+        hit = False
+        if self.player_AP >= cost:
+            self.player_AP -= cost
+            # check if hit
+            roll_k100 = random.randint(1, 100)
+            self.situation_report.generate_line(self.current_player.short_name + " rolls k100: "+str(roll_k100))
+            if roll_k100 > self.current_player.melee_skill:
+                hit = False  # Miss
+                text = self.current_player.short_name + " attacks and MISS! " + \
+                       str(roll_k100) + ">" + str(self.current_player.melee_skill)
+                self.situation_report.generate_line(text)
+            else:
+                hit = True  # Hit!
+                text = self.current_player.short_name + " attacks and HITS! " + \
+                        str(roll_k100) + "<" + str(self.current_player.melee_skill)
+                self.situation_report.generate_line(text)
 
     def draw_content(self):
 
@@ -46,8 +79,8 @@ class CombatScreen(game_control.Scene):
                 extra = 0
             self.menu_buttons.append(
                 ui.button(self.windows[0],
-                          min_y+num+extra,
-                          center_x-int(len(button)/2),
+                          min_y + num + extra,
+                          center_x - int(len(button) / 2),
                           button,
                           button,
                           self.buttons_on_pressed[button][0],
@@ -84,8 +117,8 @@ class CombatPlayerStats:
         center_y = int(self.window_y / 2)
         center_x = int(self.window_x / 2)
 
-        current_AP_str = "AP left : ["+str(self.current_action_points)+"]"
-        self.window.addstr(min_y, center_x-int(len(current_AP_str)/2), current_AP_str)
+        current_AP_str = "AP left : [" + str(self.combat_screen.player_AP) + "]"
+        self.window.addstr(min_y, center_x - int(len(current_AP_str) / 2), current_AP_str)
 
         # Name
         self.window.addstr(min_y + 1, min_x + 1, "NAME: " + self.current_player.name)
@@ -95,11 +128,13 @@ class CombatPlayerStats:
                 "HEALTH: " + str(self.current_player.current_health) + "/" + str(self.current_player.health)))
         self.window.addstr(min_y + 3, min_x + 1, ("MELEE: " + str(self.current_player.melee_skill)))
         self.window.addstr(min_y + 4, min_x + 1,
-                           ("AP: " + str(self.current_action_points) + "/" + str(self.current_player.action_points)))
+                           ("AP: " + str(self.combat_screen.player_AP) + "/" + str(self.current_player.action_points)))
         self.window.addstr(min_y + 5, min_x + 1, ("STRENGHT: " + str(self.current_player.strenght)))
         # endurance situation:
-        if self.defences > 0:
-            endurance_str = "ENDURANCE: " + str(self.current_player.endurance)+" + DEF: "+str(self.current_player.strenght)+" x "+str(self.defences)
+        if self.combat_screen.player_defences > 0:
+            endurance_str = "ENDURANCE: " + \
+                            str(self.current_player.endurance) + " + DEF: " + \
+                            str(self.current_player.strenght) + " x " + str(self.combat_screen.player_defences)
         else:
             endurance_str = "ENDURANCE: " + str(self.current_player.endurance)
         self.window.addstr(min_y + 6, min_x + 1, endurance_str)
@@ -129,7 +164,7 @@ class CombatEnemyStats:
         self.current_enemy = current_enemy
         self.combat_screen = combat_screen
         self.window_y, self.window_x = window.getmaxyx()
-        self.current_action_points = self.current_enemy.action_points
+        self.defences = 0
 
     def draw(self):
         min_y = 1
@@ -143,7 +178,7 @@ class CombatEnemyStats:
         name = "NAME: " + self.current_enemy.name
         health = "HEALTH: " + str(self.current_enemy.current_health) + "/" + str(self.current_enemy.health)
         melee = "MELEE: " + str(self.current_enemy.melee_skill)
-        ap = "AP: " + str(self.current_action_points) + "/" + str(self.current_enemy.action_points)
+        ap = "AP: " + str(self.combat_screen.enemy_AP) + "/" + str(self.current_enemy.action_points)
         strenght = "STRENGHT: " + str(self.current_enemy.strenght)
         endurance = "ENDURANCE: " + str(self.current_enemy.endurance)
         weapon = "WEAPON: [" + str(self.current_enemy.weapon) + "]"
@@ -166,6 +201,7 @@ class CombatEnemyStats:
     def update(self):
         pass
 
+
 class SitRaport:
     def __init__(self, window, combat_screen: CombatScreen):
         self.window = window
@@ -178,11 +214,20 @@ class SitRaport:
         self.lines = {}
         self.clean_dialogue()
 
-    def generate_line(self):
+    def generate_line(self, text):
+
+        new_line = "[->" + text + " " * (self.max_x - 5 - len(text)) + "]"
+        # cascade
+        for i in range(len(self.lines) - 1, -1, -1):
+            if i != 0:
+                self.lines[i] = self.lines[i - 1]
+            else:
+                self.lines[0] = new_line
+
         pass
 
     def clean_dialogue(self):
-        empty_line = "[->"+" "*(self.max_x-5)+"]"
+        empty_line = "[->" + " " * (self.max_x - 5) + "]"
 
         # calculate how many lines we have
         no_of_lines = self.max_y - self.min_y
@@ -192,7 +237,4 @@ class SitRaport:
     def draw(self):
 
         for line in self.lines:
-            self.window.addstr(self.max_y-line, self.min_x, self.lines[line])
-
-
-
+            self.window.addstr(self.max_y - line, self.min_x, self.lines[line])
