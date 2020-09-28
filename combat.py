@@ -34,6 +34,9 @@ class CombatScreen(game_control.Scene):
 
         self.draw_content()
 
+    def player_win(self):
+        pass
+
     def player_defend(self):
 
         cost = 2
@@ -45,7 +48,6 @@ class CombatScreen(game_control.Scene):
     def player_attack(self):
 
         cost = 1
-        hit = False
         if self.player_AP >= cost:
             self.player_AP -= cost
             # check if hit
@@ -61,6 +63,11 @@ class CombatScreen(game_control.Scene):
                 text = self.current_player.short_name + " attacks and HITS! " + \
                         str(roll_k100) + "<" + str(self.current_player.melee_skill)
                 self.situation_report.generate_line(text)
+
+            if hit:
+                attack_strenght = 0
+                if self.current_enemy.current_health > 0:
+                    self.current_enemy.current_health -=
 
     def draw_content(self):
 
