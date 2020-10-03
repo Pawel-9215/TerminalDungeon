@@ -29,13 +29,31 @@ class CombatScreen(game_control.Scene):
             "Card 1": [print, ["Card 1"]],
             "Card 2": [print, ["Card 2"]],
             "Card 3": [print, ["Card 3"]],
-            "End Turn": [print, ["End Turn"]],
+            "End Turn": [self.end_turn, []],
         }
 
         self.draw_content()
 
     def player_win(self):
         pass
+		
+	def end_turn(self):
+		self.enemy_AP = self.current_enemy.action_points
+		self.enemy_turn()
+		self.player_AP = self.current_player.action_points
+		
+	def enemy_turn(self):
+		self.enemy_AP -= 1
+		if self.current_enemy.current_health > self.current_enemy.health/2:
+			self.enemy_attack()
+		elif self.enemy_AP >=2:
+			self.enemy_defend()
+		else:
+			self.enemy_attack()
+		if self.enemy_AP >= 1:
+			self.enemy_turn()
+		else:
+			pass
 
     def player_defend(self):
 
@@ -45,35 +63,52 @@ class CombatScreen(game_control.Scene):
             self.player_defences += 1
             self.situation_report.generate_line(self.current_player.short_name + " is prepairing to defend.")
 
-    def enemy_armour_check(self):
+	def enemy_defend(self):
+		
+		cost = 2
+		if self.enemy_AP >= cost:
+			self.enemy_AP -= cost
+			self.enemy_defences += 1
+			self.situation_report.generate_line(self.current_enemy.short_name + " is prepairing to defend. ")
+
+    def armour_check(self, character):
+		
+		if character == "enemy":
+			character_armour = self.current_enemy
+		elif character == "player":
+			character_armour = self.current_player
+		else:
+			print("smth went wrong.")
+			print("armour check is neither enemy nor player")
+			quit()
         
         bodypart_armour = {}
         
-        if self.current_enemy.arm_head is None:
+        if character_armour.arm_head is None:
             bodypart_armour["head"] = 0
         else:
-            bodypart_armour["head"] = self.current_enemy.arm_head.endurance
+            bodypart_armour["head"] = character_armour.arm_head.endurance
             
-        if self.current_enemy.arm_torso is None:
+        if character_armour.arm_torso is None:
             bodypart_armour["torso"] = 0
         else:
-            bodypart_armour["torso"] = self.current_enemy.arm_torso.endurance
+            bodypart_armour["torso"] = character_armour.arm_torso.endurance
             
-        if self.current_enemy.arm_hands is None:
+        if character_armour.arm_hands is None:
             bodypart_armour["hands"] = 0
         else:
-            bodypart_armour["hands"] = self.current_enemy.arm_hands.endurance
+            bodypart_armour["hands"] = character_armour.arm_hands.endurance
             
-        if self.current_enemy.arm_legs is None:
+        if character_armour.arm_legs is None:
             bodypart_armour["legs"] = 0
         else:
-            bodypart_armour["legs"] = self.current_enemy.arm_legs.endurance
+            bodypart_armour["legs"] = character_armour.arm_legs.endurance
             
         return bodypart_armour
             
     def player_attack(self):
         # enemy bodypart armour:
-        bodypart_armour = self.enemy_armour_check()
+        bodypart_armour = self.armour_check("enemy")
         
         cost = 1
         if self.player_AP >= cost:
@@ -112,6 +147,50 @@ class CombatScreen(game_control.Scene):
 
                 if attack_strenght - enemy_defence > 0:
                     self.current_enemy.current_health -= attack_strenght - enemy_defence
+
+
+    def enemy_attack(self):
+        # enemy bodypart armour:
+        bodypart_armour = self.armour_check("player")
+        
+        cost = 1
+        if self.enemy_AP >= cost:
+            self.enemy_AP -= cost
+            # check if hit
+            roll_k100 = random.randint(1, 100)
+            self.situation_report.generate_line(self.current_enemy.short_name + " rolls k100: "+str(roll_k100))
+            if roll_k100 > self.current_enemy.melee_skill:
+                hit = False  # Miss
+                text = self.current_enemy.short_name + " attacks and MISS! " + \
+                       str(roll_k100) + ">" + str(self.current_enemy.melee_skill)
+                self.situation_report.generate_line(text)
+            else:
+                hit = True  # Hit!
+                body_target = random.choice(["head", "torso", "hands", "legs"])
+                text = self.current_enemy.short_name + " attacks and HITS his "+ body_target + \
+                        str(roll_k100) + "<" + str(self.current_enemy.melee_skill)
+                self.situation_report.generate_line(text)
+
+            if hit:
+                # enemys attack:
+                if self.current_enemy.weapon is not None:
+                    attack_strenght = self.current_enemy.strenght + self.current_enemy.weapon.strenght
+                else:
+                    attack_strenght = self.current_enemy.strenght
+
+                # players defence:
+                if self.player_defences > 0:
+                    player_defence = self.current_player.endurance + self.current_player.strenght + bodypart_armour[body_target]
+                else: player_defence = self.current_player.endurance + bodypart_armour[body_target]
+                
+                text = self.current_enemy.short_name + " hits for: " + str(attack_strenght) + " " + \
+                       self.current_player.short_name + " defends: " + str(player_defence)
+                
+                self.situation_report.generate_line(text)
+
+                if attack_strenght - player_defence > 0:
+                    self.current_player.current_health -= attack_strenght - player_defence
+
 
     def draw_content(self):
 
