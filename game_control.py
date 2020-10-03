@@ -73,6 +73,8 @@ class Keyboard:
 
     def __init__(self, engine: object):
         self.engine = engine
+        self.uppercase_alphabet = []
+        self.uppercase_fix()
 
     def key_listen(self):
         """wait for key press and return what was pressed
@@ -80,6 +82,9 @@ class Keyboard:
         scene = self.engine.current_scene
         key_pressed = scene.input_window.getch()
         symbol = chr(key_pressed)
+        if symbol in self.uppercase_alphabet:
+            symbol = symbol.lower()
+        
         if symbol == "w":
             self.last_pressed = "up"
         elif symbol == "s":
@@ -92,6 +97,13 @@ class Keyboard:
             quit()
         else:
             self.last_pressed = symbol
+            
+    def uppercase_fix(self):
+        
+        alphabet = "QWERTYUIOPASDFGHJKLZXCVBNM"
+        for letter in alphabet:
+            self.uppercase_alphabet.append(letter)
+            
 
 
 class Characters:
