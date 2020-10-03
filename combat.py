@@ -45,8 +45,19 @@ class CombatScreen(game_control.Scene):
             self.player_defences += 1
             self.situation_report.generate_line(self.current_player.short_name + " is prepairing to defend.")
 
+    def enemy_armour_check(self):
+        
+        bodypart_armour = {}
+        
+        if self.current_enemy.arm_head is None:
+            bodypart_armour["head"] = 0
+        else:
+            bodypart_armour["head"] = self.current_enemy.arm_head.endurance
+            
     def player_attack(self):
-
+        # enemy bodypart armour:
+        bodypart_armour = {}
+        
         cost = 1
         if self.player_AP >= cost:
             self.player_AP -= cost
