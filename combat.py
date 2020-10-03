@@ -54,9 +54,26 @@ class CombatScreen(game_control.Scene):
         else:
             bodypart_armour["head"] = self.current_enemy.arm_head.endurance
             
+        if self.current_enemy.arm_torso is None:
+            bodypart_armour["torso"] = 0
+        else:
+            bodypart_armour["torso"] = self.current_enemy.arm_torso.endurance
+            
+        if self.current_enemy.arm_hands is None:
+            bodypart_armour["hands"] = 0
+        else:
+            bodypart_armour["hands"] = self.current_enemy.arm_hands.endurance
+            
+        if self.current_enemy.arm_legs is None:
+            bodypart_armour["legs"] = 0
+        else:
+            bodypart_armour["legs"] = self.current_enemy.arm_legs.endurance
+            
+        return bodypart_armour
+            
     def player_attack(self):
         # enemy bodypart armour:
-        bodypart_armour = {}
+        bodypart_armour = self.enemy_armour_check()
         
         cost = 1
         if self.player_AP >= cost:
@@ -85,13 +102,16 @@ class CombatScreen(game_control.Scene):
 
                 # enemys defence:
                 if self.enemy_defences > 0:
-                    enemy_defence = self.current_enemy.endurance + self.current_player.strenght
-                else: enemy_defence = self.current_enemy.endurance
+                    enemy_defence = self.current_enemy.endurance + self.current_enemy.strenght + bodypart_armour[body_target]
+                else: enemy_defence = self.current_enemy.endurance + bodypart_armour[body_target]
+                
+                text = self.current_player.short_name + " hits for: " + str(attack_strenght) + " " + \
+                       self.current_enemy.short_name + " defends: " + str(enemy_defence)
+                
+                self.situation_report.generate_line(text)
 
-                # enemys armour:
-
-                if self.current_enemy.current_health > 0:
-                    self.current_enemy.current_health -= 1
+                if attack_strenght - enemy_defence > 0:
+                    self.current_enemy.current_health -= attack_strenght - enemy_defence
 
     def draw_content(self):
 
