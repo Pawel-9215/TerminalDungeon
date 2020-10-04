@@ -29,8 +29,10 @@ class Character:
         self.current_health = self.health
         self.melee_skill = 20
         self.action_points = 4
-        self.strenght = 4
-        self.endurance = 4
+        self.strengh = 30
+        self.endurance = 20
+        self.hit_points = round(self.strengh/10)
+        self.defence_points = round(self.endurance/10)
 
         # clothes:
 
@@ -55,6 +57,10 @@ class Character:
         This is place for character logic
         """
         pass
+    
+    def update_stats(self):
+        self.hit_points = round(self.strengh/10)
+        self.defence_points = round(self.endurance/10)
 
     def move(self, direction):
         """
@@ -107,6 +113,8 @@ class Player(Character):
         self.action_points = character_sheet["action_points"]
         self.strengh = character_sheet["str"]
         self.endurance = character_sheet["end"]
+        self.hit_points = round(self.strengh/10)
+        self.defence_points = round(self.endurance/10)
 
         # clothes:
 
@@ -158,6 +166,8 @@ class Player(Character):
             pass
 
         self.game_instance.check_neighbours()
+        self.hit_points = round(self.strengh/10)
+        self.defence_points = round(self.endurance/10)
 
 
     def move(self, direction):

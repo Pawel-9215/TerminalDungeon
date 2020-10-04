@@ -1,5 +1,6 @@
 # Map classes
 from __future__ import annotations
+import random
 
 
 class Cell:
@@ -73,8 +74,11 @@ class Pickable:
         # player mod:
 
         self.health = 0
-        self.strenght = 0
+        self.strenght = (0, 0)
         self.endurance = 0
 
     def __repr__(self):
         return self.name
+    
+    def weapon_attack(self):
+        return random.randint(self.strenght[0], self.strenght[1])

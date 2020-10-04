@@ -99,11 +99,11 @@ class CharacterCreation(game_control.Scene):
         self.renderable_objects.append(range_val)
         self.values.append(range_val)
         strengh_val = ui.Plain_text(self.windows[0], "".join(
-            ["Strengh (Str): ", str(self.strengh), " Actual/10: ", str(round(self.strengh / 10))]), 10, 6)
+            ["Strengh (Str): ", str(self.strengh), " Hit Points: ", str(round(self.strengh / 10))]), 10, 6)
         self.renderable_objects.append(strengh_val)
         self.values.append(strengh_val)
         endurance_val = ui.Plain_text(self.windows[0], "".join(
-            ["Endurance (End): ", str(self.endurance), " Actual/10: ", str(round(self.endurance / 10))]), 12, 6)
+            ["Endurance (End): ", str(self.endurance), " Defence Points: ", str(round(self.endurance / 10))]), 12, 6)
         self.renderable_objects.append(endurance_val)
         self.values.append(endurance_val)
 

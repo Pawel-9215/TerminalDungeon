@@ -2,6 +2,7 @@ import game_control
 import player
 import ui
 import random
+import curses
 
 
 class CombatScreen(game_control.Scene):
@@ -36,24 +37,27 @@ class CombatScreen(game_control.Scene):
 
     def player_win(self):
         pass
-		
-	def end_turn(self):
-		self.enemy_AP = self.current_enemy.action_points
-		self.enemy_turn()
-		self.player_AP = self.current_player.action_points
-		
-	def enemy_turn(self):
-		self.enemy_AP -= 1
-		if self.current_enemy.current_health > self.current_enemy.health/2:
-			self.enemy_attack()
-		elif self.enemy_AP >=2:
-			self.enemy_defend()
-		else:
-			self.enemy_attack()
-		if self.enemy_AP >= 1:
-			self.enemy_turn()
-		else:
-			pass
+
+    def end_turn(self):
+        self.enemy_defences = 0
+        self.enemy_AP = self.current_enemy.action_points
+        self.enemy_turn()
+        self.player_AP = self.current_player.action_points
+        self.player_defences = 0
+        
+    def enemy_turn(self):
+        self.engine.renderer.renderpass()
+        curses.napms(500)
+        if self.current_enemy.current_health > self.current_enemy.health/2:
+            self.enemy_attack()
+        elif self.enemy_AP >=2:
+            self.enemy_defend()
+        else:
+            self.enemy_attack()
+        if self.enemy_AP >= 1:
+            self.enemy_turn()
+        else:
+            pass
 
     def player_defend(self):
 
@@ -63,46 +67,46 @@ class CombatScreen(game_control.Scene):
             self.player_defences += 1
             self.situation_report.generate_line(self.current_player.short_name + " is prepairing to defend.")
 
-	def enemy_defend(self):
-		
-		cost = 2
-		if self.enemy_AP >= cost:
-			self.enemy_AP -= cost
-			self.enemy_defences += 1
-			self.situation_report.generate_line(self.current_enemy.short_name + " is prepairing to defend. ")
-
+    def enemy_defend(self):
+        
+        cost = 2
+        if self.enemy_AP >= cost:
+            self.enemy_AP -= cost
+            self.enemy_defences += 1
+            self.situation_report.generate_line(self.current_enemy.short_name + " is prepairing to defend. ")
+        
     def armour_check(self, character):
-		
-		if character == "enemy":
-			character_armour = self.current_enemy
-		elif character == "player":
-			character_armour = self.current_player
-		else:
-			print("smth went wrong.")
-			print("armour check is neither enemy nor player")
-			quit()
+        
+        if character == "enemy":
+            character_armour = self.current_enemy
+        elif character == "player":
+            character_armour = self.current_player
+        else:
+            print("smth went wrong.")
+            print("armour check is neither enemy nor player")
+            quit()
         
         bodypart_armour = {}
         
         if character_armour.arm_head is None:
             bodypart_armour["head"] = 0
         else:
-            bodypart_armour["head"] = character_armour.arm_head.endurance
+            bodypart_armour["head"] = character_armour.arm_head.defence_points
             
         if character_armour.arm_torso is None:
             bodypart_armour["torso"] = 0
         else:
-            bodypart_armour["torso"] = character_armour.arm_torso.endurance
+            bodypart_armour["torso"] = character_armour.arm_torso.defence_points
             
         if character_armour.arm_hands is None:
             bodypart_armour["hands"] = 0
         else:
-            bodypart_armour["hands"] = character_armour.arm_hands.endurance
+            bodypart_armour["hands"] = character_armour.arm_hands.defence_points
             
         if character_armour.arm_legs is None:
             bodypart_armour["legs"] = 0
         else:
-            bodypart_armour["legs"] = character_armour.arm_legs.endurance
+            bodypart_armour["legs"] = character_armour.arm_legs.defence_points
             
         return bodypart_armour
             
@@ -131,23 +135,23 @@ class CombatScreen(game_control.Scene):
             if hit:
                 # players attack:
                 if self.current_player.weapon is not None:
-                    attack_strenght = self.current_player.strenght + self.current_player.weapon.strenght
+                    attack_strengh = self.current_player.hit_points + self.current_player.weapon.weapon_attack()
                 else:
-                    attack_strenght = self.current_player.strenght
+                    attack_strengh = self.current_player.hit_points
 
                 # enemys defence:
                 if self.enemy_defences > 0:
-                    enemy_defence = self.current_enemy.endurance + self.current_enemy.strenght + bodypart_armour[body_target]
-                else: enemy_defence = self.current_enemy.endurance + bodypart_armour[body_target]
+                    self.enemy_defences -= 1
+                    enemy_defence = self.current_enemy.defence_points + self.current_enemy.hit_points + bodypart_armour[body_target]
+                else: enemy_defence = self.current_enemy.defence_points + bodypart_armour[body_target]
                 
-                text = self.current_player.short_name + " hits for: " + str(attack_strenght) + " " + \
+                text = self.current_player.short_name + " hits for: " + str(attack_strengh) + " " + \
                        self.current_enemy.short_name + " defends: " + str(enemy_defence)
                 
                 self.situation_report.generate_line(text)
 
-                if attack_strenght - enemy_defence > 0:
-                    self.current_enemy.current_health -= attack_strenght - enemy_defence
-
+                if attack_strengh - enemy_defence > 0:
+                    self.current_enemy.current_health -= attack_strengh - enemy_defence
 
     def enemy_attack(self):
         # enemy bodypart armour:
@@ -174,23 +178,24 @@ class CombatScreen(game_control.Scene):
             if hit:
                 # enemys attack:
                 if self.current_enemy.weapon is not None:
-                    attack_strenght = self.current_enemy.strenght + self.current_enemy.weapon.strenght
+                    attack_strengh = self.current_enemy.hit_points + self.current_enemy.weapon.weapon_attack()
                 else:
-                    attack_strenght = self.current_enemy.strenght
+                    attack_strengh = self.current_enemy.hit_points
 
                 # players defence:
                 if self.player_defences > 0:
-                    player_defence = self.current_player.endurance + self.current_player.strenght + bodypart_armour[body_target]
-                else: player_defence = self.current_player.endurance + bodypart_armour[body_target]
+                    self.player_defences -= 1
+                    player_defence = self.current_player.defence_points + self.current_player.hit_points + bodypart_armour[body_target]
+                else: player_defence = self.current_player.defence_points + bodypart_armour[body_target]
                 
-                text = self.current_enemy.short_name + " hits for: " + str(attack_strenght) + " " + \
+                text = self.current_enemy.short_name + " hits for: " + str(attack_strengh) + " " + \
                        self.current_player.short_name + " defends: " + str(player_defence)
                 
                 self.situation_report.generate_line(text)
 
-                if attack_strenght - player_defence > 0:
-                    self.current_player.current_health -= attack_strenght - player_defence
-
+                if attack_strengh - player_defence > 0:
+                    self.current_player.current_health -= attack_strengh - player_defence
+        
 
     def draw_content(self):
 
@@ -259,14 +264,14 @@ class CombatPlayerStats:
         self.window.addstr(min_y + 3, min_x + 1, ("MELEE: " + str(self.current_player.melee_skill)))
         self.window.addstr(min_y + 4, min_x + 1,
                            ("AP: " + str(self.combat_screen.player_AP) + "/" + str(self.current_player.action_points)))
-        self.window.addstr(min_y + 5, min_x + 1, ("STRENGHT: " + str(self.current_player.strenght)))
+        self.window.addstr(min_y + 5, min_x + 1, ("HIT POINTS: " + str(self.current_player.hit_points)))
         # endurance situation:
         if self.combat_screen.player_defences > 0:
-            endurance_str = "ENDURANCE: " + \
-                            str(self.current_player.endurance) + " + DEF: " + \
-                            str(self.current_player.strenght) + " x " + str(self.combat_screen.player_defences)
+            endurance_str = "DEFENCE POINTS: " + \
+                            str(self.current_player.defence_points) + " + " +str(self.combat_screen.player_defences)+"xDEF: " + \
+                            str(self.current_player.hit_points)
         else:
-            endurance_str = "ENDURANCE: " + str(self.current_player.endurance)
+            endurance_str = "DEFENCE: " + str(self.current_player.defence_points)
         self.window.addstr(min_y + 6, min_x + 1, endurance_str)
 
         # inventory
@@ -309,8 +314,12 @@ class CombatEnemyStats:
         health = "HEALTH: " + str(self.current_enemy.current_health) + "/" + str(self.current_enemy.health)
         melee = "MELEE: " + str(self.current_enemy.melee_skill)
         ap = "AP: " + str(self.combat_screen.enemy_AP) + "/" + str(self.current_enemy.action_points)
-        strenght = "STRENGHT: " + str(self.current_enemy.strenght)
-        endurance = "ENDURANCE: " + str(self.current_enemy.endurance)
+        strengh = "HIT POINTS: " + str(self.current_enemy.hit_points)
+        if self.combat_screen.enemy_defences > 0:
+            endurance = str(self.combat_screen.enemy_defences) + "xDEF: " + \
+                            str(self.current_enemy.hit_points) + " DEFENCE POINTS: " + str(self.current_enemy.defence_points)
+        else:
+            endurance = "DEFENCE POINTS: " + str(self.current_enemy.defence_points)
         weapon = "WEAPON: [" + str(self.current_enemy.weapon) + "]"
 
         armour_l1 = "HEAD: [" + str(self.current_enemy.arm_head) + "] " + "TORSO: [" + str(
@@ -322,7 +331,7 @@ class CombatEnemyStats:
         self.window.addstr(min_y + 2, max_x - len(health), health)
         self.window.addstr(min_y + 3, max_x - len(melee), melee)
         self.window.addstr(min_y + 4, max_x - len(ap), ap)
-        self.window.addstr(min_y + 5, max_x - len(strenght), strenght)
+        self.window.addstr(min_y + 5, max_x - len(strengh), strengh)
         self.window.addstr(min_y + 6, max_x - len(endurance), endurance)
         self.window.addstr(min_y + 7, max_x - len(weapon), weapon)
         self.window.addstr(min_y + 8, max_x - len(armour_l1), armour_l1)

@@ -17,6 +17,8 @@ class Rat(Character):
         global rat_names
         self.short_name = random.choice(rat_names)
         self.name = self.short_name+" the Rat"
+        self.endurance = 8
+        self.update_stats()
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right"]

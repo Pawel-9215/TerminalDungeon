@@ -7,7 +7,7 @@ class Dagger(Pickable):
         super().__init__()
         self.glyph = "W"
         self.name = "Dagger"
-        self.strenght = 1
+        self.strenght = (1, 2)
 
 
 class Mace(Pickable):
@@ -15,4 +15,4 @@ class Mace(Pickable):
         super().__init__()
         self.glyph = "W"
         self.name = "Mace"
-        self.strenght = 1
+        self.strenght = (0, 2)
