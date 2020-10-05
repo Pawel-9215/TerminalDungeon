@@ -48,9 +48,20 @@ class CombatScreen(game_control.Scene):
     def enemy_turn(self):
         self.engine.renderer.renderpass()
         curses.napms(500)
-        if self.current_enemy.current_health > self.current_enemy.health / 2:
+
+        # health percentage:
+        health_percent = round((self.current_enemy.current_health / self.current_enemy.health) * 100)
+
+        # roll to check if attacks or defends
+        if random.randint(1, 100) <= health_percent:
+            set_to_attack = True
+        else:
+            set_to_attack = False
+
+        # attack
+        if set_to_attack:
             self.enemy_attack()
-        elif self.enemy_AP >= 2:
+        elif set_to_attack is False and self.enemy_AP >= 2:
             self.enemy_defend()
         else:
             self.enemy_attack()
