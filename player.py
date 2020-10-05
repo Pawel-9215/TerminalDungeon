@@ -52,6 +52,9 @@ class Character:
         self.inv_3 = None
         self.inv_4 = None
 
+    def remove_self(self):
+        self.game_instance = None
+
     def update(self, *args, **kwargs):
         """
         This is place for character logic

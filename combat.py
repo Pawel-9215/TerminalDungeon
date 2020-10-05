@@ -36,7 +36,18 @@ class CombatScreen(game_control.Scene):
         self.draw_content()
 
     def player_win(self):
-        pass
+        self.current_enemy.vacate_position()
+        self.escape.updatable_objects.remove(self.current_enemy)
+        self.escape.mobs.remove(self.current_enemy)
+        self.current_enemy.remove_self()
+        del self.current_enemy
+        self.engine.change_scene(self.escape)
+
+    def player_loose(self):
+        self.situation_report.generate_line("YOU DIED!")
+        self.engine.renderer.renderpass
+        curses.napms(1000)
+        self.engine.change_scene(self.engine.base_menu)
 
     def end_turn(self):
         self.enemy_defences = 0
@@ -93,6 +104,7 @@ class CombatScreen(game_control.Scene):
         elif character == "player":
             character_armour = self.current_player
         else:
+            character_armour = "error"
             print("smth went wrong.")
             print("armour check is neither enemy nor player")
             quit()
@@ -133,9 +145,10 @@ class CombatScreen(game_control.Scene):
             self.situation_report.generate_line(self.current_player.short_name + " rolls k100: " + str(roll_k100))
             if roll_k100 > self.current_player.melee_skill:
                 hit = False  # Miss
-                text = self.current_player.short_name + " attacks and MISS! " + \
-                       str(roll_k100) + ">" + str(self.current_player.melee_skill)
+                text = self.current_player.short_name + " attacks and MISS! " + str(roll_k100) + ">" \
+                       + str(self.current_player.melee_skill)
                 self.situation_report.generate_line(text)
+                body_target = "none"
             else:
                 hit = True  # Hit!
                 body_target = random.choice(["head", "torso", "hands", "legs"])
@@ -145,16 +158,20 @@ class CombatScreen(game_control.Scene):
 
             if hit:
                 # players attack:
+                # roll D4
+                roll_d4 = random.randint(1, 4)
                 if self.current_player.weapon is not None:
-                    attack_strengh = self.current_player.hit_points + self.current_player.weapon.weapon_attack()
+                    attack_strengh = self.current_player.hit_points + self.current_player.weapon.weapon_attack() \
+                                     + roll_d4
                 else:
-                    attack_strengh = self.current_player.hit_points
+                    attack_strengh = self.current_player.hit_points + roll_d4
 
                 # enemys defence:
                 if self.enemy_defences > 0:
                     self.enemy_defences -= 1
-                    enemy_defence = self.current_enemy.defence_points + self.current_enemy.hit_points + bodypart_armour[
-                        body_target]
+                    enemy_defence = self.current_enemy.defence_points + round(self.current_enemy.hit_points / 2) \
+                                    + bodypart_armour[body_target] + random.randint(1, 4)
+
                 else:
                     enemy_defence = self.current_enemy.defence_points + bodypart_armour[body_target]
 
@@ -165,6 +182,12 @@ class CombatScreen(game_control.Scene):
 
                 if attack_strengh - enemy_defence > 0:
                     self.current_enemy.current_health -= attack_strengh - enemy_defence
+
+        if self.current_enemy.current_health <= 0:
+            self.situation_report.generate_line(self.current_enemy.short_name+" was slain")
+            self.engine.renderer.renderpass()
+            curses.napms(1000)
+            self.player_win()
 
     def enemy_attack(self):
         # enemy bodypart armour:
@@ -181,6 +204,7 @@ class CombatScreen(game_control.Scene):
                 text = self.current_enemy.short_name + " attacks and MISS! " + \
                        str(roll_k100) + ">" + str(self.current_enemy.melee_skill)
                 self.situation_report.generate_line(text)
+                body_target = "None"
             else:
                 hit = True  # Hit!
                 body_target = random.choice(["head", "torso", "hands", "legs"])
@@ -190,16 +214,18 @@ class CombatScreen(game_control.Scene):
 
             if hit:
                 # enemys attack:
+                # roll D4:
+                roll_D4 = random.randint(1, 4)
                 if self.current_enemy.weapon is not None:
-                    attack_strengh = self.current_enemy.hit_points + self.current_enemy.weapon.weapon_attack()
+                    attack_strengh = self.current_enemy.hit_points + self.current_enemy.weapon.weapon_attack() + roll_D4
                 else:
-                    attack_strengh = self.current_enemy.hit_points
+                    attack_strengh = self.current_enemy.hit_points + roll_D4
 
                 # players defence:
                 if self.player_defences > 0:
                     self.player_defences -= 1
-                    player_defence = self.current_player.defence_points + self.current_player.hit_points + \
-                                     bodypart_armour[body_target]
+                    player_defence = self.current_player.defence_points + round(self.current_player.hit_points/2) + \
+                                     bodypart_armour[body_target] + random.randint(1, 4)
                 else:
                     player_defence = self.current_player.defence_points + bodypart_armour[body_target]
 
@@ -210,6 +236,8 @@ class CombatScreen(game_control.Scene):
 
                 if attack_strengh - player_defence > 0:
                     self.current_player.current_health -= attack_strengh - player_defence
+        if self.current_player.current_health <= 0:
+            self.player_loose()
 
     def draw_content(self):
 

@@ -3,9 +3,11 @@ from __future__ import annotations
 from player import Character
 import random
 
-rat_names = ["Feskit", "Tredkit", "Paskrokin", "Rikeskit", "Morskit",
-             "Ratchit", "Quoto", "Quotisk", "Paskratt", "Quorkat",
-             "Trakat", "Dragkirt"]
+rat_names1 = ["Fes", "Tred", "Paskro", "Rikes", "Mors",
+              "Rat", "Quo", "Quot", "Pask", "Quar",
+              "Tra", "Drag", "Derg", "Pesk", "Fas",
+              "Trud", "Rekis", "Murs", "Ret"]
+rat_names2 = ["kit", "kin", "chit", "oto", "isk", "ratt", "krat", "akat", "kirt", "rit", "tirt", "irt"]
 
 
 # Basic level 1 mobs:
@@ -14,10 +16,12 @@ class Rat(Character):
     def __init__(self, y, x, glyph, world_map, game_instance):
         super().__init__(y, x, glyph, world_map, game_instance)
         self.glyph = "R"
-        global rat_names
-        self.short_name = random.choice(rat_names)
-        self.name = self.short_name+" the Rat"
-        self.endurance = 8
+        global rat_names1, rat_names2
+        self.short_name = random.choice(rat_names1)+random.choice(rat_names2)
+        self.name = self.short_name + " the Rat"
+        self.endurance = random.randint(7, 10)
+        self.health = random.randint(7, 12)
+        self.melee_skill = random.randint(15, 25)
         self.update_stats()
 
     def update(self, *args, **kwargs):
