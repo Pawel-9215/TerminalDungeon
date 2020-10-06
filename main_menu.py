@@ -122,12 +122,15 @@ class Mainmenu(game_control.Scene):
         self.char_choice = ChooseCharacter(self.windows, "Character Selection",
                                            self.engine, self)
         self.buttons_on_pressed = {
-            "Quit": [quit, []],
+            "Quit": [self.quitter, []],
             "Start Game": [self.new_game, []],
             "Credits": [self.engine.change_scene, [self.credits_scene]],
             "Create Character": [self.engine.change_scene, [self.character_creator]],
         }
         self.print_content()
+
+    def quitter(self):
+        quit()
 
     def print_content(self):
         start_pos_y = int(self.win_y / 2 - len(self.menu_items) / 2 - 1)
