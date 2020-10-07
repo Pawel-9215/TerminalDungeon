@@ -67,6 +67,8 @@ class PlayerStart:
 class Pickable:
     def __init__(self):
         self.glyph = "P"
+        self.glyph_inverted = False
+        self.glyph_color = "White"
         self.destination = "weapon"
         self.consumable = False
         self.name = "Pickable"

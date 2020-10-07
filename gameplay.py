@@ -172,6 +172,8 @@ class SituationMap:
         self.grid = grid
         self.window_y, self.window_x = window.getmaxyx()
         self.game_instance = game_instance
+        self.colors = {"Red": curses.color_pair(4),
+                       "White": curses.color_pair(6)}
 
     def draw(self):
         """

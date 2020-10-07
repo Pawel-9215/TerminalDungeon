@@ -80,6 +80,7 @@ class ColorInit():
         # font colors
         curses.init_pair(1, curses.COLOR_YELLOW, curses.COLOR_BLACK)
         curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_YELLOW)
+        curses.init_pair(6, curses.COLOR_WHITE, curses.COLOR_BLACK)
 
         curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
         curses.init_pair(4, curses.COLOR_RED, curses.COLOR_BLACK)
@@ -89,6 +90,7 @@ class ColorInit():
         curses.init_pair(21, curses.COLOR_BLACK, curses.COLOR_WHITE)
         curses.init_pair(22, curses.COLOR_BLACK, curses.COLOR_YELLOW)
         curses.init_pair(23, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
+        curses.init_pair(24, curses.COLOR_BLACK, curses.COLOR_RED)
 
 
 class Rotator():

@@ -16,6 +16,8 @@ class Character:
         self.y = y
         self.x = x
         self.glyph = glyph
+        self.glyph_inverted = False
+        self.glyph_color = "White"
         self.world_map = world_map
         self.look_at_y = self.y + 1
         self.look_at_x = self.x
@@ -101,6 +103,7 @@ class Player(Character):
         self.y = y
         self.x = x
         self.glyph = glyph
+        self.glyph_inverted = True
         self.world_map = world_map
         self.look_at_y = self.y + 1
         self.look_at_x = self.x

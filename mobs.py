@@ -16,6 +16,7 @@ class Rat(Character):
     def __init__(self, y, x, glyph, world_map, game_instance):
         super().__init__(y, x, glyph, world_map, game_instance)
         self.glyph = "R"
+        self.glyph_color = "Red"
         global rat_names1, rat_names2
         self.short_name = random.choice(rat_names1)+random.choice(rat_names2)
         self.name = self.short_name + " the Rat"
