@@ -106,25 +106,60 @@ class Credits(game_control.Scene):
         self.engine.change_scene(self.escape)
 
 
+class Instructions(game_control.Scene):
+    def __init__(self, windows, name: str, engine: object, escape):
+        super().__init__(windows, name, engine)
+        self.escape = escape
+        self.print_content()
+        self.updatable_objects.append(self)
+
+    def print_content(self):
+        start_pos_y = int(self.win_y / 6)
+        start_pos_x = int(self.win_x / 6)
+        game_credits = [
+            "WSAD - Move up, down, left, right",
+            "and navigate menus",
+            "",
+            "SPACE - Confirm",
+            "",
+            "ENTER - Confirm character name",
+            "in character creation screen",
+            "",
+            "1, 2, 3, 4 - select item in inventory to equip or dump",
+        ]
+
+        info_bar = ui.Label(self.windows[0], "Instructions:", start_pos_y, start_pos_x)
+        for num, obj in enumerate(game_credits):
+            self.renderable_objects.append(
+                ui.Plain_text(self.windows[0], obj, start_pos_y + 1 + num, start_pos_x))
+
+        self.renderable_objects.append(info_bar)
+
+    def update(self, key):
+        self.engine.change_scene(self.escape)
+
+
 # go back to main-menu
 
 
 class Mainmenu(game_control.Scene):
     def __init__(self, windows, name: str, engine: object):
         super().__init__(windows, name, engine)
-        self.menu_items = ["Start Game", "Create Character", "Credits", "Quit"]
+        self.menu_items = ["Start Game", "Create Character", "Instructions", "Credits", "Quit"]
         self.menu_buttons = []
         self.focused_item = 0
         self.characters_holder = game_control.Characters()
         self.character_creator = charcter_creation.CharacterCreation(
             self.windows, "Character Creator", self.engine, self)
         self.credits_scene = Credits(self.windows, "Credits", self.engine, self)
+        self.help_scene = Instructions(self.windows, "Instructions", self.engine, self)
         self.char_choice = ChooseCharacter(self.windows, "Character Selection",
                                            self.engine, self)
         self.buttons_on_pressed = {
             "Quit": [self.quitter, []],
             "Start Game": [self.new_game, []],
             "Credits": [self.engine.change_scene, [self.credits_scene]],
+            "Instructions": [self.engine.change_scene, [self.help_scene]],
             "Create Character": [self.engine.change_scene, [self.character_creator]],
         }
         self.print_content()
