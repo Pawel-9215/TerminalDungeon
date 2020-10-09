@@ -23,8 +23,6 @@ def generate_map(y_s, x_s):
     iterations = round(x_s/10)
 
     current_cell = [y_start, x_start]
-    print(current_cell[0])
-    print(current_cell[1])
     # game_map[current_cell[0]][current_cell[1]] = " "
 
     for i in range(iterations):
