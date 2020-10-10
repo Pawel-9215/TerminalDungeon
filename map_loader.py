@@ -1,6 +1,7 @@
 from __future__ import annotations
 import random
 import world_static
+import map_gen
 
 
 class WorldMap:
@@ -23,6 +24,7 @@ class WorldMap:
         """
 
         grid = []
+
         dungeon_map = open('resources/maps/' + self.map_name, 'r')
 
         for line in dungeon_map:

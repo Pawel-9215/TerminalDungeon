@@ -84,6 +84,8 @@ def generate_map(game_map):
     for row in game_map:
         print("".join(row))
 
+    return game_map
+
 
 def generate_map_ca(y_s, x_s, alive_chance=45, steps=1):
     game_map = []
@@ -102,7 +104,9 @@ def generate_map_ca(y_s, x_s, alive_chance=45, steps=1):
     for i in range(steps):
         game_map = simulation_step(game_map)
 
-    generate_map(game_map)
+    game_map = generate_map(game_map)
+
+    return game_map
 
 
 def simulation_step(game_map):
