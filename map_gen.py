@@ -82,11 +82,11 @@ def generate_map_ca(y_s, x_s, alive_chance=45, steps=1):
 def simulation_step(game_map):
     new_map = game_map
 
-    birth_limit = 3
+    birth_limit = 4
     death_limit = 3
 
-    for y in range(1, len(game_map) - 1):
-        for x in range(1, len(game_map[y]) - 1):
+    for y in range(0, len(game_map) - 1):
+        for x in range(0, len(game_map[y]) - 1):
             neighboburs = [game_map[y - 1][x - 1],
                            game_map[y - 1][x],
                            game_map[y - 1][x + 1],
