@@ -81,9 +81,6 @@ def generate_map(game_map):
         current_cell = [y_start, x_start]
         game_map[current_cell[0]][current_cell[1]] = "E"
 
-    for row in game_map:
-        print("".join(row))
-
     return game_map
 
 
@@ -105,6 +102,16 @@ def generate_map_ca(y_s, x_s, alive_chance=45, steps=1):
         game_map = simulation_step(game_map)
 
     game_map = generate_map(game_map)
+
+    for y in range(len(game_map)):
+        for x in range(len(game_map[y])):
+            if y == 0 or y == len(game_map)-1:
+                game_map[y][x] = "@"
+            if x == 0 or x == len(game_map[y])-1:
+                game_map[y][x] = "@"
+
+    for row in game_map:
+        print("".join(row))
 
     return game_map
 

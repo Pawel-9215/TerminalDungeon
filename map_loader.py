@@ -23,13 +23,13 @@ class WorldMap:
         This methon first interpret text based map to clean list object
         """
 
-        grid = []
-
+        grid = map_gen.generate_map_ca(60, 100, 42, 2)
+        '''
         dungeon_map = open('resources/maps/' + self.map_name, 'r')
 
         for line in dungeon_map:
             grid.append(list(line.rstrip("\n")))
-
+        '''
         for y in range(1, len(grid) - 1):
             for x in range(1, len(grid[y]) - 1):
                 if grid[y][x] == "/":
@@ -65,6 +65,7 @@ class WorldMap:
                     "@": world_static.Cell(current_floor, occupation=world_static.Rock()),
                     "█": world_static.Cell(current_floor, occupation=world_static.StoneWall()),
                     " ": world_static.Cell(current_floor),
+                    "E": world_static.Cell(current_floor, occupation=world_static.StoneWall()),
                     "P": world_static.Cell(current_floor,
                                            occupation=world_static.PlayerStart(self.player_y, self.player_x)),
                 }
