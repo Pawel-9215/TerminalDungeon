@@ -4,7 +4,8 @@ import random
 # test_map = open('resources/maps/test_map2', 'w+')
 
 
-def generate_map(y_s, x_s):
+def generate_map(game_map):
+    """
     game_map = []
 
     for y in range(y_s):
@@ -13,16 +14,25 @@ def generate_map(y_s, x_s):
     for y in range(y_s):
         for x in range(x_s):
             game_map[y][x] = "@"
-
+    """
+    y_s = len(game_map)
+    x_s = len(game_map[0])
     # vertical variant
 
-    x_margin = round(x_s / 12)
-    x_start = random.randint(0 + x_margin, x_s - x_margin)
+    x_margin = round(x_s / 10)
+    x_start = random.choice([random.randint(0 + x_margin, x_s / 2 - 2 * x_margin),
+                             random.randint(x_s / 2 + 2 * x_margin, x_s - x_margin)])
     y_margin = round(y_s / 12)
     y_start = y_s - y_margin
-    iterations = round(x_s / 10)
+    iterations = 2
+    if x_start < x_s / 2:
+        start_dir = "left"
+    else:
+        start_dir = "right"
 
+    print(start_dir)
     current_cell = [y_start, x_start]
+
     # game_map[current_cell[0]][current_cell[1]] = " "
 
     for i in range(iterations):
@@ -34,15 +44,22 @@ def generate_map(y_s, x_s):
 
             if random.randint(1, 3) == 2:
                 go = "up"
-            elif random.randint(1, 2 + i) == 3 and (x_margin < current_cell[1] or current_cell[1] < x_s - x_margin):
-                go = last_direction
-            elif 3 * x_margin > current_cell[1] or current_cell[1] > x_s - x_margin * 3:
-                if random.randint(1, 99) <= ((current_cell[1] - x_margin) / (x_s - (2 * x_margin))) * 100:
+
+            elif start_dir == "left":
+                if random.randint(0, 100) <= (
+                        (current_cell[1] - round(x_margin + x_s / 2)) / (x_s - round(x_s / 2 + x_margin))) * 100:
                     go = "left"
                 else:
                     go = "right"
+
+            elif start_dir == "right":
+                if random.randint(0, 100) <= ((current_cell[1]) / (round(x_s / 2) - x_margin)) * 100:
+                    go = "left"
+                else:
+                    go = "right"
+
             else:
-                go = random.choice(["left", "right"])
+                go = last_direction
 
             if go == "up":
                 current_cell[0] -= 1
@@ -53,6 +70,16 @@ def generate_map(y_s, x_s):
             else:
                 current_cell[1] += 1
                 last_direction = "right"
+
+    traversal = random.choice(["top", "down"])
+    if traversal == "top":
+        game_map[current_cell[0]][current_cell[1]] = "E"
+        current_cell = [y_start, x_start]
+        game_map[current_cell[0]][current_cell[1]] = "P"
+    else:
+        game_map[current_cell[0]][current_cell[1]] = "P"
+        current_cell = [y_start, x_start]
+        game_map[current_cell[0]][current_cell[1]] = "E"
 
     for row in game_map:
         print("".join(row))
@@ -75,8 +102,7 @@ def generate_map_ca(y_s, x_s, alive_chance=45, steps=1):
     for i in range(steps):
         game_map = simulation_step(game_map)
 
-    for row in game_map:
-        print("".join(row))
+    generate_map(game_map)
 
 
 def simulation_step(game_map):
@@ -105,10 +131,13 @@ def simulation_step(game_map):
     return new_map
 
 
-y_size = int(input("Give Y: "))
-x_size = int(input("Give X: "))
-chance_alive = int(input("Fill percent: "))
+if __name__ == '__main__':
+    y_size = int(input("Give Y: "))
+    x_size = int(input("Give X: "))
+    chance_alive = int(input("Fill percent: "))
 
-generate_map_ca(y_size, x_size, chance_alive)
-
-_ = input()
+    # generate_map_ca(y_size, x_size, chance_alive)
+    tester = "r"
+    while tester != "f":
+        generate_map_ca(y_size, x_size, chance_alive)
+        tester = input()
