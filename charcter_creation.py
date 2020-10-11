@@ -134,7 +134,7 @@ class CharacterCreation(game_control.Scene):
         self.update("down")
 
     def modify_param(self, amount, param):
-        if (self.skill_points > 0 and amount == 1) or (self.skill_points < 10 and amount == -1):
+        if (self.skill_points >= amount > 0) or (self.skill_points < 10 and amount == -1):
             if param == "health" and ((self.health > self.initial_values[param] and amount == -1) or amount == 1):
                 self.health = self.health + amount
                 self.skill_points = self.skill_points - amount
@@ -142,7 +142,7 @@ class CharacterCreation(game_control.Scene):
                 self.melee_skill = self.melee_skill + amount
                 self.skill_points = self.skill_points - amount
             elif param == "ap" and ((self.action_points > self.initial_values[param] and amount == -1) or amount == 1):
-                self.action_points = self.action_points + amount
+                self.action_points = self.action_points + 1
                 self.skill_points = self.skill_points - amount
             elif param == "strengh" and ((self.strengh > self.initial_values[param] and amount == -1) or amount == 1):
                 self.strengh = self.strengh + amount

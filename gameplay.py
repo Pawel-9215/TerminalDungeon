@@ -55,7 +55,6 @@ class GameInstance(game_control.Scene):
             self.grid.grid[mob_coord[0]][mob_coord[1]].occupation = self.mobs[i]
 
         for mob in self.mobs:
-            self.updatable_objects.append(mob)
             mob.weapon = pickables.Dagger()
 
         for i in range(8):

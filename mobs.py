@@ -54,12 +54,13 @@ class RatWarrior(Character):
         self.glyph = "R"
         self.glyph_color = "Red"
         self.glyph_inverted = True
+        self.action_points = 5
         global rat_names1, rat_names2
         self.short_name = random.choice(rat_names1)+random.choice(rat_names2)
         self.name = "RatWarrior "+ self.short_name
         self.endurance = random.randint(12, 16)
         self.health = random.randint(12, 16)
-        self.melee_skill = random.randint(22, 27)
+        self.melee_skill = random.randint(26, 32)
         self.update_stats()
 
     def update(self, *args, **kwargs):
