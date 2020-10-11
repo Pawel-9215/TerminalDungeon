@@ -34,10 +34,11 @@ class WorldMap:
             for x in range(1, len(grid[y]) - 1):
                 if grid[y][x] == "/":
                     grid[y][x] = "█"
-                if grid[y][x] == "@" and (
-                        grid[y][x + 1] == " " or grid[y][x - 1] == " " or grid[y - 1][x] == " " or grid[y + 1][x] == " "):
+                elif grid[y][x] == "@" and (
+                        grid[y][x + 1] == " " or grid[y][x - 1] == " " or grid[y - 1][x] == " " or grid[y + 1][
+                            x] == " "):
                     grid[y][x] = "█"
-                if grid[y][x] == "P":
+                elif grid[y][x] == "P":
                     self.player_y = y
                     self.player_x = x
 

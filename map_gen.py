@@ -105,9 +105,9 @@ def generate_map_ca(y_s, x_s, alive_chance=45, steps=1):
 
     for y in range(len(game_map)):
         for x in range(len(game_map[y])):
-            if y == 0 or y == len(game_map)-1:
+            if y in [0, 1] or y == len(game_map)-1:
                 game_map[y][x] = "@"
-            if x == 0 or x == len(game_map[y])-1:
+            if x in [0, 1] or x == len(game_map[y])-1:
                 game_map[y][x] = "@"
 
     for row in game_map:
