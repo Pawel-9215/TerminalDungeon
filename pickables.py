@@ -7,6 +7,7 @@ class Dagger(Pickable):
         super().__init__()
         self.glyph = "W"
         self.glyph_inverted = True
+        self.glyph_color = "Yellow"
         self.name = "Dagger"
         self.strenght = (1, 2)
 
@@ -16,6 +17,6 @@ class Mace(Pickable):
         super().__init__()
         self.glyph = "W"
         self.glyph_inverted = True
-        self.glyph_color = "Yellow"
+        self.glyph_color = "Magenta"
         self.name = "Mace"
         self.strenght = (0, 2)

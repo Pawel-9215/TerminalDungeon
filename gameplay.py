@@ -172,8 +172,20 @@ class SituationMap:
         self.grid = grid
         self.window_y, self.window_x = window.getmaxyx()
         self.game_instance = game_instance
-        self.colors = {False: {"Red": curses.color_pair(4),
-                       "White": curses.color_pair(6)}}
+        self.colors = {False:
+                           {"Red": curses.color_pair(4),
+                            "White": curses.color_pair(6),
+                            "Yellow": curses.color_pair(1),
+                            "Blue": curses.color_pair(3),
+                            "Magenta": curses.color_pair(5)},
+                       True:
+                           {"Yellow": curses.color_pair(2),
+                            "White": curses.color_pair(21),
+                            "Red": curses.color_pair(24),
+                            "Magenta": curses.color_pair(23),
+                            "Blue": curses.color_pair(22)
+                            }
+                       }
 
     def draw(self):
         """
@@ -195,10 +207,13 @@ class SituationMap:
             for x in range(min_x, max_x):
                 if 0 < y + diff_y < len(self.grid.grid) and 0 < x + diff_x < len(self.grid.grid[0]):
                     if isinstance(self.grid.grid[y + diff_y][x + diff_x].occupation, player.Character):
-                        # print("YES THERE IS CHARACTER ON SCREEN")
-                        self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]), curses.color_pair(4))
+                        char = self.grid.grid[y + diff_y][x + diff_x].occupation
+                        self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]),
+                                           self.colors[char.glyph_inverted][char.glyph_color])
                     elif isinstance(self.grid.grid[y + diff_y][x + diff_x].pickable, world_static.Pickable):
-                        self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]), curses.color_pair(2))
+                        char = self.grid.grid[y + diff_y][x + diff_x].pickable
+                        self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]),
+                                           self.colors[char.glyph_inverted][char.glyph_color])
                     else:
                         self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]))
                 else:
@@ -226,8 +241,13 @@ class DumpOrEquip(game_control.Scene):
         self.print_content()
 
     def print_content(self):
+        obj_in_question = self.current_player.get_inventory_state(self.item_slot)
+        relevant_char = {"weapon": "Attack: "+str(obj_in_question.strenght),
+                         "arm_head": "Defence: "+str(obj_in_question.defence_points),
+                         "arm_head": "Defence: " + str(obj_in_question.defence_points),
+                         }
         main_label = \
-            "What do you want to do with [" + self.current_player.get_inventory_state(self.item_slot).name + "]"
+            "[" + obj_in_question.name + "] " + relevant_char[obj_in_question.destination]
 
         self.renderable_objects.append(ui.Label(self.windows[0],
                                                 main_label,

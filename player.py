@@ -103,6 +103,7 @@ class Player(Character):
         self.y = y
         self.x = x
         self.glyph = glyph
+        self.glyph_color = "Red"
         self.glyph_inverted = True
         self.world_map = world_map
         self.look_at_y = self.y + 1

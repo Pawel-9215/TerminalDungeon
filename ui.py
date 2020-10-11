@@ -88,7 +88,7 @@ class ColorInit():
 
         # bg colors
         curses.init_pair(21, curses.COLOR_BLACK, curses.COLOR_WHITE)
-        curses.init_pair(22, curses.COLOR_BLACK, curses.COLOR_YELLOW)
+        curses.init_pair(22, curses.COLOR_BLACK, curses.COLOR_BLUE)
         curses.init_pair(23, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
         curses.init_pair(24, curses.COLOR_BLACK, curses.COLOR_RED)
 

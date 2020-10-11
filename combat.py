@@ -184,7 +184,7 @@ class CombatScreen(game_control.Scene):
                     self.current_enemy.current_health -= attack_strengh - enemy_defence
 
         if self.current_enemy.current_health <= 0:
-            self.situation_report.generate_line(self.current_enemy.short_name+" was slain")
+            self.situation_report.generate_line(self.current_enemy.short_name + " was slain")
             self.engine.renderer.renderpass()
             curses.napms(1000)
             self.player_win()
@@ -224,7 +224,7 @@ class CombatScreen(game_control.Scene):
                 # players defence:
                 if self.player_defences > 0:
                     self.player_defences -= 1
-                    player_defence = self.current_player.defence_points + round(self.current_player.hit_points/2) + \
+                    player_defence = self.current_player.defence_points + round(self.current_player.hit_points / 2) + \
                                      bodypart_armour[body_target] + random.randint(1, 4)
                 else:
                     player_defence = self.current_player.defence_points + bodypart_armour[body_target]
