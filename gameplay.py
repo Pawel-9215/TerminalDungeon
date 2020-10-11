@@ -48,6 +48,16 @@ class GameInstance(game_control.Scene):
 
         # test_mobs
 
+        for i in range(2):
+            available_cells = self.grid.get_available_spaces()
+            mob_coord = random.choice(available_cells)
+            self.mobs.append(mobs.RatWarrior(mob_coord[0], mob_coord[1], "R", self.grid, self))
+            self.grid.grid[mob_coord[0]][mob_coord[1]].occupation = self.mobs[i]
+
+        for mob in self.mobs:
+            self.updatable_objects.append(mob)
+            mob.weapon = pickables.Dagger()
+
         for i in range(8):
             available_cells = self.grid.get_available_spaces()
             mob_coord = random.choice(available_cells)
@@ -56,6 +66,8 @@ class GameInstance(game_control.Scene):
 
         for mob in self.mobs:
             self.updatable_objects.append(mob)
+
+
 
         # test pickable
 
