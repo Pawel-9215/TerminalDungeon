@@ -420,4 +420,4 @@ class SitRaport:
     def draw(self):
 
         for line in self.lines:
-            self.window.addstr(self.max_y - line, self.min_x, self.lines[line])
+            self.window.addstr(self.max_y - line, self.min_x, self.lines[line], curses.color_pair(1))

@@ -244,7 +244,10 @@ class DumpOrEquip(game_control.Scene):
         obj_in_question = self.current_player.get_inventory_state(self.item_slot)
         relevant_char = {"weapon": "Attack: "+str(obj_in_question.strenght),
                          "arm_head": "Defence: "+str(obj_in_question.defence_points),
-                         "arm_head": "Defence: " + str(obj_in_question.defence_points),
+                         "arm_torso": "Defence: " + str(obj_in_question.defence_points),
+                         "arm_hands": "Defence: " + str(obj_in_question.defence_points),
+                         "arm_legs": "Defence: " + str(obj_in_question.defence_points),
+                         "consumable": "Health: +" + str(obj_in_question.health),
                          }
         main_label = \
             "[" + obj_in_question.name + "] " + relevant_char[obj_in_question.destination]
