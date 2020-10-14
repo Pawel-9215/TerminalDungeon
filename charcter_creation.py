@@ -12,7 +12,7 @@ class CharacterCreation(game_control.Scene):
         self.updatable_objects.append(self)
         self.health = 5 + random.randint(2, 20)
         self.melee_skill = 20 + random.randint(2, 20)
-        self.action_points = 2 + random.randint(2, 4)
+        self.action_points = 2 + random.randint(1, 2)
         self.strengh = random.randint(10, 60)
         self.endurance = random.randint(10, 30)
         self.menu_buttons = []
@@ -48,10 +48,10 @@ class CharacterCreation(game_control.Scene):
         substract_melee = ui.button(self.windows[0], 7, 4, "-", "substract_melee", self.modify_param, [-1, "melee"])
         self.menu_buttons.append(substract_melee)
         self.renderable_objects.append(substract_melee)
-        add_range = ui.button(self.windows[0], 8, 4, "+", "add_Action_Points", self.modify_param, [1, "ap"])
+        add_range = ui.button(self.windows[0], 8, 4, "+", "add_Action_Points", self.modify_param, [8, "ap"])
         self.menu_buttons.append(add_range)
         self.renderable_objects.append(add_range)
-        substract_range = ui.button(self.windows[0], 9, 4, "-", "substract_Action_Points", self.modify_param, [-1, "ap"])
+        substract_range = ui.button(self.windows[0], 9, 4, "-", "substract_Action_Points", self.modify_param, [-8, "ap"])
         self.menu_buttons.append(substract_range)
         self.renderable_objects.append(substract_range)
         add_strengh = ui.button(self.windows[0], 10, 4, "+", "add_strenght", self.modify_param, [1, "strengh"])
@@ -134,15 +134,16 @@ class CharacterCreation(game_control.Scene):
         self.update("down")
 
     def modify_param(self, amount, param):
-        if (self.skill_points >= amount > 0) or (self.skill_points < 10 and amount == -1):
+        if (self.skill_points >= amount > 0) or (self.skill_points < 10 and round(amount*(1/abs(amount))) == -1):
             if param == "health" and ((self.health > self.initial_values[param] and amount == -1) or amount == 1):
                 self.health = self.health + amount
                 self.skill_points = self.skill_points - amount
             elif param == "melee" and ((self.melee_skill > self.initial_values[param] and amount == -1) or amount == 1):
                 self.melee_skill = self.melee_skill + amount
                 self.skill_points = self.skill_points - amount
-            elif param == "ap" and ((self.action_points > self.initial_values[param] and amount == -1) or amount == 1):
-                self.action_points = self.action_points + 1
+            elif param == "ap" and ((self.action_points > self.initial_values[param] and
+                                     round(amount*(1/abs(amount))) == -1) or round(amount*(1/abs(amount))) == 1):
+                self.action_points = self.action_points + 1*round(amount*(1/abs(amount)))
                 self.skill_points = self.skill_points - amount
             elif param == "strengh" and ((self.strengh > self.initial_values[param] and amount == -1) or amount == 1):
                 self.strengh = self.strengh + amount
