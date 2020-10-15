@@ -8,6 +8,7 @@ class Cell:
         self.floor_glyph = floor_glyph
         self.occupation = occupation
         self.pickable = "free"
+        self.distance_to_player = 255
 
     def __repr__(self):
         if self.occupation != "free":
