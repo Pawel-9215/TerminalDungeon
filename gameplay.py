@@ -265,8 +265,6 @@ class SituationMap:
                         char = self.grid.grid[y + diff_y][x + diff_x].pickable
                         self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]),
                                            self.colors[char.glyph_inverted][char.glyph_color])
-                    elif self.grid.grid[y + diff_y][x + diff_x].distance_to_player <= 9: # DEBUG ONLY
-                        self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x].distance_to_player))
                     else:
                         self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]))
                 else:
