@@ -63,11 +63,11 @@ class WorldMap:
             for x in range(len(base_grid[y])):
                 current_floor = random.choice(floor)
                 objects = {
-                    "@": world_static.Cell(current_floor, occupation=world_static.Rock()),
-                    "█": world_static.Cell(current_floor, occupation=world_static.StoneWall()),
-                    " ": world_static.Cell(current_floor),
-                    "E": world_static.Cell(current_floor, occupation=world_static.StoneWall()),
-                    "P": world_static.Cell(current_floor,
+                    "@": world_static.Cell(current_floor, y, x, occupation=world_static.Rock()),
+                    "█": world_static.Cell(current_floor, y, x, occupation=world_static.StoneWall()),
+                    " ": world_static.Cell(current_floor, y, x),
+                    "E": world_static.Cell(current_floor, y, x, occupation=world_static.StoneWall()),
+                    "P": world_static.Cell(current_floor, y, x,
                                            occupation=world_static.PlayerStart(self.player_y, self.player_x)),
                 }
                 base_grid[y][x] = objects[base_grid[y][x]]

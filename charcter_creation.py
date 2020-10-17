@@ -13,7 +13,7 @@ class CharacterCreation(game_control.Scene):
         self.health = 5 + random.randint(2, 20)
         self.melee_skill = 20 + random.randint(2, 20)
         self.action_points = 2 + random.randint(1, 2)
-        self.strengh = random.randint(10, 60)
+        self.strengh = random.randint(10, 40)
         self.endurance = random.randint(10, 30)
         self.menu_buttons = []
         self.values = []

@@ -45,6 +45,7 @@ class GameInstance(game_control.Scene):
         self.renderable_objects.append(character_info)
         self.secondary_update.append(self.current_player)
         self.updatable_objects.append(character_info)
+        self.secondary_update.append(self)
 
         # test_mobs
 
@@ -66,8 +67,6 @@ class GameInstance(game_control.Scene):
         for mob in self.mobs:
             self.updatable_objects.append(mob)
 
-
-
         # test pickable
 
         for i in range(4):
@@ -79,6 +78,9 @@ class GameInstance(game_control.Scene):
     def ask_Dump_or_Equip(self, key):
         scene = DumpOrEquip([self.engine.popup_screen], "Dump or Equip?", self.engine, self, self.current_player, key)
         self.engine.change_scene(scene)
+
+    def update(self, key):
+        self.dijkstra_map()
 
     def check_neighbours(self, enemies=True):
         if enemies:
@@ -108,6 +110,44 @@ class GameInstance(game_control.Scene):
                     self.engine.change_scene(new_combat_screen)
         else:
             pass
+
+    def dijkstra_map(self):
+
+        # reset grid
+
+        for y in range(len(self.grid.grid)):
+            for x in range(len(self.grid.grid[y])):
+                self.grid.grid[y][x].distance_to_player = 255
+
+        curpos_y = self.grid.player_y
+        curpos_x = self.grid.player_x
+
+        self.grid.grid[curpos_y][curpos_x].distance_to_player = 0
+
+        neighbours = [self.grid.grid[curpos_y][curpos_x]]
+        future_neighbours = []
+        iteration = 1
+
+        while iteration < 244 and len(neighbours) > 0:
+            for cell in neighbours:
+                cell.distance_to_player = iteration
+                # collect neighbours
+                north = self.grid.grid[cell.y - 1][cell.x]
+                if north.occupation == "free" and north.distance_to_player == 255 and north not in future_neighbours:
+                    future_neighbours.append(north)
+                south = self.grid.grid[cell.y + 1][cell.x]
+                if south.occupation == "free" and south.distance_to_player == 255 and south not in future_neighbours:
+                    future_neighbours.append(south)
+                west = self.grid.grid[cell.y][cell.x-1]
+                if west.occupation == 'free' and west.distance_to_player == 255 and west not in future_neighbours:
+                    future_neighbours.append(west)
+                east = self.grid.grid[cell.y][cell.x+1]
+                if east.occupation == "free" and east.distance_to_player == 255 and east not in future_neighbours:
+                    future_neighbours.append(east)
+
+            neighbours = future_neighbours
+            future_neighbours = []
+            iteration += 1
 
 
 class CharacterSheet:
@@ -225,6 +265,8 @@ class SituationMap:
                         char = self.grid.grid[y + diff_y][x + diff_x].pickable
                         self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]),
                                            self.colors[char.glyph_inverted][char.glyph_color])
+                    elif self.grid.grid[y + diff_y][x + diff_x].distance_to_player <= 9: # DEBUG ONLY
+                        self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x].distance_to_player))
                     else:
                         self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]))
                 else:
@@ -253,8 +295,8 @@ class DumpOrEquip(game_control.Scene):
 
     def print_content(self):
         obj_in_question = self.current_player.get_inventory_state(self.item_slot)
-        relevant_char = {"weapon": "Attack: "+str(obj_in_question.strenght),
-                         "arm_head": "Defence: "+str(obj_in_question.defence_points),
+        relevant_char = {"weapon": "Attack: " + str(obj_in_question.strenght),
+                         "arm_head": "Defence: " + str(obj_in_question.defence_points),
                          "arm_torso": "Defence: " + str(obj_in_question.defence_points),
                          "arm_hands": "Defence: " + str(obj_in_question.defence_points),
                          "arm_legs": "Defence: " + str(obj_in_question.defence_points),

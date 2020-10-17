@@ -4,11 +4,13 @@ import random
 
 
 class Cell:
-    def __init__(self, floor_glyph, occupation="free"):
+    def __init__(self, floor_glyph, y, x, occupation="free"):
         self.floor_glyph = floor_glyph
         self.occupation = occupation
         self.pickable = "free"
         self.distance_to_player = 255
+        self.y = y
+        self.x = x
 
     def __repr__(self):
         if self.occupation != "free":
