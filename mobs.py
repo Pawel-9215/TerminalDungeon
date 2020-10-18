@@ -23,6 +23,7 @@ class Rat(Character):
         self.endurance = random.randint(7, 10)
         self.health = random.randint(7, 12)
         self.melee_skill = random.randint(15, 25)
+        self.distance_to_player = 255
         self.update_stats()
 
     def update(self, *args, **kwargs):
@@ -32,8 +33,8 @@ class Rat(Character):
 
         self.distance_to_player = self.world_map.check_distance_to_player(self.y, self.x)
         # print(distance_to_player)
-        """
-        if distance_to_player < 10:
+
+        if self.distance_to_player < 10:
             distances = []
             direction_values = {}
             for direction in directions:
@@ -47,9 +48,9 @@ class Rat(Character):
         else:
             # chosen_dir = random.choice(directions)
             chosen_dir = "stop"
-        """
+
         # chosen_dir = random.choice(directions)
-        chosen_dir = "stop"
+        # chosen_dir = "stop"
         self.move(chosen_dir)
 
     def move(self, direction):
