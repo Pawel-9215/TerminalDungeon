@@ -32,9 +32,10 @@ class Rat(Character):
         # check distance to player
 
         self.distance_to_player = self.world_map.check_distance_to_player(self.y, self.x)
-        # print(distance_to_player)
+        print(self.distance_to_player)
 
         if self.distance_to_player < 10:
+            self.glyph = "C"
             distances = []
             direction_values = {}
             for direction in directions:
@@ -48,6 +49,7 @@ class Rat(Character):
         else:
             # chosen_dir = random.choice(directions)
             chosen_dir = "stop"
+            self.glyph = str(self.distance_to_player)[0]
 
         # chosen_dir = random.choice(directions)
         # chosen_dir = "stop"

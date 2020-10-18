@@ -121,7 +121,7 @@ class GameInstance(game_control.Scene):
 
         neighbours = [self.grid.grid[curpos_y][curpos_x]]
         future_neighbours = []
-        iteration = 1
+        iteration = 0
 
         while iteration < 244 and len(neighbours) > 0:
             for cell in neighbours:
