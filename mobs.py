@@ -26,38 +26,50 @@ class Rat(Character):
         self.update_stats()
 
     def update(self, *args, **kwargs):
-        directions = ["up", "down", "left", "right"]
-        way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
+        directions = ["up", "down", "left", "right", "stop"]
+        way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"], "stop":[0, 0, "↑"]}
         # check distance to player
-        if self.world_map.check_distance_to_player < 6:
+
+        self.distance_to_player = self.world_map.check_distance_to_player(self.y, self.x)
+        # print(distance_to_player)
+        """
+        if distance_to_player < 10:
             distances = []
             direction_values = {}
             for direction in directions:
                 distance = self.world_map.check_distance_to_player(self.y + way_to_go[direction][0],
                                                                    self.x + way_to_go[direction][1])
-                distances.append(distance)
-                direction_values[distance] = directions
+                if self.world_map.check_content(self.y + way_to_go[direction][0],
+                                                self.x + way_to_go[direction][1]) == "free":
+                    distances.append(distance)
+                    direction_values[distance] = direction
             chosen_dir = direction_values[max(distances)]
         else:
-            chosen_dir = random.choice(directions)
+            # chosen_dir = random.choice(directions)
+            chosen_dir = "stop"
+        """
+        # chosen_dir = random.choice(directions)
+        chosen_dir = "stop"
         self.move(chosen_dir)
 
     def move(self, direction):
         """
         method to move player on grid
         """
+        if direction == "stop":
+            pass
+        else:
+            way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
+            if self.world_map.check_content(self.y + way_to_go[direction][0],
+                                            self.x + way_to_go[direction][1]) == "free":
+                self.vacate_position()
+                self.y = self.y + way_to_go[direction][0]
+                self.x = self.x + way_to_go[direction][1]
+                self.update_position()
 
-        way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
-        if self.world_map.check_content(self.y + way_to_go[direction][0],
-                                        self.x + way_to_go[direction][1]) == "free":
-            self.vacate_position()
-            self.y = self.y + way_to_go[direction][0]
-            self.x = self.x + way_to_go[direction][1]
-            self.update_position()
-
-        # self.glyph = way_to_go[direction][2] - can't change mob glyph to players
-        self.look_at_y = self.y + way_to_go[direction][0]
-        self.look_at_x = self.x + way_to_go[direction][1]
+            # self.glyph = way_to_go[direction][2] - can't change mob glyph to players
+            self.look_at_y = self.y + way_to_go[direction][0]
+            self.look_at_x = self.x + way_to_go[direction][1]
 
 
 class RatWarrior(Character):
@@ -85,14 +97,18 @@ class RatWarrior(Character):
         """
         method to move player on grid
         """
-        way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
-        if self.world_map.check_content(self.y + way_to_go[direction][0],
-                                        self.x + way_to_go[direction][1]) == "free":
-            self.vacate_position()
-            self.y = self.y + way_to_go[direction][0]
-            self.x = self.x + way_to_go[direction][1]
-            self.update_position()
+        if direction == "stop":
+            pass
 
-        # self.glyph = way_to_go[direction][2] - can't change mob glyph to players
-        self.look_at_y = self.y + way_to_go[direction][0]
-        self.look_at_x = self.x + way_to_go[direction][1]
+        else:
+            way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
+            if self.world_map.check_content(self.y + way_to_go[direction][0],
+                                            self.x + way_to_go[direction][1]) == "free":
+                self.vacate_position()
+                self.y = self.y + way_to_go[direction][0]
+                self.x = self.x + way_to_go[direction][1]
+                self.update_position()
+
+            # self.glyph = way_to_go[direction][2] - can't change mob glyph to players
+            self.look_at_y = self.y + way_to_go[direction][0]
+            self.look_at_x = self.x + way_to_go[direction][1]

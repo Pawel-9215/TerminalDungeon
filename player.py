@@ -55,22 +55,20 @@ class Character:
         self.inv_4 = None
 
     def remove_self(self):
+        self.vacate_position()
+        self.world_map = None
         self.game_instance = None
 
-    def update(self, *args, **kwargs):
-        """
-        This is place for character logic
-        """
-        pass
+    """def update(self, *args, **kwargs):
+        
+        pass"""
     
     def update_stats(self):
         self.hit_points = round(self.strengh/10)
         self.defence_points = round(self.endurance/10)
 
-    def move(self, direction):
-        """
-        method to move character on grid
-        """
+    """def move(self, direction):
+        
         way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
         if self.world_map.check_content(self.y + way_to_go[direction][0],
                                         self.x + way_to_go[direction][1]) == "free":
@@ -81,7 +79,7 @@ class Character:
 
         # self.glyph = way_to_go[direction][2]
         self.look_at_y = self.y + way_to_go[direction][0]
-        self.look_at_x = self.x + way_to_go[direction][1]
+        self.look_at_x = self.x + way_to_go[direction][1]"""
 
     def vacate_position(self):
         self.world_map.grid[self.y][self.x].occupation = "free"

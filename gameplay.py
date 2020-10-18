@@ -56,7 +56,7 @@ class GameInstance(game_control.Scene):
             self.grid.grid[mob_coord[0]][mob_coord[1]].occupation = self.mobs[i]
 
         for mob in self.mobs:
-            mob.weapon = pickables.Dagger()
+            mob.weapon = random.choice([pickables.Dagger(), pickables.Mace()])
 
         for i in range(8):
             available_cells = self.grid.get_available_spaces()
@@ -104,10 +104,11 @@ class GameInstance(game_control.Scene):
                 pass
 
             if len(found_enemies) > 0:
-                for enemy in found_enemies:
-                    new_combat_screen = combat.CombatScreen([self.engine.full_screen], "Combat Screen", self.engine,
-                                                            self, self.current_player, enemy)
-                    self.engine.change_scene(new_combat_screen)
+                new_combat_screen = combat.CombatScreen([self.engine.full_screen], "Combat Screen", self.engine,
+                                                                self, self.current_player, found_enemies[0])
+                self.engine.change_scene(new_combat_screen)
+            else:
+                pass
         else:
             pass
 

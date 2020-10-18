@@ -37,10 +37,9 @@ class CombatScreen(game_control.Scene):
 
     def player_win(self):
         self.current_enemy.vacate_position()
-        self.escape.updatable_objects.remove(self.current_enemy)
         self.escape.mobs.remove(self.current_enemy)
+        self.escape.updatable_objects.remove(self.current_enemy)
         self.current_enemy.remove_self()
-        del self.current_enemy
         self.engine.change_scene(self.escape)
 
     def player_loose(self):
