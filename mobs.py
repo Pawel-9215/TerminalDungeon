@@ -18,7 +18,7 @@ class Rat(Character):
         self.glyph = "R"
         self.glyph_color = "Red"
         global rat_names1, rat_names2
-        self.short_name = random.choice(rat_names1)+random.choice(rat_names2)
+        self.short_name = random.choice(rat_names1) + random.choice(rat_names2)
         self.name = self.short_name + " the Rat"
         self.endurance = random.randint(7, 10)
         self.health = random.randint(7, 12)
@@ -27,14 +27,26 @@ class Rat(Character):
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right"]
-
-        chosen_dir = random.choice(directions)
+        way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
+        # check distance to player
+        if self.world_map.check_distance_to_player < 6:
+            distances = []
+            direction_values = {}
+            for direction in directions:
+                distance = self.world_map.check_distance_to_player(self.y + way_to_go[direction][0],
+                                                                   self.x + way_to_go[direction][1])
+                distances.append(distance)
+                direction_values[distance] = directions
+            chosen_dir = direction_values[max(distances)]
+        else:
+            chosen_dir = random.choice(directions)
         self.move(chosen_dir)
 
     def move(self, direction):
         """
         method to move player on grid
         """
+
         way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
         if self.world_map.check_content(self.y + way_to_go[direction][0],
                                         self.x + way_to_go[direction][1]) == "free":
@@ -56,8 +68,8 @@ class RatWarrior(Character):
         self.glyph_inverted = True
         self.action_points = 5
         global rat_names1, rat_names2
-        self.short_name = random.choice(rat_names1)+random.choice(rat_names2)
-        self.name = "RatWarrior "+ self.short_name
+        self.short_name = random.choice(rat_names1) + random.choice(rat_names2)
+        self.name = "RatWarrior " + self.short_name
         self.endurance = random.randint(12, 16)
         self.health = random.randint(12, 16)
         self.melee_skill = random.randint(26, 32)

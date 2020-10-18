@@ -78,6 +78,10 @@ class WorldMap:
 
         return self.grid[y][x].occupation
 
+    def check_distance_to_player(self, y, x):
+
+        return self.grid[y][x].distance_to_player
+
     def get_available_spaces(self):
 
         available_spaces = []

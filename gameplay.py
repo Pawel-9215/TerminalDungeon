@@ -228,13 +228,15 @@ class SituationMap:
                             "White": curses.color_pair(6),
                             "Yellow": curses.color_pair(1),
                             "Blue": curses.color_pair(3),
-                            "Magenta": curses.color_pair(5)},
+                            "Magenta": curses.color_pair(5),
+                            "Green": curses.color_pair(7)},
                        True:
                            {"Yellow": curses.color_pair(2),
                             "White": curses.color_pair(21),
                             "Red": curses.color_pair(24),
                             "Magenta": curses.color_pair(23),
-                            "Blue": curses.color_pair(22)
+                            "Blue": curses.color_pair(22),
+                            "Green": curses.color_pair(25),
                             }
                        }
 

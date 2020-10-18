@@ -85,12 +85,14 @@ class ColorInit():
         curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
         curses.init_pair(4, curses.COLOR_RED, curses.COLOR_BLACK)
         curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+        curses.init_pair(7, curses.COLOR_GREEN, curses.COLOR_BLACK)
 
         # bg colors
         curses.init_pair(21, curses.COLOR_BLACK, curses.COLOR_WHITE)
         curses.init_pair(22, curses.COLOR_BLACK, curses.COLOR_BLUE)
         curses.init_pair(23, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
         curses.init_pair(24, curses.COLOR_BLACK, curses.COLOR_RED)
+        curses.init_pair(25, curses.COLOR_BLACK, curses.COLOR_GREEN)
 
 
 class Rotator():
