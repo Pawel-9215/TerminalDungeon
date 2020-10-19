@@ -49,10 +49,12 @@ class GameInstance(game_control.Scene):
 
         # test_mobs
 
-        for i in range(12):
+        for i in range(14):
             available_cells = self.grid.get_available_spaces()
             mob_coord = random.choice(available_cells)
-            self.mobs.append(random.choice([mobs.RatWarrior(mob_coord[0], mob_coord[1], "R", self.grid, self), mobs.Rat(mob_coord[0], mob_coord[1], "R", self.grid, self)]))
+            self.mobs.append(random.choice([mobs.RatWarrior(mob_coord[0], mob_coord[1], "R", self.grid, self),
+                                            mobs.Rat(mob_coord[0], mob_coord[1], "R", self.grid, self),
+                                            mobs.Goblin(mob_coord[0], mob_coord[1], "R", self.grid, self)]))
             self.grid.grid[mob_coord[0]][mob_coord[1]].occupation = self.mobs[i]
 
         for mob in self.mobs:
@@ -128,16 +130,16 @@ class GameInstance(game_control.Scene):
                 cell.distance_to_player = iteration
                 # collect neighbours
                 north = self.grid.grid[cell.y - 1][cell.x]
-                if north.occupation == "free" and north.distance_to_player == 255 and north not in future_neighbours:
+                if (north.occupation == "free" or isinstance(north.occupation, player.Character)) and north.distance_to_player == 255 and north not in future_neighbours:
                     future_neighbours.append(north)
                 south = self.grid.grid[cell.y + 1][cell.x]
-                if south.occupation == "free" and south.distance_to_player == 255 and south not in future_neighbours:
+                if (south.occupation == "free" or isinstance(south.occupation, player.Character)) and south.distance_to_player == 255 and south not in future_neighbours:
                     future_neighbours.append(south)
                 west = self.grid.grid[cell.y][cell.x-1]
-                if west.occupation == 'free' and west.distance_to_player == 255 and west not in future_neighbours:
+                if (west.occupation == "free" or isinstance(west.occupation, player.Character)) and west.distance_to_player == 255 and west not in future_neighbours:
                     future_neighbours.append(west)
                 east = self.grid.grid[cell.y][cell.x+1]
-                if east.occupation == "free" and east.distance_to_player == 255 and east not in future_neighbours:
+                if (east.occupation == "free" or isinstance(east.occupation, player.Character)) and east.distance_to_player == 255 and east not in future_neighbours:
                     future_neighbours.append(east)
 
             neighbours = future_neighbours

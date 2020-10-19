@@ -2,6 +2,7 @@
 This is module for player class
 """
 from __future__ import annotations
+import random
 
 
 # ← ↑ → ↓
@@ -22,6 +23,7 @@ class Character:
         self.look_at_y = self.y + 1
         self.look_at_x = self.x
         self.is_mob = True
+        self.EXP_value = 10
 
         # character sheet:
 
@@ -67,19 +69,56 @@ class Character:
         self.hit_points = round(self.strengh/10)
         self.defence_points = round(self.endurance/10)
 
-    def move(self, direction):
-        
-        way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
-        if self.world_map.check_content(self.y + way_to_go[direction][0],
-                                        self.x + way_to_go[direction][1]) == "free":
-            self.vacate_position()
-            self.y = self.y + way_to_go[direction][0]
-            self.x = self.x + way_to_go[direction][1]
-            self.update_position()
+    def escape_player(self, directions):
+        way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"],
+                     "stop": [0, 0, "↑"]}
+        distances = []
+        direction_values = {}
+        for direction in directions:
+            distance = self.world_map.check_distance_to_player(self.y + way_to_go[direction][0],
+                                                               self.x + way_to_go[direction][1])
+            if self.world_map.check_content(self.y + way_to_go[direction][0],
+                                            self.x + way_to_go[direction][1]) == "free":
+                distances.append(distance)
+                direction_values[distance] = direction
+        random.shuffle(distances)
 
-        # self.glyph = way_to_go[direction][2]
-        self.look_at_y = self.y + way_to_go[direction][0]
-        self.look_at_x = self.x + way_to_go[direction][1]
+        return direction_values[max(distances)]
+
+    def chase_player(self, directions):
+        way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"],
+                     "stop": [0, 0, "↑"]}
+        distances = []
+        direction_values = {}
+        for direction in directions:
+            distance = self.world_map.check_distance_to_player(self.y + way_to_go[direction][0],
+                                                               self.x + way_to_go[direction][1])
+            if self.world_map.check_content(self.y + way_to_go[direction][0],
+                                            self.x + way_to_go[direction][1]) == "free":
+                distances.append(distance)
+                direction_values[distance] = direction
+        random.shuffle(distances)
+
+        return direction_values[min(distances)]
+
+    def move(self, direction):
+        """
+        method to move player on grid
+        """
+        if direction == "stop":
+            pass
+        else:
+            way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"]}
+            if self.world_map.check_content(self.y + way_to_go[direction][0],
+                                            self.x + way_to_go[direction][1]) == "free":
+                self.vacate_position()
+                self.y = self.y + way_to_go[direction][0]
+                self.x = self.x + way_to_go[direction][1]
+                self.update_position()
+
+            # self.glyph = way_to_go[direction][2] - can't change mob glyph to players
+            self.look_at_y = self.y + way_to_go[direction][0]
+            self.look_at_x = self.x + way_to_go[direction][1]
 
     def vacate_position(self):
         self.world_map.grid[self.y][self.x].occupation = "free"
@@ -120,6 +159,7 @@ class Player(Character):
         self.endurance = character_sheet["end"]
         self.hit_points = round(self.strengh/10)
         self.defence_points = round(self.endurance/10)
+        self.exp = 0
 
         # clothes:
 
