@@ -36,6 +36,7 @@ class CombatScreen(game_control.Scene):
         self.draw_content()
 
     def player_win(self):
+        self.current_player.exp += self.current_enemy.EXP_value
         self.current_enemy.vacate_position()
         self.escape.mobs.remove(self.current_enemy)
         self.escape.updatable_objects.remove(self.current_enemy)

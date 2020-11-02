@@ -30,7 +30,7 @@ class GameInstance(game_control.Scene):
         """
         This loads map and sets reference in game instance
         """
-        self.grid = map_loader.WorldMap(map_name)
+        self.grid = map_loader.WorldMap(map_name, self.character_sheet["current_map"])
         self.current_player = player.Player(self.grid.player_y,
                                             self.grid.player_x,
                                             "↑",

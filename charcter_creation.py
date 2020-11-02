@@ -197,6 +197,8 @@ class CharacterCreation(game_control.Scene):
                     "inv_2": None,
                     "inv_3": None,
                     "inv_4": None,
+                    "exp": 0,
+                    "level": 1,
                     "current_map": 1
                 }
                 characters[self.character_name] = character

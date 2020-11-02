@@ -12,18 +12,21 @@ class WorldMap:
     Respect this object.
     """
 
-    def __init__(self, map_name: str):
+    def __init__(self, map_name: str, current_map: int):
         self.player_y = 0
         self.player_x = 0
         self.map_name = map_name
+        self.current_map = current_map
         self.grid = self.populate_map()
+
 
     def load_map(self):
         """
         This methon first interpret text based map to clean list object
         """
-
-        grid = map_gen.generate_map_ca(60, 100, 42, 2)
+        map_y = (1+round(self.current_map/10))*60
+        map_x = (1+round(self.current_map/10))*100
+        grid = map_gen.generate_map_ca(map_y, map_x, 42, 2)
         '''
         dungeon_map = open('resources/maps/' + self.map_name, 'r')
 
