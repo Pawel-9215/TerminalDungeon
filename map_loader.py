@@ -19,13 +19,12 @@ class WorldMap:
         self.current_map = current_map
         self.grid = self.populate_map()
 
-
     def load_map(self):
         """
         This methon first interpret text based map to clean list object
         """
-        map_y = (1+round(self.current_map/10))*60
-        map_x = (1+round(self.current_map/10))*100
+        map_y = (1 + round(self.current_map / 10)) * 50
+        map_x = (1 + round(self.current_map / 10)) * 90
         grid = map_gen.generate_map_ca(map_y, map_x, 42, 2)
         '''
         dungeon_map = open('resources/maps/' + self.map_name, 'r')
@@ -39,7 +38,7 @@ class WorldMap:
                     grid[y][x] = "█"
                 elif grid[y][x] == "@" and (
                         grid[y][x + 1] == " " or grid[y][x - 1] == " " or grid[y - 1][x] == " " or grid[y + 1][
-                            x] == " "):
+                    x] == " "):
                     grid[y][x] = "█"
                 elif grid[y][x] == "P":
                     self.player_y = y
