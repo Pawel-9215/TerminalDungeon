@@ -9,6 +9,7 @@ import pickables
 import world_static
 import ui
 import combat
+import map_populator
 
 
 class GameInstance(game_control.Scene):
@@ -33,7 +34,6 @@ class GameInstance(game_control.Scene):
         self.grid = map_loader.WorldMap(map_name, self.character_sheet["current_map"])
         self.current_player = player.Player(self.grid.player_y,
                                             self.grid.player_x,
-                                            "↑",
                                             self.character_sheet,
                                             self.grid,
                                             self)
@@ -48,28 +48,18 @@ class GameInstance(game_control.Scene):
         self.secondary_update.append(self)
 
         # test_mobs
+        population = map_populator.level_contents(self.current_player.current_map)
+        population_names = map_populator.population_dictionary()
+        print(population)
 
-        for i in range(14):
-            available_cells = self.grid.get_available_spaces()
-            mob_coord = random.choice(available_cells)
-            self.mobs.append(random.choice([mobs.RatWarrior(mob_coord[0], mob_coord[1], "R", self.grid, self),
-                                            mobs.Rat(mob_coord[0], mob_coord[1], "R", self.grid, self),
-                                            mobs.Goblin(mob_coord[0], mob_coord[1], "R", self.grid, self)]))
-            self.grid.grid[mob_coord[0]][mob_coord[1]].occupation = self.mobs[i]
-
-        for mob in self.mobs:
-            mob.weapon = random.choice([pickables.Dagger(), pickables.Mace(), None])
-
-        for mob in self.mobs:
-            self.updatable_objects.append(mob)
-
-        # test pickable
-
-        for i in range(4):
-            available_cells = self.grid.get_available_spaces()
-            item_coord = random.choice(available_cells)
-            self.grid.grid[item_coord[0]][item_coord[1]].pickable = random.choice(
-                [pickables.Dagger(), pickables.Mace()])
+        for item in population['creatures']:
+            for i in range(population['creatures'][item]):
+                available_cells = self.grid.get_available_spaces()
+                coord = random.choice(available_cells)
+                created_mob = population_names[item](coord[0], coord[1], self.grid, self)
+                self.mobs.append(created_mob)
+                self.grid.grid[coord[0]][coord[1]].occupation = created_mob
+                self.updatable_objects.append(created_mob)
 
     def ask_Dump_or_Equip(self, key):
         scene = DumpOrEquip([self.engine.popup_screen], "Dump or Equip?", self.engine, self, self.current_player, key)
@@ -101,7 +91,7 @@ class GameInstance(game_control.Scene):
 
             if len(found_enemies) > 0:
                 new_combat_screen = combat.CombatScreen([self.engine.full_screen], "Combat Screen", self.engine,
-                                                                self, self.current_player, found_enemies[0])
+                                                        self, self.current_player, found_enemies[0])
                 self.engine.change_scene(new_combat_screen)
             else:
                 pass
@@ -130,16 +120,20 @@ class GameInstance(game_control.Scene):
                 cell.distance_to_player = iteration
                 # collect neighbours
                 north = self.grid.grid[cell.y - 1][cell.x]
-                if (north.occupation == "free" or isinstance(north.occupation, player.Character)) and north.distance_to_player == 255 and north not in future_neighbours:
+                if (north.occupation == "free" or isinstance(north.occupation,
+                                                             player.Character)) and north.distance_to_player == 255 and north not in future_neighbours:
                     future_neighbours.append(north)
                 south = self.grid.grid[cell.y + 1][cell.x]
-                if (south.occupation == "free" or isinstance(south.occupation, player.Character)) and south.distance_to_player == 255 and south not in future_neighbours:
+                if (south.occupation == "free" or isinstance(south.occupation,
+                                                             player.Character)) and south.distance_to_player == 255 and south not in future_neighbours:
                     future_neighbours.append(south)
-                west = self.grid.grid[cell.y][cell.x-1]
-                if (west.occupation == "free" or isinstance(west.occupation, player.Character)) and west.distance_to_player == 255 and west not in future_neighbours:
+                west = self.grid.grid[cell.y][cell.x - 1]
+                if (west.occupation == "free" or isinstance(west.occupation,
+                                                            player.Character)) and west.distance_to_player == 255 and west not in future_neighbours:
                     future_neighbours.append(west)
-                east = self.grid.grid[cell.y][cell.x+1]
-                if (east.occupation == "free" or isinstance(east.occupation, player.Character)) and east.distance_to_player == 255 and east not in future_neighbours:
+                east = self.grid.grid[cell.y][cell.x + 1]
+                if (east.occupation == "free" or isinstance(east.occupation,
+                                                            player.Character)) and east.distance_to_player == 255 and east not in future_neighbours:
                     future_neighbours.append(east)
 
             neighbours = future_neighbours

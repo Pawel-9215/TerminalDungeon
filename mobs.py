@@ -16,8 +16,8 @@ goblin_names = ["Ois", "Blong", "Kord", "Vrilx", "Bong", "Freklucs", "Iknoc",
 # Basic level 1 mobs:
 
 class Rat(Character):
-    def __init__(self, y, x, glyph, world_map, game_instance):
-        super().__init__(y, x, glyph, world_map, game_instance)
+    def __init__(self, y, x, world_map, game_instance):
+        super().__init__(y, x, world_map, game_instance)
         self.glyph = "R"
         self.glyph_color = "Red"
         global rat_names1, rat_names2
@@ -49,8 +49,8 @@ class Rat(Character):
 
 
 class RatWarrior(Character):
-    def __init__(self, y, x, glyph, world_map, game_instance):
-        super().__init__(y, x, glyph, world_map, game_instance)
+    def __init__(self, y, x, world_map, game_instance):
+        super().__init__(y, x, world_map, game_instance)
         self.glyph = "R"
         self.glyph_color = "Red"
         self.glyph_inverted = True
@@ -84,8 +84,8 @@ class RatWarrior(Character):
 
 
 class Goblin(Character):
-    def __init__(self, y, x, glyph, world_map, game_instance):
-        super().__init__(y, x, glyph, world_map, game_instance)
+    def __init__(self, y, x, world_map, game_instance):
+        super().__init__(y, x, world_map, game_instance)
         self.glyph = "G"
         self.glyph_color = "Green"
         self.glyph_inverted = True

@@ -12,11 +12,11 @@ class Character:
     Base class for characters - This should be inherited by both player and mobs alike
     """
 
-    def __init__(self, y, x, glyph, world_map, game_instance):
+    def __init__(self, y, x, world_map, game_instance):
         self.game_instance = game_instance
         self.y = y
         self.x = x
-        self.glyph = glyph
+        self.glyph = "c"
         self.glyph_inverted = False
         self.glyph_color = "White"
         self.world_map = world_map
@@ -35,8 +35,8 @@ class Character:
         self.action_points = 4
         self.strengh = 30
         self.endurance = 20
-        self.hit_points = round(self.strengh/10)
-        self.defence_points = round(self.endurance/10)
+        self.hit_points = round(self.strengh / 10)
+        self.defence_points = round(self.endurance / 10)
 
         # clothes:
 
@@ -62,12 +62,12 @@ class Character:
         self.game_instance = None
 
     def update(self, *args, **kwargs):
-        
+
         pass
-    
+
     def update_stats(self):
-        self.hit_points = round(self.strengh/10)
-        self.defence_points = round(self.endurance/10)
+        self.hit_points = round(self.strengh / 10)
+        self.defence_points = round(self.endurance / 10)
 
     def escape_player(self, directions):
         way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"],
@@ -135,11 +135,11 @@ class Player(Character):
     Player class
     """
 
-    def __init__(self, y, x, glyph, character_sheet, world_map, game_instance):
-        super().__init__(y, x, glyph, world_map, game_instance)
+    def __init__(self, y, x, character_sheet, world_map, game_instance):
+        super().__init__(y, x, world_map, game_instance)
         self.y = y
         self.x = x
-        self.glyph = glyph
+        self.glyph = "↑"
         self.glyph_color = "Red"
         self.glyph_inverted = True
         self.world_map = world_map
@@ -157,8 +157,8 @@ class Player(Character):
         self.action_points = character_sheet["action_points"]
         self.strengh = character_sheet["str"]
         self.endurance = character_sheet["end"]
-        self.hit_points = round(self.strengh/10)
-        self.defence_points = round(self.endurance/10)
+        self.hit_points = round(self.strengh / 10)
+        self.defence_points = round(self.endurance / 10)
         self.exp = character_sheet["exp"]
         self.level = character_sheet["level"]
 
@@ -202,7 +202,7 @@ class Player(Character):
                 self.game_instance.ask_Dump_or_Equip(key)
             else:
                 pass
-            
+
         elif key == " ":
             if self.world_map.grid[self.y][self.x].pickable != "free":
                 self.pickup()
@@ -212,9 +212,8 @@ class Player(Character):
             pass
 
         self.game_instance.check_neighbours()
-        self.hit_points = round(self.strengh/10)
-        self.defence_points = round(self.endurance/10)
-
+        self.hit_points = round(self.strengh / 10)
+        self.defence_points = round(self.endurance / 10)
 
     def move(self, direction):
         """
@@ -256,7 +255,7 @@ class Player(Character):
             return self.weapon
         elif bodypart == "arm_head":
             return self.arm_head
-        elif bodypart  == "arm_torso":
+        elif bodypart == "arm_torso":
             return self.arm_torso
         elif bodypart == "arm_hands":
             return self.arm_hands
@@ -268,7 +267,7 @@ class Player(Character):
             self.weapon = item
         elif bodypart == "arm_head":
             self.arm_head = item
-        elif bodypart  == "arm_torso":
+        elif bodypart == "arm_torso":
             self.arm_torso = item
         elif bodypart == "arm_hands":
             self.arm_hands = item
