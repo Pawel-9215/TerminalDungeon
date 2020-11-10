@@ -20,6 +20,14 @@ def level_contents(map_no: int):
                    "pickables": {"Dagger": 3,
                                  "Mace": 5,
                                  },
+                   },
+               3: {"creatures": {"Rat": 18,
+                                 "Rat_Warrior": 8,
+                                 "Goblin": 8,
+                                 },
+                   "pickables": {"Dagger": 3,
+                                 "Mace": 5,
+                                 },
                    }
                }
 

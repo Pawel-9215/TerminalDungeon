@@ -67,6 +67,19 @@ class PlayerStart:
         del self
 
 
+class LevelEnd:
+    """
+    Object to move player to next level
+    """
+
+    def __init__(self, y, x):
+        self.y = y
+        self.x = x
+        self.glyph = "↓"
+        self.glyph_inverted = True
+        self.glyph_color = "Magenta"
+
+
 class Pickable:
     def __init__(self):
         self.glyph = "P"
@@ -84,6 +97,6 @@ class Pickable:
 
     def __repr__(self):
         return self.name
-    
+
     def weapon_attack(self):
         return random.randint(self.strenght[0], self.strenght[1])

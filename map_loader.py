@@ -2,6 +2,8 @@ from __future__ import annotations
 import random
 import world_static
 import map_gen
+import game_control
+import ui
 
 
 class WorldMap:
@@ -68,7 +70,7 @@ class WorldMap:
                     "@": world_static.Cell(current_floor, y, x, occupation=world_static.Rock()),
                     "█": world_static.Cell(current_floor, y, x, occupation=world_static.StoneWall()),
                     " ": world_static.Cell(current_floor, y, x),
-                    "E": world_static.Cell(current_floor, y, x, occupation=world_static.StoneWall()),
+                    "E": world_static.Cell(current_floor, y, x, occupation=world_static.LevelEnd(y, x)),
                     "P": world_static.Cell(current_floor, y, x,
                                            occupation=world_static.PlayerStart(self.player_y, self.player_x)),
                 }
@@ -94,6 +96,49 @@ class WorldMap:
                     available_spaces.append((y, x))
 
         return available_spaces
+
+
+class New_level(game_control.Scene):
+    """
+    Scene that shows up between levels
+    """
+
+    def __init__(self, windows, name: str, engine: object, character_sheet, player):
+        super().__init__(windows, name, engine)
+        self.character_sheet = character_sheet
+        self.current_player = player
+        self.window_y, self.window_x = windows[0].getmaxyx()
+        self.draw_content()
+
+    def draw_content(self):
+        center_x = int(self.window_x / 2)
+        min_y = 2
+
+        line1 = "You are descending further into the caves"
+        line2 = "You are entering level "+str(self.character_sheet["current_map"]+1)
+
+        info1 = ui.Plain_text(self.windows[0],
+                              line1,
+                              min_y,
+                              center_x - round(len(line1) / 2)
+                              )
+
+        info2 = ui.Plain_text(self.windows[0],
+                              line2,
+                              min_y+1,
+                              center_x - round(len(line2) / 2)
+                              )
+
+        self.renderable_objects.append(info1)
+        self.renderable_objects.append(info2)
+
+        pass
+
+    def update_character_sheet(self):
+        pass
+
+    def start_new_level(self):
+        pass
 
 
 if __name__ == '__main__':

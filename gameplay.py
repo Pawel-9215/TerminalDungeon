@@ -61,6 +61,13 @@ class GameInstance(game_control.Scene):
                 self.grid.grid[coord[0]][coord[1]].occupation = created_mob
                 self.updatable_objects.append(created_mob)
 
+        for item in population['pickables']:
+            for i in range(population['pickables'][item]):
+                available_cells = self.grid.get_available_spaces()
+                coord = random.choice(available_cells)
+                created_item = population_names[item]()
+                self.grid.grid[coord[0]][coord[1]].pickable = created_item
+
     def ask_Dump_or_Equip(self, key):
         scene = DumpOrEquip([self.engine.popup_screen], "Dump or Equip?", self.engine, self, self.current_player, key)
         self.engine.change_scene(scene)
@@ -251,6 +258,10 @@ class SituationMap:
             for x in range(min_x, max_x):
                 if 0 < y + diff_y < len(self.grid.grid) and 0 < x + diff_x < len(self.grid.grid[0]):
                     if isinstance(self.grid.grid[y + diff_y][x + diff_x].occupation, player.Character):
+                        char = self.grid.grid[y + diff_y][x + diff_x].occupation
+                        self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]),
+                                           self.colors[char.glyph_inverted][char.glyph_color])
+                    elif isinstance(self.grid.grid[y + diff_y][x + diff_x].occupation, world_static.LevelEnd):
                         char = self.grid.grid[y + diff_y][x + diff_x].occupation
                         self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]),
                                            self.colors[char.glyph_inverted][char.glyph_color])
