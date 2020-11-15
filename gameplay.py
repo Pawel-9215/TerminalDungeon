@@ -266,8 +266,8 @@ class SituationMap:
                         char = self.grid.grid[y + diff_y][x + diff_x].occupation
                         self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]),
                                            self.colors[char.glyph_inverted][char.glyph_color])
-                    elif isinstance(self.grid.grid[y + diff_y][x + diff_x].occupation, world_static.LevelEnd):
-                        char = self.grid.grid[y + diff_y][x + diff_x].occupation
+                    elif isinstance(self.grid.grid[y + diff_y][x + diff_x].pickable, world_static.LevelEnd):
+                        char = self.grid.grid[y + diff_y][x + diff_x].pickable
                         self.window.addstr(y, x, str(self.grid.grid[y + diff_y][x + diff_x]),
                                            self.colors[char.glyph_inverted][char.glyph_color])
                     elif isinstance(self.grid.grid[y + diff_y][x + diff_x].pickable, world_static.Pickable):
