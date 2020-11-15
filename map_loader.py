@@ -70,7 +70,7 @@ class WorldMap:
                     "@": world_static.Cell(current_floor, y, x, occupation=world_static.Rock()),
                     "█": world_static.Cell(current_floor, y, x, occupation=world_static.StoneWall()),
                     " ": world_static.Cell(current_floor, y, x),
-                    "E": world_static.Cell(current_floor, y, x, occupation=world_static.LevelEnd(y, x)),
+                    "E": world_static.Cell(current_floor, y, x, pickable=world_static.LevelEnd(y, x)),
                     "P": world_static.Cell(current_floor, y, x,
                                            occupation=world_static.PlayerStart(self.player_y, self.player_x)),
                 }
@@ -139,13 +139,3 @@ class New_level(game_control.Scene):
 
     def start_new_level(self):
         pass
-
-
-if __name__ == '__main__':
-    my_map = WorldMap('Test_map_1')
-    dungeon_map2 = my_map.load_map()
-    for row in dungeon_map2:
-        print("".join(row))
-
-    print(my_map.grid)
-    input()

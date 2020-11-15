@@ -211,6 +211,7 @@ class Player(Character):
         else:
             pass
 
+        self.game_instance.check_level_end()
         self.game_instance.check_neighbours()
         self.hit_points = round(self.strengh / 10)
         self.defence_points = round(self.endurance / 10)

@@ -75,6 +75,11 @@ class GameInstance(game_control.Scene):
     def update(self, key):
         self.dijkstra_map()
 
+    def check_level_end(self):
+        if isinstance(self.grid.grid[self.current_player.y][self.current_player.x].pickable, world_static.LevelEnd):
+            new_level = map_loader.New_level([self.engine.full_screen], 'Next Level', self.engine, self.character_sheet, self.current_player)
+            self.engine.change_scene(new_level)
+
     def check_neighbours(self, enemies=True):
         if enemies:
             # directions

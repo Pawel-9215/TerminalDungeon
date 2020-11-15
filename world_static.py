@@ -4,11 +4,11 @@ import random
 
 
 class Cell:
-    def __init__(self, floor_glyph, y, x, occupation="free"):
+    def __init__(self, floor_glyph, y, x, pickable="free", occupation="free"):
         self.floor_glyph = floor_glyph
         self.occupation = occupation
-        self.pickable = "free"
-        self.distance_to_player = 255
+        self.pickable = pickable
+        self.distance_to_player = 255 
         self.y = y
         self.x = x
 
