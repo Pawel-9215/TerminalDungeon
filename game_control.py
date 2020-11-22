@@ -132,8 +132,8 @@ class Scene:
         self.renderable_objects = []
         self.updatable_objects = []
         self.name = name  # debug only?
-        self.scene_label = ui.Label(windows[0], name, 0, 0)
-        self.renderable_objects.append(self.scene_label)
+        # self.scene_label = ui.Label(windows[0], name, 0, 0)
+        # self.renderable_objects.append(self.scene_label)
         self.focused_item = 0
         self.menu_buttons = []
         self.secondary_update = []

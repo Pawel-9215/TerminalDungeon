@@ -10,6 +10,7 @@ import world_static
 import ui
 import combat
 import map_populator
+import pickle
 
 
 class GameInstance(game_control.Scene):
@@ -46,6 +47,8 @@ class GameInstance(game_control.Scene):
         self.secondary_update.append(self.current_player)
         self.updatable_objects.append(character_info)
         self.secondary_update.append(self)
+        level_label = ui.Label(self.GP_window, "Dungeon level: "+str(self.current_player.current_map), 0, 0)
+        self.renderable_objects.append(level_label)
 
         # test_mobs
         population = map_populator.level_contents(self.current_player.current_map)
@@ -53,7 +56,7 @@ class GameInstance(game_control.Scene):
         print(population)
 
         for item in population['creatures']:
-            for i in range(population['creatures'][item]):
+            for _ in range(population['creatures'][item]):
                 available_cells = self.grid.get_available_spaces()
                 coord = random.choice(available_cells)
                 created_mob = population_names[item](coord[0], coord[1], self.grid, self)
@@ -62,7 +65,7 @@ class GameInstance(game_control.Scene):
                 self.updatable_objects.append(created_mob)
 
         for item in population['pickables']:
-            for i in range(population['pickables'][item]):
+            for _ in range(population['pickables'][item]):
                 available_cells = self.grid.get_available_spaces()
                 coord = random.choice(available_cells)
                 created_item = population_names[item]()
@@ -77,7 +80,7 @@ class GameInstance(game_control.Scene):
 
     def check_level_end(self):
         if isinstance(self.grid.grid[self.current_player.y][self.current_player.x].pickable, world_static.LevelEnd):
-            new_level = map_loader.New_level([self.engine.full_screen], 'Next Level', self.engine, self.character_sheet, self.current_player)
+            new_level = New_level([self.engine.full_screen], 'Next Level', self.engine, self.character_sheet, self.current_player)
             self.engine.change_scene(new_level)
 
     def check_neighbours(self, enemies=True):
@@ -359,3 +362,94 @@ class DumpOrEquip(game_control.Scene):
             self.current_player.set_inventory_state(self.item_slot, item_to_swap)
 
         self.engine.change_scene(self.escape)
+
+class New_level(game_control.Scene):
+    """
+    Scene that shows up between levels
+    """
+
+    def __init__(self, windows, name: str, engine: object, character_sheet, player):
+        super().__init__(windows, name, engine)
+        self.character_sheet = character_sheet
+        self.current_player = player
+        self.window_y, self.window_x = windows[0].getmaxyx()
+        self.draw_content()
+
+    def draw_content(self):
+        center_x = int(self.window_x / 2)
+        min_y = 2
+
+        self.current_player.current_map += 1
+
+        line1 = "You are descending further into the caves"
+        line2 = "You are entering level "+str(self.character_sheet["current_map"]+1)
+
+        info1 = ui.Plain_text(self.windows[0],
+                              line1,
+                              min_y,
+                              center_x - round(len(line1) / 2)
+                              )
+
+        info2 = ui.Plain_text(self.windows[0],
+                              line2,
+                              min_y+1,
+                              center_x - round(len(line2) / 2)
+                              )
+
+        self.renderable_objects.append(info1)
+        self.renderable_objects.append(info2)
+
+        characters = pickle.load(open("resources/char", "rb"))
+
+        info3 = ui.Plain_text(self.windows[0],
+                              characters[self.current_player.name]['name'],
+                              min_y+3,
+                              center_x - round(len(characters[self.current_player.name]['name']) / 2)
+                              )
+
+        info4 = ui.Label(self.windows[0],
+                            "Press Space",
+                            min_y+5,
+                            center_x - round(len("Press Space") / 2))
+
+        self.renderable_objects.append(info3)
+        self.renderable_objects.append(info4)
+
+        characters[self.current_player.name]['health'] = self.current_player.health
+        characters[self.current_player.name]['melee'] = self.current_player.melee_skill
+        characters[self.current_player.name]['action_points'] = self.current_player.action_points
+        characters[self.current_player.name]['str'] = self.current_player.strengh
+        characters[self.current_player.name]['end'] = self.current_player.endurance
+        characters[self.current_player.name]['arm_head'] = self.current_player.arm_head
+        characters[self.current_player.name]['arm_torso'] = self.current_player.arm_torso
+        characters[self.current_player.name]['arm_hands'] = self.current_player.arm_hands
+        characters[self.current_player.name]['arm_legs'] = self.current_player.arm_legs
+        characters[self.current_player.name]['weapon'] = self.current_player.weapon
+        characters[self.current_player.name]['inv_1'] = self.current_player.inv_1
+        characters[self.current_player.name]['inv_2'] = self.current_player.inv_2
+        characters[self.current_player.name]['inv_3'] = self.current_player.inv_3
+        characters[self.current_player.name]['inv_4'] = self.current_player.inv_4
+        characters[self.current_player.name]['exp'] = self.current_player.exp
+        characters[self.current_player.name]['level'] = self.current_player.level
+        characters[self.current_player.name]['current_map'] = self.current_player.current_map
+
+        pickle.dump(characters, open("resources/char", "wb"), -1)
+
+        self.updatable_objects.append(self)
+
+    def start_new_level(self):
+
+        characters = pickle.load(open("resources/char", "rb"))
+
+        game_instance = GameInstance([self.engine.right_bar,
+                                            self.engine.left_bar],
+                                            self.current_player.name,
+                                            self.engine,
+                                            characters[self.current_player.name])
+
+        self.engine.change_scene(game_instance)
+
+    def update(self, key):
+
+        if key == " ":
+            self.start_new_level()

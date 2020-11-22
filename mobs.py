@@ -23,8 +23,8 @@ class Rat(Character):
         global rat_names1, rat_names2
         self.short_name = random.choice(rat_names1) + random.choice(rat_names2)
         self.name = self.short_name + " the Rat"
-        self.endurance = random.randint(7, 10)
-        self.health = random.randint(7, 12)
+        self.endurance = random.randint(3, 6)
+        self.health = random.randint(4, 10)
         self.melee_skill = random.randint(15, 25)
         self.distance_to_player = 255
         self.update_stats()
