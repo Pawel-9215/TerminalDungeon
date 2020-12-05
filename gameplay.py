@@ -75,8 +75,18 @@ class GameInstance(game_control.Scene):
         scene = DumpOrEquip([self.engine.popup_screen], "Dump or Equip?", self.engine, self, self.current_player, key)
         self.engine.change_scene(scene)
 
+    def check_levelup(self):
+        # check if player accumulater required exp points
+        if self.current_player.exp >= self.current_player.next_level:
+            # set new exp target
+            self.current_player.next_level += int(self.current_player.next_level*1.2)
+            # invoke levelup scene
+        else:
+            pass
+
     def update(self, key):
         self.dijkstra_map()
+        self.check_levelup()
 
     def check_level_end(self):
         if isinstance(self.grid.grid[self.current_player.y][self.current_player.x].pickable, world_static.LevelEnd):
