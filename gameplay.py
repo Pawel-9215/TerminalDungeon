@@ -174,6 +174,10 @@ class CharacterSheet:
         center_y = int(self.window_y / 2)
         center_x = int(self.window_x / 2)
 
+        self.window.addstr(0, 0, 
+                            "EXP:"+str(self.game_instance.current_player.exp)+
+                            "/"+
+                            str(self.game_instance.current_player.next_level))
         self.window.addstr(min_y, center_x - 3, "Hp:" + str(self.game_instance.current_player.current_health) + "/" +
                            str(self.game_instance.current_player.health))
         self.window.addstr(2, min_x, "Mel:" + str(self.game_instance.current_player.melee_skill))

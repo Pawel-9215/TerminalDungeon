@@ -28,6 +28,7 @@ class Rat(Character):
         self.melee_skill = random.randint(15, 25)
         self.distance_to_player = 255
         self.update_stats()
+        self.EXP_value = 10
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right", "stop"]
@@ -63,6 +64,7 @@ class RatWarrior(Character):
         self.melee_skill = random.randint(26, 32)
         self.distance_to_player = 255
         self.update_stats()
+        self.EXP_value = 20
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right", "stop"]
@@ -98,6 +100,7 @@ class Goblin(Character):
         self.melee_skill = random.randint(26, 34)
         self.distance_to_player = 255
         self.update_stats()
+        self.EXP_value = 45
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right", "stop", "stop", "stop"]

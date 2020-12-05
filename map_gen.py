@@ -29,13 +29,12 @@ def generate_map(game_map):
         start_dir = "left"
     else:
         start_dir = "right"
-
     print(start_dir)
     current_cell = [y_start, x_start]
 
     # game_map[current_cell[0]][current_cell[1]] = " "
 
-    for i in range(iterations):
+    for _ in range(iterations):
         current_cell = [y_start, x_start]
         while current_cell[0] > y_margin:
 
@@ -98,7 +97,7 @@ def generate_map_ca(y_s, x_s, alive_chance=45, steps=1):
             else:
                 game_map[y][x] = " "
 
-    for i in range(steps):
+    for _ in range(steps):
         game_map = simulation_step(game_map)
 
     game_map = generate_map(game_map)
