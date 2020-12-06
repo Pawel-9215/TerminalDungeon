@@ -34,14 +34,14 @@ class LevelUpScene(game_control.Scene):
                     "+",
                     "add_health",
                     self.change_parameter,
-                    ["health", self.current_player.health, 1, 1, self.prev_health])
+                    ["health",1, 1, self.prev_health])
         health_sub = ui.button(self.windows[0],
                     self.start_pos[0]+4,
                     self.start_pos[1],
                     "-",
                     "substract_health",
                     self.change_parameter,
-                    ["health", self.current_player.health, -1, -1, self.prev_health])
+                    ["health",-1, -1, self.prev_health])
 
         self.renderable_objects.append(health_add)
         self.renderable_objects.append(health_sub)
@@ -49,9 +49,9 @@ class LevelUpScene(game_control.Scene):
         self.menu_buttons.append(health_sub)
 
 
-    def change_parameter(self, par_name, parameter, cost, amount, min):
-        if cost <= self.available_skillpoints and parameter+amount >= min:
-            parameter = parameter + amount
+    def change_parameter(self, par_name, cost, amount, min):
+        if cost <= self.available_skillpoints and self.current_player.health+amount >= min:
+            parameter += amount
             self.available_skillpoints -= cost
 
         if par_name == "health":
