@@ -11,6 +11,7 @@ import ui
 import combat
 import map_populator
 import pickle
+import levelup
 
 
 class GameInstance(game_control.Scene):
@@ -85,6 +86,12 @@ class GameInstance(game_control.Scene):
             # bring back health to max
             self.current_player.current_health = self.current_player.health
             # invoke levelup scene
+            levelup_ui = levelup.LevelUpScene([self.engine.full_screen],
+                                        "Level Up!",
+                                        self.engine,
+                                        self,
+                                        self.current_player)
+            self.engine.change_scene(levelup_ui)
         else:
             pass
 
