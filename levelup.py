@@ -12,13 +12,16 @@ class LevelUpScene(game_control.Scene):
         self.available_skillpoints = 10
 
         #character old values
-
         self.prev_health = player.health
+
+        self.parameters = Parameters(windows[0], self.current_player, self)
         self.print_content()
 
     def print_content(self):
         
         self.updatable_objects.append(self)
+        self.renderable_objects.append(self.parameters)
+
         welcome_lab = ui.Label(self.windows[0], 
                                 "You reached new level!", 
                                 self.start_pos[0],
@@ -65,13 +68,15 @@ class LevelUpScene(game_control.Scene):
         self.button_toggle(key)
 
 class Parameters:
-    def __init__(self, window, player, parameters):
+    def __init__(self, window, player: player.Player, levelup: LevelUpScene):
         self.window = window
         self.current_player = player
+        self.levelupscene = levelup
 
     def draw(self):
-        for parameter in Parameters:
-            self.window
+        self.window.addstr(3, 6, "Available skillpoints: " + str(self.levelupscene.available_skillpoints))
+        self.window.addstr(5, 6, "Health: " + str(self.current_player.health))
+        self.window.addstr(8, 6, "Melee: " + str(self.current_player.melee_skill))
 
     def update(self):
         pass
