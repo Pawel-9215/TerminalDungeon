@@ -78,8 +78,12 @@ class GameInstance(game_control.Scene):
     def check_levelup(self):
         # check if player accumulater required exp points
         if self.current_player.exp >= self.current_player.next_level:
+            # increase player's level
+            self.current_player.level += 1
             # set new exp target
             self.current_player.next_level += int(self.current_player.next_level*1.2)
+            # bring back health to max
+            self.current_player.current_health = self.current_player.health
             # invoke levelup scene
         else:
             pass
