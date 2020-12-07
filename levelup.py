@@ -1,6 +1,7 @@
 import game_control
 import player
 import ui
+import pickle
 
 
 class LevelUpScene(game_control.Scene):
@@ -129,6 +130,16 @@ class LevelUpScene(game_control.Scene):
         self.renderable_objects.append(end_sub)
         self.menu_buttons.append(end_sub)
 
+        confirm_button = ui.button(self.windows[0],
+                                   self.start_pos[0]+18,
+                                   self.start_pos[1],
+                                   "Confirm",
+                                   "confirm",
+                                   self.confirm,
+                                   [])
+        self.renderable_objects.append(confirm_button)
+        self.menu_buttons.append(confirm_button)
+
     def change_parameter(self, par_name, cost, amount, minimum):
 
         if par_name == "health":
@@ -142,8 +153,18 @@ class LevelUpScene(game_control.Scene):
                 self.available_skillpoints -= cost
 
         elif par_name == "ap":
-            if cost <= self.available_skillpoints and self.current_player.melee_skill + amount >= minimum:
-                self.current_player.melee_skill += amount
+            if cost <= self.available_skillpoints and self.current_player.action_points + amount >= minimum:
+                self.current_player.action_points += amount
+                self.available_skillpoints -= cost
+
+        elif par_name == "str":
+            if cost <= self.available_skillpoints and self.current_player.strengh + amount >= minimum:
+                self.current_player.strengh += amount
+                self.available_skillpoints -= cost
+
+        elif par_name == "end":
+            if cost <= self.available_skillpoints and self.current_player.endurance + amount >= minimum:
+                self.current_player.endurance += amount
                 self.available_skillpoints -= cost
 
     def confirm(self):
@@ -151,7 +172,15 @@ class LevelUpScene(game_control.Scene):
             # skill points left!
             print("skill points left")
         else:
-            pass
+            characters = pickle.load(open("resources/char", "rb"))
+
+            characters[self.current_player.name]['health'] = self.current_player.health
+            characters[self.current_player.name]['melee'] = self.current_player.melee_skill
+            characters[self.current_player.name]['action_points'] = self.current_player.action_points
+            characters[self.current_player.name]['str'] = self.current_player.strengh
+            characters[self.current_player.name]['end'] = self.current_player.endurance
+
+            pickle.dump(characters, open("resources/char", "wb"), -1)
 
     def update(self, key):
         self.button_toggle(key)
