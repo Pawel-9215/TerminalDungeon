@@ -456,6 +456,7 @@ class New_level(game_control.Scene):
         characters[self.current_player.name]['inv_4'] = self.current_player.inv_4
         characters[self.current_player.name]['exp'] = self.current_player.exp
         characters[self.current_player.name]['level'] = self.current_player.level
+        characters[self.current_player.name]['next_level'] = self.current_player.next_level
         characters[self.current_player.name]['current_map'] = self.current_player.current_map
 
         pickle.dump(characters, open("resources/char", "wb"), -1)

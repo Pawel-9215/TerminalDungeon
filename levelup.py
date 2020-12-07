@@ -1,3 +1,4 @@
+from __future__ import annotations
 import game_control
 import player
 import ui
@@ -10,6 +11,7 @@ class LevelUpScene(game_control.Scene):
         self.escape = escape
         self.current_player = current_player
         self.start_pos = [2, 4]
+        self.warning_label = None
 
         self.available_skillpoints = 10
 
@@ -117,7 +119,7 @@ class LevelUpScene(game_control.Scene):
                             "+",
                             "add_end",
                             self.change_parameter,
-                            ["end", 1, 1, self.prev_str])
+                            ["end", 1, 1, self.prev_end])
         self.renderable_objects.append(end_add)
         self.menu_buttons.append(end_add)
         end_sub = ui.button(self.windows[0],
@@ -126,12 +128,19 @@ class LevelUpScene(game_control.Scene):
                             "-",
                             "sub_end",
                             self.change_parameter,
-                            ["end", -1, -1, self.prev_str])
+                            ["end", -1, -1, self.prev_end])
         self.renderable_objects.append(end_sub)
         self.menu_buttons.append(end_sub)
 
+        self.warning_label = ui.Label(self.windows[0],
+                                      "",
+                                      self.start_pos[0] + 17,
+                                      self.start_pos[1],
+                                      )
+        self.renderable_objects.append(self.warning_label)
+
         confirm_button = ui.button(self.windows[0],
-                                   self.start_pos[0]+18,
+                                   self.start_pos[0] + 18,
                                    self.start_pos[1],
                                    "Confirm",
                                    "confirm",
@@ -139,6 +148,8 @@ class LevelUpScene(game_control.Scene):
                                    [])
         self.renderable_objects.append(confirm_button)
         self.menu_buttons.append(confirm_button)
+
+        self.menu_buttons[self.focused_item].is_focused = True
 
     def change_parameter(self, par_name, cost, amount, minimum):
 
@@ -167,10 +178,14 @@ class LevelUpScene(game_control.Scene):
                 self.current_player.endurance += amount
                 self.available_skillpoints -= cost
 
+        if self.available_skillpoints == 0:
+            self.warning_label.content = ""
+
     def confirm(self):
         if self.available_skillpoints > 0:
             # skill points left!
             print("skill points left")
+            self.warning_label.content = "You must use all skill points!"
         else:
             characters = pickle.load(open("resources/char", "rb"))
 
@@ -179,8 +194,23 @@ class LevelUpScene(game_control.Scene):
             characters[self.current_player.name]['action_points'] = self.current_player.action_points
             characters[self.current_player.name]['str'] = self.current_player.strengh
             characters[self.current_player.name]['end'] = self.current_player.endurance
+            characters[self.current_player.name]['arm_head'] = self.current_player.arm_head
+            characters[self.current_player.name]['arm_torso'] = self.current_player.arm_torso
+            characters[self.current_player.name]['arm_hands'] = self.current_player.arm_hands
+            characters[self.current_player.name]['arm_legs'] = self.current_player.arm_legs
+            characters[self.current_player.name]['weapon'] = self.current_player.weapon
+            characters[self.current_player.name]['inv_1'] = self.current_player.inv_1
+            characters[self.current_player.name]['inv_2'] = self.current_player.inv_2
+            characters[self.current_player.name]['inv_3'] = self.current_player.inv_3
+            characters[self.current_player.name]['inv_4'] = self.current_player.inv_4
+            characters[self.current_player.name]['exp'] = self.current_player.exp
+            characters[self.current_player.name]['level'] = self.current_player.level
+            characters[self.current_player.name]['next_level'] = self.current_player.next_level
+            characters[self.current_player.name]['current_map'] = self.current_player.current_map
 
             pickle.dump(characters, open("resources/char", "wb"), -1)
+
+            self.engine.change_scene(self.escape)
 
     def update(self, key):
         self.button_toggle(key)

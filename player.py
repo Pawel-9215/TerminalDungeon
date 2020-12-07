@@ -161,7 +161,7 @@ class Player(Character):
         self.defence_points = round(self.endurance / 10)
         self.exp = character_sheet["exp"]
         self.level = character_sheet["level"]
-        self.next_level = 20
+        self.next_level = character_sheet["next_level"]
 
         # clothes:
 
