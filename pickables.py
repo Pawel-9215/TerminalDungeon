@@ -29,6 +29,7 @@ class HealthPotion(Pickable):
         self.glyph_inverted = True
         self.glyph_color = "Red"
         self.name = "HealthPotion"
+        self.consumable = True
 
 class Helmet(Pickable):
     def __init__(self):

@@ -27,7 +27,9 @@ class GameInstance(game_control.Scene):
         self.mobs = []
         self.grid = None
         self.current_player = None
+        self.grid_map = None
         self.load_map("Test_map_1")
+        
 
     def load_map(self, map_name: "str"):
         """
@@ -41,8 +43,8 @@ class GameInstance(game_control.Scene):
                                             self)
         self.grid.grid[self.grid.player_y][self.grid.player_x].occupation = self.current_player
 
-        grid_map = SituationMap(self.GP_window, self.grid, self)
-        self.renderable_objects.append(grid_map)
+        self.grid_map = SituationMap(self.GP_window, self.grid, self)
+        self.renderable_objects.append(self.grid_map)
         character_info = CharacterSheet(self.UI_window, self)
         self.renderable_objects.append(character_info)
         self.secondary_update.append(self.current_player)
@@ -254,6 +256,8 @@ class SituationMap:
         self.grid = grid
         self.window_y, self.window_x = window.getmaxyx()
         self.game_instance = game_instance
+        self.info_label = ""
+        self.info_counter = 0
         self.colors = {False:
                            {"Red": curses.color_pair(4),
                             "White": curses.color_pair(6),
@@ -283,6 +287,8 @@ class SituationMap:
         center_y = int(self.window_y / 2)
         center_x = int(self.window_x / 2)
 
+        self.window.addstr(max_y, min_x, self.info_label, self.colors[True]["Red"])
+
         # get beginning
         diff_y = self.grid.player_y - center_y
         diff_x = self.grid.player_x - center_x
@@ -310,6 +316,10 @@ class SituationMap:
                     # draw static map elements first, then dynamic objects like player
 
         # self.window.addstr(center_y, center_x, self.game_instance.current_player.glyph)
+        if self.info_label != "":
+            self.info_counter += 1
+        if self.info_counter >= 2:
+            self.info_label = ""
 
 
 class DumpOrEquip(game_control.Scene):

@@ -311,6 +311,7 @@ class Player(Character):
                 self.current_health = self.health
             else:
                 self.current_health += self.current_map
+            self.game_instance.grid_map.info_label = "Health potion brought back "+str(self.current_map)+" of Health"
         else:
 
         # check if default body part is available:
@@ -326,6 +327,7 @@ class Player(Character):
             elif self.inv_4 is None:
                 self.inv_4 = object_to_pick
             else:
+                self.game_instance.grid_map.info_label = "No place in inventory. Throw something out"
                 return "No place in inventory. Throw something out"
 
         self.world_map.grid[self.y][self.x].pickable = "free"
