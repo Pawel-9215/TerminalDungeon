@@ -305,19 +305,27 @@ class Player(Character):
     def pickup(self):
 
         object_to_pick = self.world_map.grid[self.y][self.x].pickable
+        print(object_to_pick)
+        if object_to_pick.consumable == True:
+            if self.current_health + self.current_map >= self.health:
+                self.current_health = self.health
+            else:
+                self.current_health += self.current_map
+        else:
 
         # check if default body part is available:
 
-        if self.get_bodypart_state(object_to_pick.destination) is None:
-            self.set_bodypart_state(object_to_pick.destination, object_to_pick)
-        elif self.inv_1 is None:
-            self.inv_1 = object_to_pick
-        elif self.inv_2 is None:
-            self.inv_2 = object_to_pick
-        elif self.inv_3 is None:
-            self.inv_3 = object_to_pick
-        elif self.inv_4 is None:
-            self.inv_4 = object_to_pick
-        else:
-            return "No place in inventory. Throw something out"
+            if self.get_bodypart_state(object_to_pick.destination) is None:
+                self.set_bodypart_state(object_to_pick.destination, object_to_pick)
+            elif self.inv_1 is None:
+                self.inv_1 = object_to_pick
+            elif self.inv_2 is None:
+                self.inv_2 = object_to_pick
+            elif self.inv_3 is None:
+                self.inv_3 = object_to_pick
+            elif self.inv_4 is None:
+                self.inv_4 = object_to_pick
+            else:
+                return "No place in inventory. Throw something out"
+
         self.world_map.grid[self.y][self.x].pickable = "free"

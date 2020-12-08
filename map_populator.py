@@ -11,6 +11,7 @@ def level_contents(map_no: int):
                    "pickables": {"Dagger": 2,
                                  "Mace": 4,
                                  "Helmet": 2,
+                                 "HealthPotion": 1,
                                  },
                    },
 
@@ -21,6 +22,7 @@ def level_contents(map_no: int):
                    "pickables": {"Dagger": 3,
                                  "Mace": 5,
                                  "Helmet": 2,
+                                 "HealthPotion": 3,
                                  },
                    },
                3: {"creatures": {"Rat": 18,
@@ -30,6 +32,7 @@ def level_contents(map_no: int):
                    "pickables": {"Dagger": 3,
                                  "Mace": 5,
                                  "Helmet": 3,
+                                 "HealthPotion": 4,
                                  },
                    }
                }
@@ -44,5 +47,6 @@ def population_dictionary():
                   "Dagger": pickables.Dagger,
                   "Mace": pickables.Mace,
                   "Helmet": pickables.Helmet,
+                  "HealthPotion": pickables.HealthPotion,
                   }
     return dictionary
