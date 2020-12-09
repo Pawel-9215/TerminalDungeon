@@ -18,6 +18,18 @@ class CombatScreen(game_control.Scene):
         self.escape = escape
         self.player_sheet = CombatPlayerStats(windows[0], self.current_player, self)
         self.enemy_sheet = CombatEnemyStats(windows[0], self.current_enemy, self)
+
+        #mods from cards
+        #player mods:
+        self.player_defence_mod = 0
+        self.player_attack_mod = 0
+        self.player_mod_clock = 0
+
+        #enemy mods:
+        self.enemy_defence_mod = 0
+        self.player_attack_mod = 0
+        self.enemy_mod_clock = 0
+
         self.situation_report = SitRaport(self.windows[0], self)
         self.button_names = ["Attack", "Defend", "Card 1", "Card 2", "Card 3", "End Turn"]
         self.player_defences = 0
