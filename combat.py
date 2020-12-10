@@ -24,11 +24,13 @@ class CombatScreen(game_control.Scene):
         self.player_defence_mod = 0
         self.player_attack_mod = 0
         self.player_mod_clock = 0
+        self.player_poison_clock = 0
 
         #enemy mods:
         self.enemy_defence_mod = 0
         self.player_attack_mod = 0
         self.enemy_mod_clock = 0
+        self.enemy_poison_clock = 0
 
         self.situation_report = SitRaport(self.windows[0], self)
         self.button_names = ["Attack", "Defend", "Card 1", "Card 2", "Card 3", "End Turn"]
@@ -46,6 +48,35 @@ class CombatScreen(game_control.Scene):
         }
 
         self.draw_content()
+
+    def heal(self, who: player.Character, points):
+        #this fction can be used by healing cards
+        if points >= who.current_health:
+            who.current_health = who.health
+        else:
+            who.current_health += points
+            
+    def poison(self, who, how_long):
+        #sets character in poisoned mode
+
+        if who == self.current_player:
+            self.player_poison_clock = how_long
+
+        elif who == self.current_enemy:
+            self.enemy_poison_clock = how_long
+
+    def calculate_turn_buffs(self):
+        #this function is to caluclate uffs and debuffs in between rounds
+        if self.player_poison_clock > 0:
+            self.current_player.current_health -= 1
+            self.player_poison_clock -= 1
+        if self.enemy_poison_clock > 0:
+            self.current_enemy.health -= 1
+            self.enemy_poison_clock -= 1
+
+        
+
+
 
     def player_win(self):
         self.current_player.exp += self.current_enemy.EXP_value
@@ -67,6 +98,7 @@ class CombatScreen(game_control.Scene):
         self.enemy_turn()
         self.player_AP = self.current_player.action_points
         self.player_defences = 0
+        self.calculate_turn_buffs()
 
     def enemy_turn(self):
         self.engine.renderer.renderpass()
