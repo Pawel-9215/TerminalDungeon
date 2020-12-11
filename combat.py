@@ -73,7 +73,10 @@ class CombatScreen(game_control.Scene):
         if self.enemy_poison_clock > 0:
             self.current_enemy.health -= 1
             self.enemy_poison_clock -= 1
-
+        if self.player_mod_clock > 0:
+            self.player_mod_clock -= 1
+        if self.enemy_mod_clock > 0:
+            self.enemy_mod_clock -= 1
         
 
 
