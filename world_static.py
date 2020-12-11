@@ -8,7 +8,7 @@ class Cell:
         self.floor_glyph = floor_glyph
         self.occupation = occupation
         self.pickable = pickable
-        self.distance_to_player = 255 
+        self.distance_to_player = 255
         self.y = y
         self.x = x
 

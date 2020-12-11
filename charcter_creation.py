@@ -200,7 +200,8 @@ class CharacterCreation(game_control.Scene):
                     "exp": 0,
                     "level": 1,
                     "next_level": 20,
-                    "current_map": 1
+                    "current_map": 1,
+                    "deck": [],
                 }
                 characters[self.character_name] = character
                 pickle.dump(characters, open("resources/char", "wb"), -1)

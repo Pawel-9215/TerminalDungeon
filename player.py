@@ -37,6 +37,7 @@ class Character:
         self.endurance = 20
         self.hit_points = round(self.strengh / 10)
         self.defence_points = round(self.endurance / 10)
+        self.deck = []
 
         # clothes:
 
@@ -180,6 +181,9 @@ class Player(Character):
         self.inv_2 = character_sheet["inv_2"]
         self.inv_3 = character_sheet["inv_3"]
         self.inv_4 = character_sheet["inv_4"]
+
+        # deck:
+        self.deck = character_sheet["deck"]
 
         # "save game"
 

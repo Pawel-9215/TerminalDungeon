@@ -207,6 +207,7 @@ class LevelUpScene(game_control.Scene):
             characters[self.current_player.name]['level'] = self.current_player.level
             characters[self.current_player.name]['next_level'] = self.current_player.next_level
             characters[self.current_player.name]['current_map'] = self.current_player.current_map
+            characters[self.current_player.name]['deck'] = self.current_player.deck
 
             pickle.dump(characters, open("resources/char", "wb"), -1)
 

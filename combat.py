@@ -3,6 +3,7 @@ import player
 import ui
 import random
 import curses
+import cards
 
 
 class CombatScreen(game_control.Scene):
@@ -19,16 +20,19 @@ class CombatScreen(game_control.Scene):
         self.player_sheet = CombatPlayerStats(windows[0], self.current_player, self)
         self.enemy_sheet = CombatEnemyStats(windows[0], self.current_enemy, self)
 
-        #mods from cards
-        #player mods:
+        # mods from cards
+        # each player should be able to have
+        # only one mod at a time
+
+        # player mods:
         self.player_defence_mod = 0
         self.player_attack_mod = 0
         self.player_mod_clock = 0
         self.player_poison_clock = 0
 
-        #enemy mods:
+        # enemy mods:
         self.enemy_defence_mod = 0
-        self.player_attack_mod = 0
+        self.enemy_attack_mod = 0
         self.enemy_mod_clock = 0
         self.enemy_poison_clock = 0
 
@@ -49,15 +53,17 @@ class CombatScreen(game_control.Scene):
 
         self.draw_content()
 
+    # card possibilities:
+
     def heal(self, who: player.Character, points):
-        #this fction can be used by healing cards
+        # this function can be used by healing cards
         if points >= who.current_health:
             who.current_health = who.health
         else:
             who.current_health += points
-            
+
     def poison(self, who, how_long):
-        #sets character in poisoned mode
+        # sets character in poisoned mode
 
         if who == self.current_player:
             self.player_poison_clock = how_long
@@ -65,8 +71,13 @@ class CombatScreen(game_control.Scene):
         elif who == self.current_enemy:
             self.enemy_poison_clock = how_long
 
+    def deal_card(self, card: cards.Card, dealer: player.Character):
+        pass
+
+    # end of card functions
+
     def calculate_turn_buffs(self):
-        #this function is to caluclate uffs and debuffs in between rounds
+        # this function is to caluclate uffs and debuffs in between rounds
         if self.player_poison_clock > 0:
             self.current_player.current_health -= 1
             self.player_poison_clock -= 1
@@ -75,11 +86,14 @@ class CombatScreen(game_control.Scene):
             self.enemy_poison_clock -= 1
         if self.player_mod_clock > 0:
             self.player_mod_clock -= 1
+        elif self.player_mod_clock == 0:
+            self.player_attack_mod = 0
+            self.player_defence_mod = 0
         if self.enemy_mod_clock > 0:
             self.enemy_mod_clock -= 1
-        
-
-
+        elif self.enemy_mod_clock == 0:
+            self.enemy_attack_mod = 0
+            self.enemy_defence_mod = 0
 
     def player_win(self):
         self.current_player.exp += self.current_enemy.EXP_value
@@ -91,7 +105,7 @@ class CombatScreen(game_control.Scene):
 
     def player_loose(self):
         self.situation_report.generate_line("YOU DIED!")
-        self.engine.renderer.renderpass
+        self.engine.renderer.renderpass()
         curses.napms(1000)
         self.engine.change_scene(self.engine.base_menu)
 
@@ -212,6 +226,7 @@ class CombatScreen(game_control.Scene):
                                      + roll_d4
                 else:
                     attack_strengh = self.current_player.hit_points + roll_d4
+                attack_strengh += self.player_attack_mod
 
                 # enemys defence:
                 if self.enemy_defences > 0:
@@ -221,6 +236,7 @@ class CombatScreen(game_control.Scene):
 
                 else:
                     enemy_defence = self.current_enemy.defence_points + bodypart_armour[body_target]
+                enemy_defence += self.enemy_defence_mod
 
                 text = self.current_player.short_name + " hits for: " + str(attack_strengh) + " " + \
                        self.current_enemy.short_name + " defends: " + str(enemy_defence)
