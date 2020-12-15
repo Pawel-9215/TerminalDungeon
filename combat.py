@@ -62,7 +62,7 @@ class CombatScreen(game_control.Scene):
         else:
             who.current_health += points
 
-    def poison(self, who, how_long):
+    def poison(self, who: player.Character, how_long):
         # sets character in poisoned mode
 
         if who == self.current_player:
@@ -71,8 +71,20 @@ class CombatScreen(game_control.Scene):
         elif who == self.current_enemy:
             self.enemy_poison_clock = how_long
 
+    def card_attack(self, who: player.Character, card: cards.Card):
+        card_str = card.attack
+        defence = who.endurance
+        blow = card_str-defence
+        if blow > 0:
+            who.current_health -= blow
+
     def deal_card(self, card: cards.Card, dealer: player.Character):
-        pass
+        card_effect = {"attack":self.card_attack,
+                    "heal":self.heal,
+                    "poison":self.poison}
+
+        if dealer is self.current_player:
+            pass
 
     # end of card functions
 

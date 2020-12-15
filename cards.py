@@ -4,12 +4,16 @@ from player import Character
 
 class Card(Pickable):
     def __init__(self):
-        super(self).__init__()
+        super().__init__()
         self.destination = "deck"
         self.attack = 0
         self.defence = 0
         self.is_instant = True
         self.ignore_defence = False
+        self.AP_cost = 1
+
+    def on_deal(self):
+        return "attack"
 
 
 # place to program collectable cards:
@@ -24,3 +28,4 @@ class Fireball(Card):
         self.attack = 3
         self.is_instant = True
         self.ignore_defence = False
+        self.AP_cost = 2
