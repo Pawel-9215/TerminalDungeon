@@ -6,14 +6,14 @@ class Card(Pickable):
     def __init__(self):
         super().__init__()
         self.destination = "deck"
-        self.attack = 0
-        self.defence = 0
-        self.is_instant = True
-        self.ignore_defence = False
         self.AP_cost = 1
+        self.description = "Card Description"
 
     def on_deal(self):
-        return "attack"
+        return {"attack":3}
+
+    def print_description(self):
+        return self.description
 
 
 # place to program collectable cards:
@@ -25,7 +25,8 @@ class Fireball(Card):
         self.glyph_inverted = True
         self.glyph_color = "Magenta"
         self.name = "Fireball"
-        self.attack = 3
-        self.is_instant = True
-        self.ignore_defence = False
         self.AP_cost = 2
+        self.description = "Ball of fire appears and is thrusted\n"+"torwards the enemy"
+
+    def on_deal(self):
+        return {"attack":3}

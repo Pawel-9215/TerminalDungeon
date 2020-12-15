@@ -19,6 +19,13 @@ class CombatScreen(game_control.Scene):
         self.escape = escape
         self.player_sheet = CombatPlayerStats(windows[0], self.current_player, self)
         self.enemy_sheet = CombatEnemyStats(windows[0], self.current_enemy, self)
+        
+        # card data
+        self.player_unused = self.current_player.deck
+        random.shuffle(self.player_unused)
+        self.player_hand = []
+        self.deal_hand()
+        self.player_used = []
 
         # mods from cards
         # each player should be able to have
@@ -71,20 +78,36 @@ class CombatScreen(game_control.Scene):
         elif who == self.current_enemy:
             self.enemy_poison_clock = how_long
 
-    def card_attack(self, who: player.Character, card: cards.Card):
-        card_str = card.attack
+    def card_attack(self, who: player.Character, how_hard):
+        card_str = how_hard
         defence = who.endurance
         blow = card_str-defence
         if blow > 0:
             who.current_health -= blow
+
+            
+    def deal_hand(self):
+        if len(self.player_hand) < 3 and len(self.player_unused) > 0:
+            self.player_hand.append(self.player_unused.pop(0))
+            self.deal_hand()
+        else:
+            return 0
 
     def deal_card(self, card: cards.Card, dealer: player.Character):
         card_effect = {"attack":self.card_attack,
                     "heal":self.heal,
                     "poison":self.poison}
 
+        #check if dealer have enough AP:
+
         if dealer is self.current_player:
-            pass
+            if self.player_AP >= card.AP_cost:
+                self.situation_report.generate_line(self.current_player.short_name + " is dealing " + card.name)
+                card_effects = card.on_deal()
+                for effect in card_effects:
+                    card_effect[effect](self.current_enemy, card_effects[effect])
+            else:
+                pass
 
     # end of card functions
 
@@ -128,6 +151,7 @@ class CombatScreen(game_control.Scene):
         self.player_AP = self.current_player.action_points
         self.player_defences = 0
         self.calculate_turn_buffs()
+        self.deal_hand
 
     def enemy_turn(self):
         self.engine.renderer.renderpass()

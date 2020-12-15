@@ -316,6 +316,9 @@ class Player(Character):
             else:
                 self.current_health += self.current_map
             self.game_instance.grid_map.info_label = "Health potion brought back "+str(self.current_map)+" of Health"
+        elif object_to_pick.destination == "deck":
+            self.deck.append(object_to_pick)
+
         else:
 
         # check if default body part is available:

@@ -345,7 +345,7 @@ class DumpOrEquip(game_control.Scene):
                          "arm_torso": "Defence: " + str(obj_in_question.defence_points),
                          "arm_hands": "Defence: " + str(obj_in_question.defence_points),
                          "arm_legs": "Defence: " + str(obj_in_question.defence_points),
-                         "consumable": "Health: +" + str(obj_in_question.health),
+                         "deck": "AP cost: +" + str(obj_in_question.AP_cost),
                          }
         main_label = \
             "[" + obj_in_question.name + "] " + relevant_char[obj_in_question.destination]
@@ -389,12 +389,12 @@ class DumpOrEquip(game_control.Scene):
     def equip(self):
         item = self.current_player.get_inventory_state(self.item_slot)
         bodypart = self.current_player.get_inventory_state(self.item_slot).destination
-        if self.current_player.get_bodypart_state(item.destination) is None:
+        if self.current_player.get_bodypart_wstate(item.destination) is None:
             self.current_player.set_bodypart_state(bodypart, item)
         else:
             item_to_swap = self.current_player.get_bodypart_state(item.destination)
             self.current_player.set_bodypart_state(bodypart, item)
-            self.current_player.set_inventory_state(self.item_slot, item_to_swap)
+            self.current_player.set_iwnventory_state(self.item_slot, item_to_swap)
 
         self.engine.change_scene(self.escape)
 
