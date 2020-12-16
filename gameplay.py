@@ -241,6 +241,8 @@ class CharacterSheet:
 
             self.window.addstr(12, max_x - (len("4:[" + str(self.game_instance.current_player.inv_4) + "]")),
                                "4:[" + str(self.game_instance.current_player.inv_4) + "]")
+			deck_info = "5: Cards in deck ["+ str(len(self.game_instance.current_player.deck)) +. "]"
+			self.window.addstr(13, int(center_x-(len(deck_info)/2)), deck_info)
 
     def update(self, key):
         self.draw(True)

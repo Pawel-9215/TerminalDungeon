@@ -1,5 +1,6 @@
 # Data with populate information and balancing
 import pickables
+import cards
 import mobs
 
 
@@ -22,7 +23,8 @@ def level_contents(map_no: int):
                    "pickables": {"Dagger": 3,
                                  "Mace": 5,
                                  "Helmet": 2,
-                                 "HealthPotion": 3,
+                                 "HealthPotion": 3
+                                 "Fireball": 2,
                                  },
                    },
                3: {"creatures": {"Rat": 18,
@@ -48,5 +50,6 @@ def population_dictionary():
                   "Mace": pickables.Mace,
                   "Helmet": pickables.Helmet,
                   "HealthPotion": pickables.HealthPotion,
+                  "Fireball": cards.Fireball,
                   }
     return dictionary

@@ -205,6 +205,8 @@ class Player(Character):
                 self.game_instance.ask_Dump_or_Equip(key)
             elif key == "4" and self.inv_4 is not None:
                 self.game_instance.ask_Dump_or_Equip(key)
+			elif key == "5":
+				print("open card inventory")
             else:
                 pass
 

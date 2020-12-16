@@ -52,9 +52,9 @@ class CombatScreen(game_control.Scene):
         self.buttons_on_pressed = {
             "Attack": [self.player_attack, []],
             "Defend": [self.player_defend, []],
-            "Card 1": [print, ["Card 1"]],
-            "Card 2": [print, ["Card 2"]],
-            "Card 3": [print, ["Card 3"]],
+            "Card 1": [self.choose_card, [0]],
+            "Card 2": [self.choose_card, [1]],
+            "Card 3": [self.choose_card, [2]],
             "End Turn": [self.end_turn, []],
         }
 
@@ -108,6 +108,13 @@ class CombatScreen(game_control.Scene):
                     card_effect[effect](self.current_enemy, card_effects[effect])
             else:
                 pass
+                
+    def choose_card(self, card_no):
+        if len(self.player_hand) < card_no:
+            # card slot empty - not enough cards in hand
+            self.situation_report.generate_line("Hand slot empty")
+        else:
+            deal_card(self.player_hand[card_no], self.current_player)
 
     # end of card functions
 
@@ -422,14 +429,21 @@ class CombatPlayerStats:
             self.current_player.arm_torso) + "]"
         armour_l2 = "HANDS: [" + str(self.current_player.arm_hands) + "] LEGS: [" + str(
             self.current_player.arm_legs) + "]"
+		
+		card_names = ["", "", ""]
+		for i in range(3):
+			if i<len(self.combat_screen.player_hand):
+				card_names[i] = self.combat_screen.player_hand[i].name
+			else:
+				card_names[i] = "empty"
 
         self.window.addstr(min_y + 7, min_x + 1, ("WEAPON: [" + str(self.current_player.weapon) + "]"))
         self.window.addstr(min_y + 8, min_x + 1, armour_l1)
         self.window.addstr(min_y + 9, min_x + 1, armour_l2)
         self.window.addstr(min_y + 10, min_x + 1, "DECK: [0]")
-        self.window.addstr(min_y + 11, min_x + 1, "HAND: [1: Placeholder,")
-        self.window.addstr(min_y + 12, min_x + 8, "2: Placeholder,")
-        self.window.addstr(min_y + 13, min_x + 8, "3: Placeholder]")
+        self.window.addstr(min_y + 11, min_x + 1, "HAND: [1: "+card_names[0])
+        self.window.addstr(min_y + 12, min_x + 8, "2: "+card_names[1])
+        self.window.addstr(min_y + 13, min_x + 8, "3: "+card_names[2])
 
     def update(self, key):
         pass
