@@ -29,7 +29,6 @@ class GameInstance(game_control.Scene):
         self.current_player = None
         self.grid_map = None
         self.load_map("Test_map_1")
-        
 
     def load_map(self, map_name: "str"):
         """
@@ -50,7 +49,7 @@ class GameInstance(game_control.Scene):
         self.secondary_update.append(self.current_player)
         self.updatable_objects.append(character_info)
         self.secondary_update.append(self)
-        level_label = ui.Label(self.GP_window, "Dungeon level: "+str(self.current_player.current_map), 0, 0)
+        level_label = ui.Label(self.GP_window, "Dungeon level: " + str(self.current_player.current_map), 0, 0)
         self.renderable_objects.append(level_label)
 
         # test_mobs
@@ -84,15 +83,15 @@ class GameInstance(game_control.Scene):
             # increase player's level
             self.current_player.level += 1
             # set new exp target
-            self.current_player.next_level += int(self.current_player.next_level*1.2)
+            self.current_player.next_level += int(self.current_player.next_level * 1.2)
             # bring back health to max
             self.current_player.current_health = self.current_player.health
             # invoke levelup scene
             levelup_ui = levelup.LevelUpScene([self.engine.full_screen],
-                                        "Level Up!",
-                                        self.engine,
-                                        self,
-                                        self.current_player)
+                                              "Level Up!",
+                                              self.engine,
+                                              self,
+                                              self.current_player)
             self.engine.change_scene(levelup_ui)
         else:
             pass
@@ -103,7 +102,8 @@ class GameInstance(game_control.Scene):
 
     def check_level_end(self):
         if isinstance(self.grid.grid[self.current_player.y][self.current_player.x].pickable, world_static.LevelEnd):
-            new_level = New_level([self.engine.full_screen], 'Next Level', self.engine, self.character_sheet, self.current_player)
+            new_level = New_level([self.engine.full_screen], 'Next Level', self.engine, self.character_sheet,
+                                  self.current_player)
             self.engine.change_scene(new_level)
 
     def check_neighbours(self, enemies=True):
@@ -197,10 +197,10 @@ class CharacterSheet:
         center_y = int(self.window_y / 2)
         center_x = int(self.window_x / 2)
 
-        self.window.addstr(0, 0, 
-                            "EXP:"+str(self.game_instance.current_player.exp)+
-                            "/"+
-                            str(self.game_instance.current_player.next_level))
+        self.window.addstr(0, 0,
+                           "EXP:" + str(self.game_instance.current_player.exp) +
+                           "/" +
+                           str(self.game_instance.current_player.next_level))
         self.window.addstr(min_y, center_x - 3, "Hp:" + str(self.game_instance.current_player.current_health) + "/" +
                            str(self.game_instance.current_player.health))
         self.window.addstr(2, min_x, "Mel:" + str(self.game_instance.current_player.melee_skill))
@@ -241,8 +241,8 @@ class CharacterSheet:
 
             self.window.addstr(12, max_x - (len("4:[" + str(self.game_instance.current_player.inv_4) + "]")),
                                "4:[" + str(self.game_instance.current_player.inv_4) + "]")
-			deck_info = "5: Cards in deck ["+ str(len(self.game_instance.current_player.deck)) +. "]"
-			self.window.addstr(13, int(center_x-(len(deck_info)/2)), deck_info)
+            deck_info = "5: Cards in deck [" + str(len(self.game_instance.current_player.deck)) + "]"
+            self.window.addstr(13, int(center_x - (len(deck_info) / 2)), deck_info)
 
     def update(self, key):
         self.draw(True)
@@ -400,6 +400,7 @@ class DumpOrEquip(game_control.Scene):
 
         self.engine.change_scene(self.escape)
 
+
 class New_level(game_control.Scene):
     """
     Scene that shows up between levels
@@ -419,7 +420,7 @@ class New_level(game_control.Scene):
         self.current_player.current_map += 1
 
         line1 = "You are descending further into the caves"
-        line2 = "You are entering level "+str(self.character_sheet["current_map"]+1)
+        line2 = "You are entering level " + str(self.character_sheet["current_map"] + 1)
 
         info1 = ui.Plain_text(self.windows[0],
                               line1,
@@ -429,7 +430,7 @@ class New_level(game_control.Scene):
 
         info2 = ui.Plain_text(self.windows[0],
                               line2,
-                              min_y+1,
+                              min_y + 1,
                               center_x - round(len(line2) / 2)
                               )
 
@@ -440,14 +441,14 @@ class New_level(game_control.Scene):
 
         info3 = ui.Plain_text(self.windows[0],
                               characters[self.current_player.name]['name'],
-                              min_y+3,
+                              min_y + 3,
                               center_x - round(len(characters[self.current_player.name]['name']) / 2)
                               )
 
         info4 = ui.Label(self.windows[0],
-                            "Press Space",
-                            min_y+5,
-                            center_x - round(len("Press Space") / 2))
+                         "Press Space",
+                         min_y + 5,
+                         center_x - round(len("Press Space") / 2))
 
         self.renderable_objects.append(info3)
         self.renderable_objects.append(info4)
@@ -477,18 +478,16 @@ class New_level(game_control.Scene):
         self.updatable_objects.append(self)
 
     def start_new_level(self):
-
         characters = pickle.load(open("resources/char", "rb"))
 
         game_instance = GameInstance([self.engine.right_bar,
-                                            self.engine.left_bar],
-                                            self.current_player.name,
-                                            self.engine,
-                                            characters[self.current_player.name])
+                                      self.engine.left_bar],
+                                     self.current_player.name,
+                                     self.engine,
+                                     characters[self.current_player.name])
 
         self.engine.change_scene(game_instance)
 
     def update(self, key):
-
         if key == " ":
             self.start_new_level()

@@ -2,7 +2,7 @@
 
 # import curses
 # from math import floor
-import ui
+# import ui
 import pickle
 
 
@@ -84,7 +84,7 @@ class Keyboard:
         symbol = chr(key_pressed)
         if symbol in self.uppercase_alphabet:
             symbol = symbol.lower()
-        
+
         if symbol == "w":
             self.last_pressed = "up"
         elif symbol == "s":
@@ -97,13 +97,12 @@ class Keyboard:
             quit()
         else:
             self.last_pressed = symbol
-            
+
     def uppercase_fix(self):
-        
+
         alphabet = "QWERTYUIOPASDFGHJKLZXCVBNM"
         for letter in alphabet:
             self.uppercase_alphabet.append(letter)
-            
 
 
 class Characters:

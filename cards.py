@@ -1,5 +1,4 @@
 from world_static import Pickable
-from player import Character
 
 
 class Card(Pickable):
@@ -10,7 +9,7 @@ class Card(Pickable):
         self.description = "Card Description"
 
     def on_deal(self):
-        return {"attack":3}
+        return {"attack": 3}
 
     def print_description(self):
         return self.description
@@ -26,7 +25,7 @@ class Fireball(Card):
         self.glyph_color = "Magenta"
         self.name = "Fireball"
         self.AP_cost = 2
-        self.description = "Ball of fire appears and is thrusted\n"+"torwards the enemy"
+        self.description = "Ball of fire appears and is thrown\n" + "towards the enemy"
 
     def on_deal(self):
-        return {"attack":3}
+        return {"attack": 3}

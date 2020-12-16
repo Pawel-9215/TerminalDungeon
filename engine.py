@@ -4,7 +4,8 @@ import game_control
 import ui
 import main_menu
 
-class Engine():
+
+class Engine:
     def __init__(self, full_screen: object, left_bar: object, right_bar: object, popup_screen: object):
         self.full_screen = full_screen
         self.left_bar = left_bar
@@ -17,9 +18,8 @@ class Engine():
         self.updater = game_control.Updateque(self)
         self.colors = ui.ColorInit()
 
-    def change_scene(self, scene = game_control.Scene):
+    def change_scene(self, scene=game_control.Scene):
         self.current_scene = scene
-
 
     def run_game(self):
         self.current_scene = main_menu.Mainmenu([self.full_screen], "MainMenu", self)

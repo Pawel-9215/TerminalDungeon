@@ -19,7 +19,7 @@ class CombatScreen(game_control.Scene):
         self.escape = escape
         self.player_sheet = CombatPlayerStats(windows[0], self.current_player, self)
         self.enemy_sheet = CombatEnemyStats(windows[0], self.current_enemy, self)
-        
+
         # card data
         self.player_unused = self.current_player.deck
         random.shuffle(self.player_unused)
@@ -81,11 +81,10 @@ class CombatScreen(game_control.Scene):
     def card_attack(self, who: player.Character, how_hard):
         card_str = how_hard
         defence = who.endurance
-        blow = card_str-defence
+        blow = card_str - defence
         if blow > 0:
             who.current_health -= blow
 
-            
     def deal_hand(self):
         if len(self.player_hand) < 3 and len(self.player_unused) > 0:
             self.player_hand.append(self.player_unused.pop(0))
@@ -94,11 +93,11 @@ class CombatScreen(game_control.Scene):
             return 0
 
     def deal_card(self, card: cards.Card, dealer: player.Character):
-        card_effect = {"attack":self.card_attack,
-                    "heal":self.heal,
-                    "poison":self.poison}
+        card_effect = {"attack": self.card_attack,
+                       "heal": self.heal,
+                       "poison": self.poison}
 
-        #check if dealer have enough AP:
+        # check if dealer have enough AP:
 
         if dealer is self.current_player:
             if self.player_AP >= card.AP_cost:
@@ -108,13 +107,13 @@ class CombatScreen(game_control.Scene):
                     card_effect[effect](self.current_enemy, card_effects[effect])
             else:
                 pass
-                
+
     def choose_card(self, card_no):
         if len(self.player_hand) < card_no:
             # card slot empty - not enough cards in hand
             self.situation_report.generate_line("Hand slot empty")
         else:
-            deal_card(self.player_hand[card_no], self.current_player)
+            self.deal_card(self.player_hand[card_no], self.current_player)
 
     # end of card functions
 
@@ -158,7 +157,7 @@ class CombatScreen(game_control.Scene):
         self.player_AP = self.current_player.action_points
         self.player_defences = 0
         self.calculate_turn_buffs()
-        self.deal_hand
+        self.deal_hand()
 
     def enemy_turn(self):
         self.engine.renderer.renderpass()
@@ -429,21 +428,21 @@ class CombatPlayerStats:
             self.current_player.arm_torso) + "]"
         armour_l2 = "HANDS: [" + str(self.current_player.arm_hands) + "] LEGS: [" + str(
             self.current_player.arm_legs) + "]"
-		
-		card_names = ["", "", ""]
-		for i in range(3):
-			if i<len(self.combat_screen.player_hand):
-				card_names[i] = self.combat_screen.player_hand[i].name
-			else:
-				card_names[i] = "empty"
+
+        card_names = ["", "", ""]
+        for i in range(3):
+            if i < len(self.combat_screen.player_hand):
+                card_names[i] = self.combat_screen.player_hand[i].name
+            else:
+                card_names[i] = "empty"
 
         self.window.addstr(min_y + 7, min_x + 1, ("WEAPON: [" + str(self.current_player.weapon) + "]"))
         self.window.addstr(min_y + 8, min_x + 1, armour_l1)
         self.window.addstr(min_y + 9, min_x + 1, armour_l2)
         self.window.addstr(min_y + 10, min_x + 1, "DECK: [0]")
-        self.window.addstr(min_y + 11, min_x + 1, "HAND: [1: "+card_names[0])
-        self.window.addstr(min_y + 12, min_x + 8, "2: "+card_names[1])
-        self.window.addstr(min_y + 13, min_x + 8, "3: "+card_names[2])
+        self.window.addstr(min_y + 11, min_x + 1, "HAND: [1: " + card_names[0])
+        self.window.addstr(min_y + 12, min_x + 8, "2: " + card_names[1])
+        self.window.addstr(min_y + 13, min_x + 8, "3: " + card_names[2])
 
     def update(self, key):
         pass

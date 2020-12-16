@@ -51,7 +51,8 @@ class CharacterCreation(game_control.Scene):
         add_range = ui.button(self.windows[0], 8, 4, "+", "add_Action_Points", self.modify_param, [8, "ap"])
         self.menu_buttons.append(add_range)
         self.renderable_objects.append(add_range)
-        substract_range = ui.button(self.windows[0], 9, 4, "-", "substract_Action_Points", self.modify_param, [-8, "ap"])
+        substract_range = ui.button(self.windows[0], 9, 4, "-", "substract_Action_Points", self.modify_param,
+                                    [-8, "ap"])
         self.menu_buttons.append(substract_range)
         self.renderable_objects.append(substract_range)
         add_strengh = ui.button(self.windows[0], 10, 4, "+", "add_strenght", self.modify_param, [1, "strengh"])
@@ -134,7 +135,7 @@ class CharacterCreation(game_control.Scene):
         self.update("down")
 
     def modify_param(self, amount, param):
-        if (self.skill_points >= amount > 0) or (self.skill_points < 10 and round(amount*(1/abs(amount))) == -1):
+        if (self.skill_points >= amount > 0) or (self.skill_points < 10 and round(amount * (1 / abs(amount))) == -1):
             if param == "health" and ((self.health > self.initial_values[param] and amount == -1) or amount == 1):
                 self.health = self.health + amount
                 self.skill_points = self.skill_points - amount
@@ -142,8 +143,9 @@ class CharacterCreation(game_control.Scene):
                 self.melee_skill = self.melee_skill + amount
                 self.skill_points = self.skill_points - amount
             elif param == "ap" and ((self.action_points > self.initial_values[param] and
-                                     round(amount*(1/abs(amount))) == -1) or round(amount*(1/abs(amount))) == 1):
-                self.action_points = self.action_points + 1*round(amount*(1/abs(amount)))
+                                     round(amount * (1 / abs(amount))) == -1) or round(
+                amount * (1 / abs(amount))) == 1):
+                self.action_points = self.action_points + 1 * round(amount * (1 / abs(amount)))
                 self.skill_points = self.skill_points - amount
             elif param == "strengh" and ((self.strengh > self.initial_values[param] and amount == -1) or amount == 1):
                 self.strengh = self.strengh + amount
@@ -179,7 +181,6 @@ class CharacterCreation(game_control.Scene):
                 self.monit = warning
 
 
-
             except:
                 character = {
                     "name": self.character_name,
@@ -207,4 +208,3 @@ class CharacterCreation(game_control.Scene):
                 pickle.dump(characters, open("resources/char", "wb"), -1)
                 self.escape.characters_holder.load_characters()
                 self.engine.change_scene(self.escape)
-            

@@ -22,6 +22,7 @@ class Mace(Pickable):
         self.name = "Mace"
         self.strenght = (0, 2)
 
+
 class HealthPotion(Pickable):
     def __init__(self):
         super().__init__()
@@ -30,6 +31,7 @@ class HealthPotion(Pickable):
         self.glyph_color = "Red"
         self.name = "HealthPotion"
         self.consumable = True
+
 
 class Helmet(Pickable):
     def __init__(self):

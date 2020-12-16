@@ -23,7 +23,7 @@ def level_contents(map_no: int):
                    "pickables": {"Dagger": 3,
                                  "Mace": 5,
                                  "Helmet": 2,
-                                 "HealthPotion": 3
+                                 "HealthPotion": 3,
                                  "Fireball": 2,
                                  },
                    },

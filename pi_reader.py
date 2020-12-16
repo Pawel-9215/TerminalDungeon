@@ -2,7 +2,7 @@ import pickle
 
 characters = pickle.load(open("resources/char", 'rb'))
 
-#print(characters)
+# print(characters)
 print()
 
 for character in characters:
