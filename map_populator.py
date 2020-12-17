@@ -24,7 +24,7 @@ def level_contents(map_no: int):
                                  "Mace": 5,
                                  "Helmet": 2,
                                  "HealthPotion": 3,
-                                 "Fireball": 2,
+                                 "Fireball": 6,
                                  },
                    },
                3: {"creatures": {"Rat": 18,
@@ -35,6 +35,7 @@ def level_contents(map_no: int):
                                  "Mace": 5,
                                  "Helmet": 3,
                                  "HealthPotion": 4,
+                                 "Fireball": 6,
                                  },
                    }
                }

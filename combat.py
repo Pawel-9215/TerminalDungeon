@@ -101,6 +101,7 @@ class CombatScreen(game_control.Scene):
 
         if dealer is self.current_player:
             if self.player_AP >= card.AP_cost:
+                self.player_AP -= card.AP_cost
                 self.situation_report.generate_line(self.current_player.short_name + " is dealing " + card.name)
                 card_effects = card.on_deal()
                 for effect in card_effects:
@@ -109,7 +110,10 @@ class CombatScreen(game_control.Scene):
                 pass
 
     def choose_card(self, card_no):
-        if len(self.player_hand) < card_no:
+        if len(self.player_hand) == 0:
+            # card slot empty - not enough cards in hand
+            self.situation_report.generate_line("Hand slot empty")
+        elif len(self.player_hand) < card_no:
             # card slot empty - not enough cards in hand
             self.situation_report.generate_line("Hand slot empty")
         else:
@@ -439,7 +443,8 @@ class CombatPlayerStats:
         self.window.addstr(min_y + 7, min_x + 1, ("WEAPON: [" + str(self.current_player.weapon) + "]"))
         self.window.addstr(min_y + 8, min_x + 1, armour_l1)
         self.window.addstr(min_y + 9, min_x + 1, armour_l2)
-        self.window.addstr(min_y + 10, min_x + 1, "DECK: [0]")
+        deck_len = str(self.combat_screen.player_unused)
+        self.window.addstr(min_y + 10, min_x + 1, "DECK: [%s]"%deck_len)
         self.window.addstr(min_y + 11, min_x + 1, "HAND: [1: " + card_names[0])
         self.window.addstr(min_y + 12, min_x + 8, "2: " + card_names[1])
         self.window.addstr(min_y + 13, min_x + 8, "3: " + card_names[2])
