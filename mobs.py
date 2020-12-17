@@ -29,6 +29,7 @@ class Rat(Character):
         self.distance_to_player = 255
         self.update_stats()
         self.EXP_value = 10
+        self.on_create()
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right", "stop"]
@@ -65,6 +66,7 @@ class RatWarrior(Character):
         self.distance_to_player = 255
         self.update_stats()
         self.EXP_value = 20
+        self.on_create()
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right", "stop"]
@@ -101,6 +103,7 @@ class Goblin(Character):
         self.distance_to_player = 255
         self.update_stats()
         self.EXP_value = 45
+        self.on_create()
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right", "stop", "stop", "stop"]

@@ -21,7 +21,7 @@ class CombatScreen(game_control.Scene):
         self.enemy_sheet = CombatEnemyStats(windows[0], self.current_enemy, self)
 
         # card data
-        self.player_unused = self.current_player.deck
+        self.player_unused = self.current_player.deck.copy()
         random.shuffle(self.player_unused)
         self.player_hand = []
         self.deal_hand()
@@ -79,16 +79,15 @@ class CombatScreen(game_control.Scene):
             self.enemy_poison_clock = how_long
 
     def card_attack(self, who: player.Character, how_hard):
-        card_str = how_hard
+        self.situation_report.generate_line("Attack was called")
         defence = who.endurance
-        blow = card_str - defence
+        blow = how_hard - defence
         if blow > 0:
             who.current_health -= blow
 
     def deal_hand(self):
-        if len(self.player_hand) < 3 and len(self.player_unused) > 0:
+        while len(self.player_hand) < 3 and len(self.player_unused) > 0:
             self.player_hand.append(self.player_unused.pop(0))
-            self.deal_hand()
         else:
             return 0
 
@@ -102,10 +101,12 @@ class CombatScreen(game_control.Scene):
         if dealer is self.current_player:
             if self.player_AP >= card.AP_cost:
                 self.player_AP -= card.AP_cost
-                self.situation_report.generate_line(self.current_player.short_name + " is dealing " + card.name)
                 card_effects = card.on_deal()
+                self.situation_report.generate_line(self.current_player.short_name + " is dealing " + card.name)
+                
                 for effect in card_effects:
                     card_effect[effect](self.current_enemy, card_effects[effect])
+                    # self.situation_report.generate_line(effect + " " + str(card_effects[effect]))
             else:
                 pass
 
@@ -113,7 +114,7 @@ class CombatScreen(game_control.Scene):
         if len(self.player_hand) == 0:
             # card slot empty - not enough cards in hand
             self.situation_report.generate_line("Hand slot empty")
-        elif len(self.player_hand) < card_no:
+        elif len(self.player_hand) <= card_no:
             # card slot empty - not enough cards in hand
             self.situation_report.generate_line("Hand slot empty")
         else:
@@ -443,8 +444,9 @@ class CombatPlayerStats:
         self.window.addstr(min_y + 7, min_x + 1, ("WEAPON: [" + str(self.current_player.weapon) + "]"))
         self.window.addstr(min_y + 8, min_x + 1, armour_l1)
         self.window.addstr(min_y + 9, min_x + 1, armour_l2)
-        deck_len = str(self.combat_screen.player_unused)
-        self.window.addstr(min_y + 10, min_x + 1, "DECK: [%s]"%deck_len)
+        deck_len = str(len(self.combat_screen.player_unused))
+        cementary = str(len(self.combat_screen.player_used))
+        self.window.addstr(min_y + 10, min_x + 1, "DECK: [%s/%s]"%(deck_len, cementary))
         self.window.addstr(min_y + 11, min_x + 1, "HAND: [1: " + card_names[0])
         self.window.addstr(min_y + 12, min_x + 8, "2: " + card_names[1])
         self.window.addstr(min_y + 13, min_x + 8, "3: " + card_names[2])

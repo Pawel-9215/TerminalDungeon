@@ -88,6 +88,7 @@ class Pickable:
         self.destination = "weapon"
         self.consumable = False
         self.name = "Pickable"
+        self.AP_cost = 1
 
         # player mod:
 

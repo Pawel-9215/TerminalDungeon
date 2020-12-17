@@ -5,7 +5,6 @@ class Card(Pickable):
     def __init__(self):
         super().__init__()
         self.destination = "deck"
-        self.AP_cost = 1
         self.description = "Card Description"
 
     def on_deal(self):
@@ -28,4 +27,4 @@ class Fireball(Card):
         self.description = "Ball of fire appears and is thrown\n" + "towards the enemy"
 
     def on_deal(self):
-        return {"attack": 3}
+        return {"attack": 5}

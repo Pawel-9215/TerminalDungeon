@@ -391,12 +391,12 @@ class DumpOrEquip(game_control.Scene):
     def equip(self):
         item = self.current_player.get_inventory_state(self.item_slot)
         bodypart = self.current_player.get_inventory_state(self.item_slot).destination
-        if self.current_player.get_bodypart_wstate(item.destination) is None:
+        if self.current_player.get_bodypart_state(item.destination) is None:
             self.current_player.set_bodypart_state(bodypart, item)
         else:
             item_to_swap = self.current_player.get_bodypart_state(item.destination)
             self.current_player.set_bodypart_state(bodypart, item)
-            self.current_player.set_iwnventory_state(self.item_slot, item_to_swap)
+            self.current_player.set_inventory_state(self.item_slot, item_to_swap)
 
         self.engine.change_scene(self.escape)
 

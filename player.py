@@ -30,7 +30,7 @@ class Character:
         self.name = "Character"
         self.short_name = self.name[0:5]
         self.health = 10
-        self.current_health = self.health
+        self.current_health = 10
         self.melee_skill = 20
         self.action_points = 4
         self.strengh = 30
@@ -56,6 +56,11 @@ class Character:
         self.inv_2 = None
         self.inv_3 = None
         self.inv_4 = None
+
+       
+
+    def on_create(self):
+        self.current_health = self.health
 
     def remove_self(self):
         self.vacate_position()
