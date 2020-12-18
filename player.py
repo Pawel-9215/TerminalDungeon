@@ -57,10 +57,10 @@ class Character:
         self.inv_3 = None
         self.inv_4 = None
 
-       
-
     def on_create(self):
         self.current_health = self.health
+        self.hit_points = round(self.strengh / 10)
+        self.defence_points = round(self.endurance / 10)
 
     def remove_self(self):
         self.vacate_position()
@@ -322,13 +322,14 @@ class Player(Character):
                 self.current_health = self.health
             else:
                 self.current_health += self.current_map
-            self.game_instance.grid_map.info_label = "Health potion brought back "+str(self.current_map)+" of Health"
+            self.game_instance.grid_map.info_label = "Health potion brought back " + str(
+                self.current_map) + " of Health"
         elif object_to_pick.destination == "deck":
             self.deck.append(object_to_pick)
 
         else:
 
-        # check if default body part is available:
+            # check if default body part is available:
 
             if self.get_bodypart_state(object_to_pick.destination) is None:
                 self.set_bodypart_state(object_to_pick.destination, object_to_pick)

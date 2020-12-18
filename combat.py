@@ -79,8 +79,8 @@ class CombatScreen(game_control.Scene):
             self.enemy_poison_clock = how_long
 
     def card_attack(self, who: player.Character, how_hard):
-        self.situation_report.generate_line("Attack was called")
-        defence = who.endurance
+        # self.situation_report.generate_line("Attack was called")
+        defence = who.defence_points
         blow = how_hard - defence
         if blow > 0:
             who.current_health -= blow
