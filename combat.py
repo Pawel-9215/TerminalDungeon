@@ -441,7 +441,7 @@ class CombatPlayerStats:
         card_names = ["", "", ""]
         for i in range(3):
             if i < len(self.combat_screen.player_hand):
-                card_names[i] = self.combat_screen.player_hand[i].name + "[" + str(
+                card_names[i] = self.combat_screen.player_hand[i].name + "[AP:" + str(
                     self.combat_screen.player_hand[i].AP_cost) + "]"
             else:
                 card_names[i] = "empty"
