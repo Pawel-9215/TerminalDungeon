@@ -103,12 +103,13 @@ class CombatScreen(game_control.Scene):
                 self.player_AP -= card.AP_cost
                 card_effects = card.on_deal()
                 self.situation_report.generate_line(self.current_player.short_name + " is dealing " + card.name)
-                
+
                 for effect in card_effects:
                     card_effect[effect](self.current_enemy, card_effects[effect])
                     # self.situation_report.generate_line(effect + " " + str(card_effects[effect]))
             else:
                 pass
+            self.check_win_condition()
 
     def choose_card(self, card_no):
         if len(self.player_hand) == 0:
@@ -119,6 +120,7 @@ class CombatScreen(game_control.Scene):
             self.situation_report.generate_line("Hand slot empty")
         else:
             self.deal_card(self.player_hand[card_no], self.current_player)
+            self.player_used.append(self.player_hand.pop(card_no))
 
     # end of card functions
 
@@ -292,7 +294,9 @@ class CombatScreen(game_control.Scene):
 
                 if attack_strengh - enemy_defence > 0:
                     self.current_enemy.current_health -= attack_strengh - enemy_defence
+        self.check_win_condition()
 
+    def check_win_condition(self):
         if self.current_enemy.current_health <= 0:
             self.situation_report.generate_line(self.current_enemy.short_name + " was slain")
             self.engine.renderer.renderpass()
@@ -437,7 +441,8 @@ class CombatPlayerStats:
         card_names = ["", "", ""]
         for i in range(3):
             if i < len(self.combat_screen.player_hand):
-                card_names[i] = self.combat_screen.player_hand[i].name
+                card_names[i] = self.combat_screen.player_hand[i].name + "[" + str(
+                    self.combat_screen.player_hand[i].AP_cost) + "]"
             else:
                 card_names[i] = "empty"
 
@@ -446,7 +451,7 @@ class CombatPlayerStats:
         self.window.addstr(min_y + 9, min_x + 1, armour_l2)
         deck_len = str(len(self.combat_screen.player_unused))
         cementary = str(len(self.combat_screen.player_used))
-        self.window.addstr(min_y + 10, min_x + 1, "DECK: [%s/%s]"%(deck_len, cementary))
+        self.window.addstr(min_y + 10, min_x + 1, "DECK: [%s/%s]" % (deck_len, cementary))
         self.window.addstr(min_y + 11, min_x + 1, "HAND: [1: " + card_names[0])
         self.window.addstr(min_y + 12, min_x + 8, "2: " + card_names[1])
         self.window.addstr(min_y + 13, min_x + 8, "3: " + card_names[2])

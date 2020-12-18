@@ -88,8 +88,10 @@ class Character:
                 distances.append(distance)
                 direction_values[distance] = direction
         random.shuffle(distances)
-
-        return direction_values[max(distances)]
+        if len(distances) == 0:
+            return "stop"
+        else:
+            return direction_values[max(distances)]
 
     def chase_player(self, directions):
         way_to_go = {"left": [0, -1, "←"], "right": [0, 1, "→"], "up": [-1, 0, "↑"], "down": [1, 0, "↓"],
