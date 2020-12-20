@@ -98,7 +98,9 @@ class ColorInit():
 class Rotator():
 
     def __init__(self, window, items: list, y, x):
-        self.items = items
+        self.items = []
+        for item in items:
+            self.items.append(str(item))
         self.choosen_item = 0
         self.y = y
         self.x = x

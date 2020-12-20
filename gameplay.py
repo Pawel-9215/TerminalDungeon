@@ -12,6 +12,7 @@ import combat
 import map_populator
 import pickle
 import levelup
+import deck
 
 
 class GameInstance(game_control.Scene):
@@ -76,6 +77,10 @@ class GameInstance(game_control.Scene):
     def ask_Dump_or_Equip(self, key):
         scene = DumpOrEquip([self.engine.popup_screen], "Dump or Equip?", self.engine, self, self.current_player, key)
         self.engine.change_scene(scene)
+
+    def show_deck(self):
+        deck_scene = deck.DeckView([self.engine.full_screen], "DeckView", self.engine, self.current_player, self)
+        self.engine.change_scene(deck_scene)
 
     def check_levelup(self):
         # check if player accumulater required exp points

@@ -203,7 +203,7 @@ class Player(Character):
 
         if key in ["up", "down", "left", "right"]:
             self.move(key)
-        elif key in ["1", "2", "3", "4"]:
+        elif key in ["1", "2", "3", "4", "5"]:
             if key == "1" and self.inv_1 is not None:
                 self.game_instance.ask_Dump_or_Equip(key)
             elif key == "2" and self.inv_2 is not None:
@@ -212,8 +212,8 @@ class Player(Character):
                 self.game_instance.ask_Dump_or_Equip(key)
             elif key == "4" and self.inv_4 is not None:
                 self.game_instance.ask_Dump_or_Equip(key)
-            elif key == "5":
-                print("open card inventory")
+            elif key == "5" and len(self.deck) > 0:
+                self.game_instance.show_deck()
             else:
                 pass
 

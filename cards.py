@@ -7,6 +7,9 @@ class Card(Pickable):
         self.destination = "deck"
         self.description = "Card Description"
 
+    def __repr__(self):
+        return self.name
+
     def on_deal(self):
         return {"attack": 3}
 
