@@ -10,6 +10,7 @@ class DeckView(game_control.Scene):
         self.current_player = player
         self.escape = escape
         self.max_y, self.max_x = self.windows[0].getmaxyx()
+        self.startpos = 3
         self.rotator = ui.Rotator(self.windows[0], self.current_player.deck, 3, int(self.max_x/2-4))
         self.buttons = {
             "↑":[self.rotator.rotate, [-1]],
@@ -21,6 +22,29 @@ class DeckView(game_control.Scene):
 
     def print_content(self):
         self.renderable_objects.append(self.rotator)
+        z = self.startpos
+        for i, button in enumerate(self.buttons):
+            if i in [1, 2]:
+                z += 1
+            else:
+                pass
+            self.menu_buttons.append(ui.button(self.windows[0], 
+                                    z,
+                                    int(self.max_x/2-6),
+                                    button,
+                                    button,
+                                    self.buttons[button][0],
+                                    self.buttons[button][1]))
+            z += 1
+                            
+        for button in self.menu_buttons:
+            self.renderable_objects.append(button)
+        self.menu_buttons[self.focused_item].is_focused = True
+        
+        self.updatable_objects.append(self)
+    
+    def update(self, key):
+        self.button_toggle(key)
     
     def destroy_card(self):
         pass
