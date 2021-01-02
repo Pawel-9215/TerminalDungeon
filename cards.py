@@ -27,7 +27,24 @@ class Fireball(Card):
         self.glyph_color = "Magenta"
         self.name = "Fireball"
         self.AP_cost = 2
-        self.description = "Ball of fire appears and is thrown\n" + "towards the enemy"
+        self.description = ["Cost: 2",
+                            "Ball of fire appears and is thrown", 
+                            "towards the enemy",
+                            "Deals 5 points of damage"
+                            ]
 
     def on_deal(self):
         return {"attack": 5}
+
+class HealingRay(Card):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "C"
+        self.glyph_inverted = True
+        self.glyph_color = "Blue"
+        self.name = "Healing Ray"
+        self.AP_cost = 3
+        self.description = ["Cost : 3", "Ray heals caster", "Restores 4 health points"]
+
+    def on_deal(self):
+        return {"heal": 4}

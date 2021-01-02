@@ -42,6 +42,8 @@ class DeckView(game_control.Scene):
         self.menu_buttons[self.focused_item].is_focused = True
         
         self.updatable_objects.append(self)
+
+        description = CardDescription(self.windows[0], z+1, int(self.max_x/2-6))
     
     def update(self, key):
         self.button_toggle(key)
@@ -51,3 +53,20 @@ class DeckView(game_control.Scene):
 
     def update_rotator(self):
         pass
+
+class CardDescription():
+    def __init__(self, window, y, x):
+        self.window = window
+        self.y = y
+        self.x = x
+        self.description = [" "]
+
+    def set_description(self, card):
+        self.description = card.description
+
+    def draw(self):
+        i = 0
+
+        for line in self.description:
+            self.window.addstr(self.y+i, self.x, line)
+            i += 1
