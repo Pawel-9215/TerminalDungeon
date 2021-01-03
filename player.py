@@ -212,7 +212,7 @@ class Player(Character):
                 self.game_instance.ask_Dump_or_Equip(key)
             elif key == "4" and self.inv_4 is not None:
                 self.game_instance.ask_Dump_or_Equip(key)
-            elif key == "5" and len(self.deck) > 0:
+            elif key == "5":
                 self.game_instance.show_deck()
             else:
                 pass

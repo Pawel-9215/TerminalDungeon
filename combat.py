@@ -64,7 +64,7 @@ class CombatScreen(game_control.Scene):
 
     def heal(self, who: player.Character, points):
         # this function can be used by healing cards
-        if points >= who.current_health:
+        if points+who.current_health >= who.health:
             who.current_health = who.health
         else:
             who.current_health += points
@@ -96,6 +96,9 @@ class CombatScreen(game_control.Scene):
                        "heal": self.heal,
                        "poison": self.poison}
 
+        who = {"player": self.current_player,
+                "enemy": self.current_enemy}
+
         # check if dealer have enough AP:
 
         if dealer is self.current_player:
@@ -105,7 +108,7 @@ class CombatScreen(game_control.Scene):
                 self.situation_report.generate_line(self.current_player.short_name + " is dealing " + card.name)
 
                 for effect in card_effects:
-                    card_effect[effect](self.current_enemy, card_effects[effect])
+                    card_effect[effect](who[card_effects[effect][0]], card_effects[effect][1])
                     # self.situation_report.generate_line(effect + " " + str(card_effects[effect]))
             else:
                 pass

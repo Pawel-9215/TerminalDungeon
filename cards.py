@@ -5,7 +5,7 @@ class Card(Pickable):
     def __init__(self):
         super().__init__()
         self.destination = "deck"
-        self.description = "Card Description"
+        self.description = ["lin1", "lin2"]
 
     def __repr__(self):
         return self.name
@@ -30,11 +30,11 @@ class Fireball(Card):
         self.description = ["Cost: 2",
                             "Ball of fire appears and is thrown", 
                             "towards the enemy",
-                            "Deals 5 points of damage"
+                            "Deals 5 points of damage",
                             ]
 
     def on_deal(self):
-        return {"attack": 5}
+        return {"attack": ["enemy", 5]}
 
 class HealingRay(Card):
     def __init__(self):
@@ -47,4 +47,4 @@ class HealingRay(Card):
         self.description = ["Cost : 3", "Ray heals caster", "Restores 4 health points"]
 
     def on_deal(self):
-        return {"heal": 4}
+        return {"heal": ["player", 4]}
