@@ -84,6 +84,13 @@ class CombatScreen(game_control.Scene):
         blow = how_hard - defence
         if blow > 0:
             who.current_health -= blow
+    
+    def drain(self, who: player.Character, how_hard):
+        # like attack but ignores defence
+        defence = 0
+        blow = how_hard - defence
+        if blow > 0:
+            who.current_health -= blow
 
     def deal_hand(self):
         while len(self.player_hand) < 3 and len(self.player_unused) > 0:
@@ -94,6 +101,7 @@ class CombatScreen(game_control.Scene):
     def deal_card(self, card: cards.Card, dealer: player.Character):
         card_effect = {"attack": self.card_attack,
                        "heal": self.heal,
+                       "drain": self.drain,
                        "poison": self.poison}
 
         who = {"player": self.current_player,

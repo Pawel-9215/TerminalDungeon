@@ -48,3 +48,20 @@ class HealingRay(Card):
 
     def on_deal(self):
         return {"heal": ["player", 4]}
+
+class HealthDrain(Card):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "C"
+        self.glyph_inverted = True
+        self.glyph_color = "Green"
+        self.name = "Health Drain"
+        self.AP_cost = 4
+        self.description = ["Cost : 4", 
+                            "Caster drains enemy's health", 
+                            "Deals 4 damage to enemy", 
+                            "Restores 4 health points to caster"]
+
+    def on_deal(self):
+        return {"heal": ["player", 4],
+                "drain": ["enemy", 4]}
