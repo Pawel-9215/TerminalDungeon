@@ -126,6 +126,7 @@ class Instructions(game_control.Scene):
             "in character creation screen",
             "",
             "1, 2, 3, 4 - select item in inventory to equip or dump",
+            "5 - show your deck of cards"
         ]
 
         info_bar = ui.Label(self.windows[0], "Instructions:", start_pos_y, start_pos_x)
