@@ -23,9 +23,14 @@ class CombatScreen(game_control.Scene):
         # card data
         self.player_unused = self.current_player.deck.copy()
         random.shuffle(self.player_unused)
-        self.player_hand = []
-        self.deal_hand()
+        self.player_hand = []    
         self.player_used = []
+
+        self.enemy_unused = self.current_enemy.deck.copy()
+        random.shuffle(self.enemy_unused)
+        self.enemy_hand = []
+        self.enemy_used = []
+        self.deal_hand()
 
         # mods from cards
         # each player should be able to have
@@ -86,7 +91,7 @@ class CombatScreen(game_control.Scene):
             who.current_health -= blow
     
     def drain(self, who: player.Character, how_hard):
-        # like attack but ignores defence
+        # like attack, but ignores defence
         defence = 0
         blow = how_hard - defence
         if blow > 0:
@@ -95,8 +100,9 @@ class CombatScreen(game_control.Scene):
     def deal_hand(self):
         while len(self.player_hand) < 3 and len(self.player_unused) > 0:
             self.player_hand.append(self.player_unused.pop(0))
-        else:
-            return 0
+        
+        while len(self.enemy_hand) < 3 and len(self.enemy_unused) > 0:
+            self.enemy_hand.append(self.enemy_unused.pop(0))
 
     def deal_card(self, card: cards.Card, dealer: player.Character):
         card_effect = {"attack": self.card_attack,
@@ -104,12 +110,11 @@ class CombatScreen(game_control.Scene):
                        "drain": self.drain,
                        "poison": self.poison}
 
-        who = {"player": self.current_player,
-                "enemy": self.current_enemy}
-
         # check if dealer have enough AP:
 
         if dealer is self.current_player:
+            who = {"player": self.current_player,
+                "enemy": self.current_enemy}
             if self.player_AP >= card.AP_cost:
                 self.player_AP -= card.AP_cost
                 card_effects = card.on_deal()
@@ -121,6 +126,17 @@ class CombatScreen(game_control.Scene):
             else:
                 pass
             self.check_win_condition()
+
+        elif dealer is self.current_enemy:
+            who = {"player": self.current_enemy,
+                "enemy": self.current_player}
+            if self.enemy_AP >= card.AP_cost:
+                self.enemy_AP -= card.AP_cost
+                card_effects = card.on_deal()
+                self.situation_report.generate_line(self.current_enemy.short_name + " ise dealing " + card.name)
+
+                for effect in card_effects:
+                    card_effect[effect](who[card_effects[effect][0]], card_effects[effect][1])
 
     def choose_card(self, card_no):
         if len(self.player_hand) == 0:
@@ -345,6 +361,7 @@ class CombatScreen(game_control.Scene):
                     attack_strengh = self.current_enemy.hit_points + self.current_enemy.weapon.weapon_attack() + roll_D4
                 else:
                     attack_strengh = self.current_enemy.hit_points + roll_D4
+                attack_strengh += self.enemy_attack_mod
 
                 # players defence:
                 if self.player_defences > 0:
@@ -353,6 +370,7 @@ class CombatScreen(game_control.Scene):
                                      bodypart_armour[body_target] + random.randint(1, 4)
                 else:
                     player_defence = self.current_player.defence_points + bodypart_armour[body_target]
+                player_defence += self.player_defence_mod
 
                 text = self.current_enemy.short_name + " hits for: " + str(attack_strengh) + " " + \
                        self.current_player.short_name + " defends: " + str(player_defence)

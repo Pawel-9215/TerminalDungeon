@@ -59,7 +59,7 @@ class HealthDrain(Card):
         self.AP_cost = 4
         self.description = ["Cost : 4", 
                             "Caster drains enemy's health", 
-                            "Deals 4 damage to enemy", 
+                            "Drains 4 HP from to enemy", 
                             "Restores 4 health points to caster"]
 
     def on_deal(self):

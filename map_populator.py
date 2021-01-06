@@ -26,7 +26,7 @@ def level_contents(map_no: int):
                                  "Helmet": 2,
                                  "HealthPotion": 3,
                                  "Fireball": 6,
-                                 "HealingRay": 4
+                                 "HealingRay": 2
                                  },
                    },
                3: {"creatures": {"Rat": 18,
@@ -38,7 +38,8 @@ def level_contents(map_no: int):
                                  "Helmet": 3,
                                  "HealthPotion": 4,
                                  "Fireball": 6,
-                                 "HealingRay": 9,
+                                 "HealingRay": 6,
+                                 "HealthDrain": 6,
                                  },
                    }
                }
@@ -56,5 +57,6 @@ def population_dictionary():
                   "HealthPotion": pickables.HealthPotion,
                   "Fireball": cards.Fireball,
                   "HealingRay": cards.HealingRay,
+                  "HealthDrain": cards.HealthDrain,
                   }
     return dictionary
