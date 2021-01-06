@@ -2,6 +2,7 @@
 from __future__ import annotations
 from player import Character
 import random
+import cards
 
 rat_names1 = ["Fes", "Tred", "Paskro", "Rikes", "Mors",
               "Rat", "Quo", "Quot", "Pask", "Quar",
@@ -67,6 +68,7 @@ class RatWarrior(Character):
         self.update_stats()
         self.EXP_value = 20
         self.on_create()
+        self.deck = [cards.Fireball()]
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right", "stop"]

@@ -125,7 +125,7 @@ class CombatScreen(game_control.Scene):
                     # self.situation_report.generate_line(effect + " " + str(card_effects[effect]))
             else:
                 pass
-            self.check_win_condition()
+        
 
         elif dealer is self.current_enemy:
             who = {"player": self.current_enemy,
@@ -137,6 +137,8 @@ class CombatScreen(game_control.Scene):
 
                 for effect in card_effects:
                     card_effect[effect](who[card_effects[effect][0]], card_effects[effect][1])
+        
+        self.check_win_condition()
 
     def choose_card(self, card_no):
         if len(self.player_hand) == 0:
@@ -199,6 +201,11 @@ class CombatScreen(game_control.Scene):
 
         # health percentage:
         health_percent = round((self.current_enemy.current_health / self.current_enemy.health) * 100)
+
+        if len(self.enemy_hand) > 0 and self.enemy_hand[0].AP_cost <= self.enemy_AP:
+            #deal card
+            self.deal_card(self.enemy_hand[0], self.current_enemy)
+            self.enemy_used.append(self.enemy_hand.pop(0))
 
         # roll to check if attacks or defends
         if random.randint(1, 100) <= health_percent:
