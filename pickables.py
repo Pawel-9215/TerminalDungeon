@@ -42,3 +42,13 @@ class Helmet(Pickable):
         self.name = "Helmet"
         self.destination = "arm_head"
         self.defence_points = random.randint(1, 2)
+
+class LeatherJacket(Pickable):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "A"
+        self.glyph_inverted = False
+        self.glyph_color = "Green"
+        self.name = "Leather Jacket"
+        self.destination = "arm_torso"
+        self.defence_points = random.randint(1, 2)
