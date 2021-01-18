@@ -28,13 +28,14 @@ class Fireball(Card):
         self.name = "Fireball"
         self.AP_cost = 2
         self.description = ["Cost: 2",
-                            "Ball of fire appears and is thrown", 
+                            "Ball of fire appears and is thrown",
                             "towards the enemy",
                             "Deals 5 points of damage",
                             ]
 
     def on_deal(self):
         return {"attack": ["enemy", 5]}
+
 
 class HealingRay(Card):
     def __init__(self):
@@ -49,19 +50,39 @@ class HealingRay(Card):
     def on_deal(self):
         return {"heal": ["player", 4]}
 
+
 class HealthDrain(Card):
     def __init__(self):
         super().__init__()
         self.glyph = "C"
         self.glyph_inverted = True
-        self.glyph_color = "Green"
+        self.glyph_color = "Red"
         self.name = "Health Drain"
         self.AP_cost = 4
-        self.description = ["Cost : 4", 
-                            "Caster drains enemy's health", 
-                            "Drains 4 HP from to enemy", 
+        self.description = ["Cost : 4",
+                            "Caster drains enemy's health",
+                            "Drains 4 HP from to enemy",
                             "Restores 4 health points to caster"]
 
     def on_deal(self):
         return {"heal": ["player", 4],
                 "drain": ["enemy", 4]}
+
+
+class PoisonCloud(Card):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "C"
+        self.glyph_inverted = True
+        self.glyph_color = "Green"
+        self.name = "Poison Cloud"
+        self.AP_cost = 4
+        self.description = ["Cost : 4",
+                            "Poisonous cloud appears over enemy",
+                            "Drains 1 HP each round for 4 rounds"]
+
+    def on_deal(self):
+        return {"poison": ["enemy", 4]}
+
+
+# class Poison

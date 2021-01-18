@@ -23,7 +23,7 @@ class CombatScreen(game_control.Scene):
         # card data
         self.player_unused = self.current_player.deck.copy()
         random.shuffle(self.player_unused)
-        self.player_hand = []    
+        self.player_hand = []
         self.player_used = []
 
         self.enemy_unused = self.current_enemy.deck.copy()
@@ -69,7 +69,7 @@ class CombatScreen(game_control.Scene):
 
     def heal(self, who: player.Character, points):
         # this function can be used by healing cards
-        if points+who.current_health >= who.health:
+        if points + who.current_health >= who.health:
             who.current_health = who.health
         else:
             who.current_health += points
@@ -89,7 +89,7 @@ class CombatScreen(game_control.Scene):
         blow = how_hard - defence
         if blow > 0:
             who.current_health -= blow
-    
+
     def drain(self, who: player.Character, how_hard):
         # like attack, but ignores defence
         defence = 0
@@ -100,7 +100,7 @@ class CombatScreen(game_control.Scene):
     def deal_hand(self):
         while len(self.player_hand) < 3 and len(self.player_unused) > 0:
             self.player_hand.append(self.player_unused.pop(0))
-        
+
         while len(self.enemy_hand) < 3 and len(self.enemy_unused) > 0:
             self.enemy_hand.append(self.enemy_unused.pop(0))
 
@@ -114,7 +114,7 @@ class CombatScreen(game_control.Scene):
 
         if dealer is self.current_player:
             who = {"player": self.current_player,
-                "enemy": self.current_enemy}
+                   "enemy": self.current_enemy}
             if self.player_AP >= card.AP_cost:
                 self.player_AP -= card.AP_cost
                 card_effects = card.on_deal()
@@ -125,11 +125,11 @@ class CombatScreen(game_control.Scene):
                     # self.situation_report.generate_line(effect + " " + str(card_effects[effect]))
             else:
                 pass
-        
+
 
         elif dealer is self.current_enemy:
             who = {"player": self.current_enemy,
-                "enemy": self.current_player}
+                   "enemy": self.current_player}
             if self.enemy_AP >= card.AP_cost:
                 self.enemy_AP -= card.AP_cost
                 card_effects = card.on_deal()
@@ -137,7 +137,7 @@ class CombatScreen(game_control.Scene):
 
                 for effect in card_effects:
                     card_effect[effect](who[card_effects[effect][0]], card_effects[effect][1])
-        
+
         self.check_win_condition()
 
     def choose_card(self, card_no):
@@ -203,7 +203,7 @@ class CombatScreen(game_control.Scene):
         health_percent = round((self.current_enemy.current_health / self.current_enemy.health) * 100)
 
         if len(self.enemy_hand) > 0 and self.enemy_hand[0].AP_cost <= self.enemy_AP:
-            #deal card
+            # deal card
             self.deal_card(self.enemy_hand[0], self.current_enemy)
             self.enemy_used.append(self.enemy_hand.pop(0))
 
