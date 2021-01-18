@@ -58,5 +58,10 @@ def population_dictionary():
                   "Fireball": cards.Fireball,
                   "HealingRay": cards.HealingRay,
                   "HealthDrain": cards.HealthDrain,
+                  "Poison": cards.Poison,
+                  "PoisonedBlade": cards.PoisonedBlade,
+                  "FullRecover": cards.FullRecover,
+                  "PoisonousCloud": cards.PoisonousCloud,
+                  "SacrificeKill": cards.SacrificeKill,
                   }
     return dictionary

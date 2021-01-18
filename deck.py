@@ -75,7 +75,9 @@ class DeckView(game_control.Scene):
 
 
     def update_rotator(self):
-        self.rotator.items = self.deck
+        self.rotator.items = []
+        for item in self.deck:
+            self.rotator.items.append(str(item))
 
 class CardDescription():
     def __init__(self, window, y, x):

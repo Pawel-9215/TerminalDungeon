@@ -69,20 +69,80 @@ class HealthDrain(Card):
                 "drain": ["enemy", 4]}
 
 
-class PoisonCloud(Card):
+class Poison(Card):
     def __init__(self):
         super().__init__()
         self.glyph = "C"
         self.glyph_inverted = True
         self.glyph_color = "Green"
-        self.name = "Poison Cloud"
+        self.name = "Poison"
         self.AP_cost = 4
         self.description = ["Cost : 4",
-                            "Poisonous cloud appears over enemy",
+                            "Enemy gets poisoned",
                             "Drains 1 HP each round for 4 rounds"]
 
     def on_deal(self):
         return {"poison": ["enemy", 4]}
 
 
-# class Poison
+class PoisonedBlade(Card):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "C"
+        self.glyph_inverted = True
+        self.glyph_color = "Green"
+        self.name = "Poisoned Blade"
+        self.AP_cost = 3
+        self.description = ["Cost : 3",
+                            "Caster hits enemy with poisoned blade",
+                            "Enemy gets stabbed for 2 HP and poisoned",
+                            "For 4 rounds"]
+    def on_deal(self):
+        return {"poison": ["enemy", 4],
+                "attack": ["enemy", 2]}
+
+class FullRecover(Card):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "C"
+        self.glyph_inverted = True
+        self.glyph_color = "Blue"
+        self.name = "Full Recover"
+        self.AP_cost = 4
+        self.description = ["Cost : 4",
+                            "Caster recovers his health",
+                            "back to full",]
+    def on_deal(self):
+        return {"heal": ["player", 999]}
+
+class PoisonousCloud(Card):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "C"
+        self.glyph_inverted = True
+        self.glyph_color = "Green"
+        self.name = "Poisonous Cloud"
+        self.AP_cost = 5
+        self.description = ["Cost : 5",
+                            "Poisonous cloud shrouds the battlefield",
+                            "Caster get poisoned"
+                            "for 7 rounds, and enemy looses 7 HP",
+                            "at once"]
+    def on_deal(self):
+        return {"drain": ["enemy", 8],
+                "poison": ["player", 8]}
+
+class SacrificeKill(Card):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "C"
+        self.glyph_inverted = True
+        self.glyph_color = "Green"
+        self.name = "Sacrifice Kill"
+        self.AP_cost = 8
+        self.description = ["Cost : 8",
+                            "Enemy is hit with lethal amount of damage",
+                            "Caster looses 10 HP points"]
+    def on_deal(self):
+        return {"attack": ["enemy", 99999],
+                "drain": ["player", 10]}
