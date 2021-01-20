@@ -97,9 +97,11 @@ class PoisonedBlade(Card):
                             "Caster hits enemy with poisoned blade",
                             "Enemy gets stabbed for 2 HP and poisoned",
                             "For 4 rounds"]
+
     def on_deal(self):
         return {"poison": ["enemy", 4],
                 "attack": ["enemy", 2]}
+
 
 class FullRecover(Card):
     def __init__(self):
@@ -111,9 +113,11 @@ class FullRecover(Card):
         self.AP_cost = 4
         self.description = ["Cost : 4",
                             "Caster recovers his health",
-                            "back to full",]
+                            "back to full", ]
+
     def on_deal(self):
         return {"heal": ["player", 999]}
+
 
 class PoisonousCloud(Card):
     def __init__(self):
@@ -128,9 +132,11 @@ class PoisonousCloud(Card):
                             "Caster get poisoned"
                             "for 7 rounds, and enemy looses 7 HP",
                             "at once"]
+
     def on_deal(self):
         return {"drain": ["enemy", 8],
                 "poison": ["player", 8]}
+
 
 class SacrificeKill(Card):
     def __init__(self):
@@ -143,6 +149,7 @@ class SacrificeKill(Card):
         self.description = ["Cost : 8",
                             "Enemy is hit with lethal amount of damage",
                             "Caster looses 10 HP points"]
+
     def on_deal(self):
         return {"attack": ["enemy", 99999],
                 "drain": ["player", 10]}
