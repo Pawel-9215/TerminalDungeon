@@ -21,15 +21,13 @@ def main(wholescr):
     ui_screen.refresh()
 
     game_map = curses.newwin(wholescr_y, wholescr_x - ui_screen_maxx, 0, ui_screen_maxx)
-    game_map_maxy, game_map_maxx = game_map.getmaxyx()
+    game_map_maxy, _ = game_map.getmaxyx()
     game_map.border()
     game_map.refresh()
-    # curses.napms(500)
 
     popup_screen = curses.newwin(int(wholescr_y/2), int(wholescr_x/2), int(wholescr_y/4), int(wholescr_x/4))
     popup_screen.border()
     popup_screen.refresh()
-    # curses.napms(500)
 
     td_engine = engine.Engine(wholescr, ui_screen, game_map, popup_screen)
     td_engine.run_game()

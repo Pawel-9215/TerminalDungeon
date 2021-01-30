@@ -151,5 +151,5 @@ class SacrificeKill(Card):
                             "Caster looses 10 HP points"]
 
     def on_deal(self):
-        return {"attack": ["enemy", 99999],
+        return {"attack": ["enemy", 999999],
                 "drain": ["player", 10]}
