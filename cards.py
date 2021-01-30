@@ -153,3 +153,21 @@ class SacrificeKill(Card):
     def on_deal(self):
         return {"attack": ["enemy", 999999],
                 "drain": ["player", 10]}
+
+
+class PiercingShot(Card):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "C"
+        self.glyph_inverted = True
+        self.glyph_color = "Yellow"
+        self.name = "Piercing"
+        self.AP_cost = 6
+        self.description = ["Cost : 6",
+                            "Enemy is hit with shot that deals",
+                            "up to 20 damage and no less than 10",
+                            ]
+
+    def on_deal(self):
+        return {"attack": ["enemy", 10],
+                "drain": ["enemy", 10]}
