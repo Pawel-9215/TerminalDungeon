@@ -3,6 +3,7 @@ from __future__ import annotations
 from player import Character
 import random
 import cards
+import pickables
 
 rat_names1 = ["Fes", "Tred", "Paskro", "Rikes", "Mors",
               "Rat", "Quo", "Quot", "Pask", "Quar",
@@ -68,7 +69,7 @@ class RatWarrior(Character):
         self.update_stats()
         self.EXP_value = 20
         self.on_create()
-        self.deck = [cards.Fireball()]
+        self.weapon = random.choice([pickables.Mace, pickables.Dagger])()
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right", "stop"]
@@ -106,6 +107,7 @@ class Goblin(Character):
         self.update_stats()
         self.EXP_value = 45
         self.on_create()
+        self.weapon = random.choice([pickables.Mace, pickables.Dagger])()
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right", "stop", "stop", "stop"]
@@ -143,6 +145,8 @@ class Lizardmen(Character):
         self.update_stats()
         self.EXP_value = 55
         self.on_create()
+        self.weapon = random.choice([pickables.Mace, pickables.Dagger, pickables.Sword])()
+        self.deck = [cards.PoisonedBlade()]
 
     def update(self, *args, **kwargs):
         directions = ["up", "down", "left", "right", "stop", "stop", "stop"]
@@ -152,7 +156,47 @@ class Lizardmen(Character):
         self.distance_to_player = self.world_map.check_distance_to_player(self.y, self.x)
         print(self.distance_to_player)
 
-        if self.distance_to_player < 12:
+        if self.distance_to_player < 16:
+            chosen_dir = self.chase_player(directions)
+        else:
+            chosen_dir = random.choice(directions)
+            # chosen_dir = "stop"
+
+        # chosen_dir = random.choice(directions)
+        # chosen_dir = "stop"
+        self.move(chosen_dir)
+
+
+class Lizardmen2(Character):
+    def __init__(self, y, x, world_map, game_instance):
+        super().__init__(y, x, world_map, game_instance)
+        self.glyph = "L"
+        self.glyph_color = "Green"
+        self.glyph_inverted = True
+        self.action_points = random.randint(4, 8)
+        global goblin_names
+        self.short_name = random.choice(goblin_names)
+        self.name = self.short_name + " Lizardmen"
+        self.endurance = random.randint(16, 24)
+        self.health = random.randint(16, 20)
+        self.melee_skill = random.randint(32, 36)
+        self.distance_to_player = 255
+        self.update_stats()
+        self.EXP_value = 58
+        self.on_create()
+        self.weapon = random.choice([pickables.Dagger, pickables.Sword])()
+        self.deck = [cards.PoisonedBlade(), cards.Poison()]
+        self.arm_torso = pickables.ChainMail()
+
+    def update(self, *args, **kwargs):
+        directions = ["up", "down", "left", "right", "stop", "stop", "stop"]
+
+        # check distance to player
+
+        self.distance_to_player = self.world_map.check_distance_to_player(self.y, self.x)
+        print(self.distance_to_player)
+
+        if self.distance_to_player < 16:
             chosen_dir = self.chase_player(directions)
         else:
             chosen_dir = random.choice(directions)

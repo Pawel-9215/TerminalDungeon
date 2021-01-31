@@ -57,7 +57,7 @@ class Dagger(Weapon):
         self.strenght = (1, 2)
 
 
-class Mace(Pickable):
+class Mace(Weapon):
     def __init__(self):
         super().__init__()
         self.glyph = "W"

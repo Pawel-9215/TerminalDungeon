@@ -172,8 +172,10 @@ class PiercingShot(Card):
         return {"attack": ["enemy", 10],
                 "drain": ["enemy", 10]}
 
+
 class PoisoningShot(Card):
     def __init__(self):
+        super().__init__()
         self.glyph = "C"
         self.glyph_inverted = True
         self.glyph_color = "Green"
@@ -187,6 +189,7 @@ class PoisoningShot(Card):
     def on_deal(self):
         return {"attack": ["enemy", 10],
                 "poison": ["enemy", 6]}
+
 
 class PowerfulFireball(Card):
     def __init__(self):
@@ -206,6 +209,7 @@ class PowerfulFireball(Card):
         return {"attack": ["enemy", 15],
                 "drain": ["player", 2]}
 
+
 class GlowingBlade(Card):
     def __init__(self):
         super().__init__()
@@ -215,7 +219,7 @@ class GlowingBlade(Card):
         self.name = "Glowing Blade"
         self.AP_cost = 12
         self.description = ["Cost: 12",
-                            "Caster hits enemy with earely glwoing weapon",
+                            "Caster hits enemy with eerily glowing weapon",
                             "enemy is hit for 20 damage but",
                             "caster gets poisoned for 8 rounds",
                             ]
@@ -223,4 +227,3 @@ class GlowingBlade(Card):
     def on_deal(self):
         return {"attack": ["enemy", 20],
                 "poison": ["player", 8]}
-
