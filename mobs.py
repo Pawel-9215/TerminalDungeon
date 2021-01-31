@@ -205,3 +205,44 @@ class Lizardmen2(Character):
         # chosen_dir = random.choice(directions)
         # chosen_dir = "stop"
         self.move(chosen_dir)
+
+
+class RatWarlord(Character):
+    def __init__(self, y, x, world_map, game_instance):
+        super().__init__(y, x, world_map, game_instance)
+        self.glyph = "R"
+        self.glyph_color = "Red"
+        self.glyph_inverted = True
+        self.action_points = random.randint(6, 12)
+        global rat_names1
+        global rat_names2
+        self.short_name = random.choice(rat_names1)
+        self.name = "RatWarlord " + self.short_name
+        self.endurance = random.randint(18, 28)
+        self.health = random.randint(19, 24)
+        self.melee_skill = random.randint(32, 36)
+        self.distance_to_player = 255
+        self.update_stats()
+        self.EXP_value = 60
+        self.on_create()
+        self.weapon = random.choice([pickables.Dagger, pickables.Sword])()
+        self.deck = [cards.Poison()]
+        self.arm_torso = pickables.ChainMail()
+
+    def update(self, *args, **kwargs):
+        directions = ["up", "down", "left", "right", "stop", "stop", "stop"]
+
+        # check distance to player
+
+        self.distance_to_player = self.world_map.check_distance_to_player(self.y, self.x)
+        print(self.distance_to_player)
+
+        if self.distance_to_player < 16:
+            chosen_dir = self.chase_player(directions)
+        else:
+            chosen_dir = random.choice(directions)
+            # chosen_dir = "stop"
+
+        # chosen_dir = random.choice(directions)
+        # chosen_dir = "stop"
+        self.move(chosen_dir)
