@@ -124,3 +124,40 @@ class Goblin(Character):
         # chosen_dir = random.choice(directions)
         # chosen_dir = "stop"
         self.move(chosen_dir)
+
+
+class Lizardmen(Character):
+    def __init__(self, y, x, world_map, game_instance):
+        super().__init__(y, x, world_map, game_instance)
+        self.glyph = "L"
+        self.glyph_color = "Green"
+        self.glyph_inverted = True
+        self.action_points = random.randint(4, 8)
+        global goblin_names
+        self.short_name = random.choice(goblin_names)
+        self.name = self.short_name + " Lizardmen"
+        self.endurance = random.randint(16, 24)
+        self.health = random.randint(16, 20)
+        self.melee_skill = random.randint(32, 36)
+        self.distance_to_player = 255
+        self.update_stats()
+        self.EXP_value = 55
+        self.on_create()
+
+    def update(self, *args, **kwargs):
+        directions = ["up", "down", "left", "right", "stop", "stop", "stop"]
+
+        # check distance to player
+
+        self.distance_to_player = self.world_map.check_distance_to_player(self.y, self.x)
+        print(self.distance_to_player)
+
+        if self.distance_to_player < 12:
+            chosen_dir = self.chase_player(directions)
+        else:
+            chosen_dir = random.choice(directions)
+            # chosen_dir = "stop"
+
+        # chosen_dir = random.choice(directions)
+        # chosen_dir = "stop"
+        self.move(chosen_dir)

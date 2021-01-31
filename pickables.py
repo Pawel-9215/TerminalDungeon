@@ -25,7 +25,29 @@ class HandArmour(Pickable):
         self.defence_points = random.randint(1, 2)
 
 
-class Dagger(Pickable):
+class LegArmour(Pickable):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "A"
+        self.glyph_inverted = False
+        self.glyph_color = "White"
+        self.name = "Armour"
+        self.destination = "arm_legs"
+        self.defence_points = random.randint(1, 2)
+
+
+class Weapon(Pickable):
+    def __init__(self):
+        super().__init__()
+        self.destination = "weapon"
+        self.glyph = "W"
+        self.glyph_inverted = True
+        self.glyph_color = "Yellow"
+        self.name = "Dagger"
+        self.strenght = (1, 2)
+
+
+class Dagger(Weapon):
     def __init__(self):
         super().__init__()
         self.glyph = "W"
@@ -118,3 +140,86 @@ class LeatherGloves(HandArmour):
         self.name = "Leather gloves"
         self.defence_points = random.randint(0, 1)
 
+
+class ChainMailGloves(HandArmour):
+    def __init__(self):
+        super().__init__()
+        self.name = "Chainmail gloves"
+        self.defence_points = random.randint(2, 3)
+
+
+class PlateGloves(HandArmour):
+    def __init__(self):
+        super().__init__()
+        self.name = "Plate gloves"
+        self.defence_points = random.randint(2, 4)
+
+
+class LeatherBoots(LegArmour):
+    def __init__(self):
+        super().__init__()
+        self.name = "Leather Boots"
+        self.defence_points = random.randint(1, 2)
+
+
+class ReinforcedLeatherBoots(LegArmour):
+    def __init__(self):
+        super().__init__()
+        self.name = " ReinforcedLeather Boots"
+        self.defence_points = random.randint(2, 3)
+
+
+class Sword(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.glyph_color = "White"
+        self.name = "Sword"
+        self.strenght = (3, 5)
+
+
+class Axe(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.glyph_color = "White"
+        self.name = "Axe"
+        self.strenght = (3, 6)
+
+
+class RustySword(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.glyph_color = "Red"
+        self.name = "Rusty Sword"
+        self.strenght = (2, 3)
+
+
+class Morgenstern(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.glyph_color = "Yellow"
+        self.name = "Morgenstern"
+        self.strenght = (4, 5)
+
+
+class DwarvenAxe(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.glyph_color = "Red"
+        self.name = "Rvwarven Axe"
+        self.strenght = (6, 7)
+
+
+class ElvishBlade(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.glyph_color = "Blue"
+        self.name = "Elvish Blade"
+        self.strenght = (5, 9)
+
+
+class ScynthianSword(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.glyph_color = "Magenta"
+        self.name = "Scynthian Sword"
+        self.strenght = (10, 12)

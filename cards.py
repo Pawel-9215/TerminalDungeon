@@ -161,7 +161,7 @@ class PiercingShot(Card):
         self.glyph = "C"
         self.glyph_inverted = True
         self.glyph_color = "Yellow"
-        self.name = "Piercing"
+        self.name = "Piercing Shot"
         self.AP_cost = 6
         self.description = ["Cost : 6",
                             "Enemy is hit with shot that deals",
@@ -171,3 +171,56 @@ class PiercingShot(Card):
     def on_deal(self):
         return {"attack": ["enemy", 10],
                 "drain": ["enemy", 10]}
+
+class PoisoningShot(Card):
+    def __init__(self):
+        self.glyph = "C"
+        self.glyph_inverted = True
+        self.glyph_color = "Green"
+        self.name = "Poisoning Shot"
+        self.AP_cost = 8
+        self.description = ["Cost : 8",
+                            "Enemy is hit by poisoned dart",
+                            "Deals 10 damage, ignores defences",
+                            "Enemy gets poisoned for 6 rounds"]
+
+    def on_deal(self):
+        return {"attack": ["enemy", 10],
+                "poison": ["enemy", 6]}
+
+class PowerfulFireball(Card):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "C"
+        self.glyph_inverted = True
+        self.glyph_color = "Red"
+        self.name = "Powerful Fireball"
+        self.AP_cost = 10
+        self.description = ["Cost: 10",
+                            "Enemy is hit by enormous ball of fire",
+                            "and is hit for 15 damage",
+                            "Caster gets burned for 2 HP",
+                            ]
+
+    def on_deal(self):
+        return {"attack": ["enemy", 15],
+                "drain": ["player", 2]}
+
+class GlowingBlade(Card):
+    def __init__(self):
+        super().__init__()
+        self.glyph = "C"
+        self.glyph_inverted = True
+        self.glyph_color = "Green"
+        self.name = "Glowing Blade"
+        self.AP_cost = 12
+        self.description = ["Cost: 12",
+                            "Caster hits enemy with earely glwoing weapon",
+                            "enemy is hit for 20 damage but",
+                            "caster gets poisoned for 8 rounds",
+                            ]
+
+    def on_deal(self):
+        return {"attack": ["enemy", 20],
+                "poison": ["player", 8]}
+
